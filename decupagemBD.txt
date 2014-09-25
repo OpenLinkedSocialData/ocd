@@ -1,0 +1,314 @@
+As tabelas são:
+'active_admin_comments', ok.
+'adesoes', *** ok.
+'bairros', *** ok.
+'cidades', *** ok.
+'comments', *** ok.
+'competition_prizes', ok.
+'competitions', *** ok.
+'estados',  ok.
+'historico_de_logins', *** ok.
+'imagens', ok.
+'inspirations', *** ok.
+'joining_topic_topicos', *** ok.
+'joining_topics', *** ok. Embora não tenha certeza sobre para que serve isso.
+'links', *** ok.
+'locais', *** ok.
+'macro_tags', *** ok.
+'nings', tabela vazia
+'observatorios', *** ok.
+'observatorios_tem_tags', ok.
+'paises', *** só possui o Brasil
+'plugin_schema_migrations', vazia
+'schema_migrations', versoes
+'seguidos', *** ok.
+'sessions', *** tabela vazia
+'settings', configuracoes varias
+'taggings', ***
+'tags', *** ok.
+'temas', *** tabela vazia
+'temas_topicos', *** tabela vazia
+'topicos', *** ok.
+'user_authorizations', 288 registros. Não achei informativa
+'user_dados', *** ok.
+'users' *** ok.
+
+==========
+Tabela users, 45 colunas, 23079 linhas
+0 'id',
+1 'login', parece ser o email, mas é zerado nos ultimos 3629 registros
+2 'name', todos vazios
+3 'email', todos os usuarios possuem email
+4 'encrypted_password',
+5 'password_salt',
+6 'created_at', data e hora
+7 'updated_at', um quarto somente dos usuários possuem este campo igual ao created
+8 'remember_token',
+9 'remember_token_expires_at',
+10 'confirmation_token',
+11 'confirmed_at', data e hora de confirmação
+12 'state', um destes 4: ['active', 'deleted', 'suspended', 'pending']
+13 'deleted_at', 473 datas de delecao
+14 'type', => ('Empresa', 25),  ('Organizacao', 80), ('Movimento', 24), ('Admin', 4), ('Igreja', 1), ('Ong', 71), ('Cidadao', 22607), ('Parlamentar', 48), ('GestorPublico', 192), ('Conferencia', 19), ('PoderPublico', 8)
+15 'parent_id', 7 registros possuem parent id
+16 'slug', tudo vazio
+17 'topicos_count', 3470 registros possuem contagem > 0. Assumido aqui que é a contagem de topicos iniciados pelo usuario.
+18 'comments_count', 4709 registros possuem contagem > 0.
+19 'adesoes_count', 8129 registros possuem contagem > 0.
+20 'relevancia', 10971 registros possuem relavancia > 0. Curioso para saber do que se trata esta coluna
+21 'confirmation_sent_at', 3639 registros com data e hora, resto Nulo
+22 'reset_password_token',
+23 'reset_password_sent_at',
+24 'remember_created_at', 236 registros com data e hora, resto nulo. Não sei do que se trata.
+25 'sign_in_count', todos os registros com 0.
+26 'current_sign_in_at', todos vazios
+27 'last_sign_in_at', vazios
+28 'current_sign_in_ip', vazios
+29 'last_sign_in_ip', vazios
+30 'inspirations_count', 36 registros com contagem > 0
+Existem como rótulos das colunas, mas não existem as colunas:
+31 'id',
+32 'email',
+33 'nick',
+34 'password',
+35 'created',
+36 'modified',
+37 'timeslot',
+38 'id',
+39 'email',
+40 'nick',
+41 'password',
+42 'created',
+43 'modified',
+44 'timeslot'
+================
+Tabela user_dados, 12 colunas, 16410 registros
+'id',
+'user_id', parece ser a id da tabela users
+'nome', todos os registros possuem nome
+'fone', 7479 registros possuem telefone, alguns parecem mal formados (com menos dígitos que o mínimo)
+'email_de_contato', 10581 registros com email. Vale verificar se bate com o email da tabela users.
+'site_url', 3451 registros possuem url aqui
+'descricao', 6960 registros com apresentação dos usuários sobre si mesmos
+'sexo', sexo de cada um dos registros.
+'aniversario', data de nascimento de cada registro (apenas 3 não possuem nada nessa coluna)
+'fax', 1013 números de fax
+'created_at', datas de criação
+'updated_at',  e atualização para cada um dos registros. Vale conferir se bate com os campos da tabela users
+===========
+Tabela topicos, 16 colunas, 6707 registros.
+Parecem postagens
+0 'id',
+1 'type', => ["Proposta" ou "Problema"]
+2 'user_id', parece ser o ID da tabela users do usuário que criou o tópico
+3 'titulo', titulos para cada registro.
+4 'descricao', parece ser o corpo de cada postagem
+5 'complementar', tudo None
+6 'parent_id',  tudo None
+7 'slug', slug para cada um dos registros
+8 'created_at', data e hora para cada registro
+9 'updated_at', pouco mais de 1/3 tem a mesma data que de criação
+10 'comments_count', 2980 registros possuem contagem > 0
+11 'adesoes_count', 3250 registros possuem contagem > 0
+12 'relevancia', 3999 possuem relevância > 0
+13 'seguidores_count', 1780 registros possuem contagem > 0
+14 'site', 34 registros possuem a entrara "uspocupa"
+15 'competition_id', 1872 registros possuem ids [0,1,2,3,4,5,6]
+====
+Tabela tags, 7 colunas, 3 colunas efetivas, 7291 registros
+'id',
+'name', palavra-chave, hashtag ou, menos comu, algum termo mais extenso
+ 'relevancia, 2267 registros possuem relevância >0
+====
+Tabela taggings, 8 colunas, 31787 registros
+0 'id',
+1 'tag_id', aparente id da tabela tag
+2 'taggable_id', aparente id na tabela do recurso taggeado
+3 'tagger_id', aparente id do usuario (tabela users)
+4 'tagger_type', 31651 "User", resto é None.
+5 'taggable_type', 31651 "Topico", resto é "Macrotag"
+6 'context', todos os registros com "tags"
+7 'created_at', data e hora
+===
+Tabela seguidos, 5 colunas, 6664 registros, não parece de interesse para esta primeira triplificação.
+'id', 'topico_id', 'user_id', 'created_at', 'updated_at'
+===
+Tabela macro_tags, 4 colunas, 2 registros
+0 id
+1 title: "Meio ambiente" e "#bigardiprometeu" com ids 1 e 2.
+2 created_at: data e hora
+2 updated_at: repete o created_at
+===
+Tabela locais, 12 colunas, 29596 registros
+0 'id',
+1 'responsavel_id', parece id da tabela users
+2 'responsavel_type', um dentre: ['Competition', 'Observatorio', None, 'User', 'Topico'] (um None)
+3 'bairro_id', 12818 ids (acho que da tabela bairros), resto None
+4 'cidade_id', 26912 ids, o resto é None
+5 'lat', tudo None 
+6 'lng', tudo None
+7 'created_at', data e hora para os registros (um None)
+8 'updated_at', 2306 registros com data diferente do created_at
+9 'cep', 7956 CEPs, resto None ou string vazia
+10 'estado_id', ids para cada postagem, deve ser da tabela estados
+11 'pais_id', tudo 1 que é Brasil
+===
+Tabela links, 7 colunas, 884 registros
+0 'id',
+1 'nome', todos os links possuem nomes, que varia de um título a uma breve descrição
+2 'url', cada registro possui sua url
+3 'position', posição de 0 a 14 (não sei o que quer dizer)
+4 'topico_id', deve ser o id do tópico em que apareceu. 882 dos registros possuem valor razoável para o campo
+5 'created_at', data e hora de criação
+6 'updated_at', 66 registros foram atualizados depois de criados
+===
+Tabela joining_topics, 9 colunas, 64 registros
+0 'id',
+1 'current_phase_cd', um dentre [0,1,2,3]
+2 'title', 12 registros com título, resto None
+3 'description', 12 registros com descrição, resto None
+4 'observation', tudo None
+5 'created_at', data e hora
+6 'updated_at', 53 registros foram atualizados
+7 'user_id', creio ser o id da tabela users do responsável pelo tópico
+8 'author_id', id do autor, acho que quando este difere do responsável. Apenas um registro repete o id neste campo e no anterior. 
+===
+Tabela joining_topic_topicos, 6 colunas, 290 registros
+0 'id',
+1 'joining_topic_id', id da tabela joining_topics
+2 'topico_id', id da tabela topicos
+3 'kind', sempre um dentre ["to","from"].
+4 'created_at', data e hora
+5 'updated_at', apenas um registro apresentou atualização
+Assumindo aqui que esta tabela destaca tópicos que foram unidos. O tópico do joining topicos pode ser unido a um tópico já existente ("to") ou pode ter servido de referência para outros tópicos serem unidos ("from").
+===
+Tabela inspirations, 8 colunas, 110 registros
+0 'id',
+1 'competition_id', id para cada registro, acho que da tabela competitions
+2 'description', descrição para cada registro
+3 'created_at', data e hora
+4 'updated_at', apenas um registro exibe update
+5 'image', string de nome de arquivo imagem para cada inspiration
+6 'user_id', id da tabela users do usuário que registrou a inspiração (inferido)
+7 'title', titulo para cada registro
+===
+Tabela imagens, 14 colunas, 20349 registros
+0 'id',
+1 'responsavel_id',
+2 'responsavel_type', 6186 registros com valor [User, Topico], resto None
+3 'size', acho q o tamanho em kB
+4 'content_type', um dentre ['image/jpeg','image/png','image/gif','image/bmp','image/pjpeg','image/x-png']
+5 'filename', nome do arquivo de imagem
+6 'height', 18885 registros com altura (acho que) em pixels, resto None
+7 'width', 18885 registros com largura (acho que em pixels), resto None
+8 'parent_id', 14163 registros com id no intervalo [13, 31035] resto None
+9 'thumbnail', 14163 registros com valor ['small', 'mini', 'thumb'], resto None
+10 'position', posicao para todos os registros, com valor no intervalo [1,14152], não sei para que serve esta coluna
+11 'legenda', 868 registros com legenda, resto None ou string vazia
+12 'created_at', data e hora para todos os registros
+13 'updated_at', 204 registros possuem atualização
+===
+Tabela historico de logins, 4 colunas, 30529 registros
+0 'id',
+1 'user_id', id do usuario que logou, da tabela users
+2 'created_at', data e hora
+3 'ip', ip de cada login. Apenas 1 valor "unknown"
+===
+Tabela estados, 6 colunas, 27 registros
+'id',
+'nome', nome de cada estado e DF.
+'abrev', abreviatra de duas letras para cada estado
+'created_at', data e hora
+'updated_at', 25 registros atualizados
+'relevancia', valores no intervalo [0,10601006]
+===
+Tabela competitions, 20 colunas, 6 registros
+0 'id',
+1 'short_description', descricao curta para cada registro
+2 'published', tudo "1" (acho que se houver "0" nao está publicado)
+3 'created_at', data e hora
+4 'updated_at', todos os registros foram atualizados
+5 'start_date', data
+6 'inspiration_phase', valores ['9', '0', '0', '20', '25', '12'], não sei o que são
+7 'proposals_phase', valores ['49', '100', '40', '100', '80', '28'], não sei o que são
+8 'support_phase', ['10', '33', '22', '35', '25', '30']
+9 'joining_phase', ['14', '0', '0', '21', '15', '0']
+10 'announce_phase', ['3', '2', '5', '20', '4', '2']
+11 'title', titulo para cada registro
+12 'image', nome do arquivo de imagem
+13 'current_phase_cd', ['4', '4', '4', '4', '4', '1']
+14 'long_description', descrição detalhada de cada registro
+15 'author_description', parece uma rescrição do responsável pelo concurso
+16 'regulation', regras para os concursos
+17 'awards', descrição da premiação a ser feita
+18 'partners', dois registros apresentam parceiros, o resto eh None
+19 'finished', ['3', '2', '5', '20', '4', '2']
+===
+Tabela competition_prizes, 8 colunas, 83 registros
+0 'id',
+1 'name', nome, parece ser o nome da competicao
+2 'description', descricao de cada registro
+3 'competition_id', id da competicao
+4 'offerer_id', id do oferecedor (acho que quem oferece o premio)
+5 'winning_topic_id', id acho que da tabela topics
+6 'created_at', data e hora
+7 'updated_at', 11 registros tem update
+===
+Tabela comments, 11 colunas, 14502 registros
+0 'id',
+1 'commentable_id', id do item a comentar
+2 'commentable_type', todos "Topico"
+3 'body', corpo da mensagem, 33 registros com corpo None ou string vazia
+4 'user_id', id do usuario que fez o comentario, da tabela users
+5 'parent_id', tudo None
+6 'lft', inteiros entre 1 e 1037
+7 'rgt', inteiros entre 0 e 1038
+8 'tipo', um dentre: ['resposta', 'pergunta', 'comentario', 'ideia']
+9 'created_at', data e hora
+10 'updated_at', 594 registros tiveram update
+===
+Tabela cidades, 7 colunas, 8651 registros
+0 'id',
+1 'nome', nome de cada cidade
+2 'estado_id', id de cada estado
+3 'slug', slug de cada
+4 'created_at', data e hora
+5 'updated_at', 607 registros com update
+6 'relevancia', 375 registros com valor >0
+===
+Tabela bairros, 6 colunas, 11034 registros
+0 'id',
+1 'nome', nome de cada
+2 'cidade_id', id da cidade para cada bairro
+3 'created_at', data e hora
+4'updated_at', 638 registros foram atualizados
+5 'relevancia', 638 registros possuem relevancia > 0
+===
+Tabela adesoes, 5 colunas, 29836 registros
+0 'topico_id', id da tabela topico
+1 'user_id', id da tabela users
+2 'created_at', data e hora
+3 'updated_at', 7 registros possuem atualizações
+4 'id', deve ser a chave primária em ordem incomum.
+===
+Tabela active_admin_comments
+há um único comentário:
+('1','6304','Topico','1','User','Acabamos de incluir! ;)', '2013-08-23 18:22:06', '2013-08-23 18:22:06', 'admin_new')
+===
+Tabela observatorios_tem_tags, 2 colunas, 87529 registros
+0 'observatorio_id', id da tabela observatorio entre 1 e 2127
+1 'tag_id', id da tabela tags, entre 1 e 7111
+===
+Tabela observatorios, 6 colunas, 2106 registros
+0 'id',
+1 'user_id', id da tabela users
+2 'nome', tudo "Observatório 1"
+3 'receber_email', valores 0 ou 1
+4 'created_at', data e hora
+5 'updated_at', 37 registros possuem atualização
+===
+
+
+
+
+
