@@ -42,6 +42,7 @@ for user in d["users"]:
     state=user[12]
     deleted=user[13]
     ttype=user[14]
+    relevance=user[20]
     du[uid]=(email,created,updated)
 
     uri=ocdp+"#"+uid
@@ -54,6 +55,7 @@ for user in d["users"]:
     if deleted:
         g.add((uri,ocd.deleted,r.Literal(parse(deleted))))
     g.add((uri,ocd.type,r.Literal(ttype)))
+    g.add((uri,ocd.relevance,r.Literal(relevance)))
 foo=[]
 contac=0
 contau=0
@@ -201,7 +203,7 @@ for tag in d["tags"]:
     uri=ocd.Tag+"#"+tid
     G(uri,rdf.type,ocd.Tag)
     G(uri,ocd.tagText,r.Literal(tag_))
-    G(uri,ocd.relevancia,r.Literal(relevancia))
+    G(uri,ocd.relevance,r.Literal(relevancia))
 
 # e taggings
 for tagging in d["taggings"]:
@@ -220,13 +222,75 @@ for tagging in d["taggings"]:
         G(uri,ocd.tagger,ocdp+"#"+uid)
     if ttype=="Topico":
         G(uri,ocd.tagged,dp[toid])
+    else:
+        G(uri,ocd.tagged,ocd.Macrotag+"#"toid)
     G(uri,ocd.created,r.Literal(parse(created)))
-    
-# triplificar as relevâncias
-# triplificar conexoes
-# estados, cidades, bairros
+
+de={}
+for estado in d["estados"]:
+    eid=estado[0]
+    nome=estado[1] # ok
+    abr=estado[2] # ok
+    created=estado[3] # ok.
+    updated=estado[4] # ok.
+    relevance=estado[5] # ok.
+
+    uri=ocd.State+"#"abr
+    de[ied]=uri
+    G(uri,rdf.type,ocd.State)
+    G(uri,ocd.abreviation,r.Literal(abr))
+    G(uri,ocd.stateName,r.Literal(name))
+    G(uri,ocd.created,r.Literal(parse(created)))
+    if updated != created:
+        G(uri,ocd.updated,r.Literal(parse(updated)))
+    G(uri,ocd.relevance,r.Literal(relevance))
+
+dc={}
+for cidade in d["cidades"]:
+    cid=cidade[0]
+    nome=cidade[1] # ok.
+    eid=cidade[2] # estado ok.
+    slug=cidade[3] # ok.
+    created=cidade[4] # ok.
+    updated=cidade[5] # ok.
+    relevance=cidade[6] # ok.
+
+    uri=ocd.City+"#"+slug
+    dc[cid]=uri
+    G(uri,rdf.type,rdf.City)
+    G(uri,ocd.state,de[eid])
+    G(uri,ocd.state,de[eid])
+    G(uri,ocd.cityName,r.Literal(nome))
+    G(uri,ocd.created,r.Literal(parse(created)))
+    if updated != created:
+        G(uri,ocd.updated,r.Literal(parse(updated)))
+    G(uri,ocd.relevance,r.Literal(relevance))
+
+for bairro in d["bairros"]:
+    bid=bairro[0] # ok.
+    nome=bairro[1] # ok.
+    cid=bairro[2] # ok.
+    created=bairro[3] # ok.
+    updated=bairro[4] # ok.
+    relevance=bairro[5] # ok.
+
+    uri=ocd.Neighborhood+"#"+bid
+    G(uri,rdf.type,ocd.Neighborhood)
+    if nome:
+        G(uri,ocd.neighborhoodName,r.Literal(nome))
+    G(uri,ocd.city,dc[cid])
+
+    G(uri,ocd.created,r.Literal(parse(created)))
+    if updated != created:
+        G(uri,ocd.updated,r.Literal(parse(updated)))
+    G(uri,ocd.relevance,r.Literal(relevance))
+
+# bairros -
+# locais -
+# adesoes -
+# links -
 # competition prizes
+# triplificar conexoes
 # observatorios. Pq os observatórios tem tags? Do que se tratam?
-# adesoes
 # 
 print time.time()-T

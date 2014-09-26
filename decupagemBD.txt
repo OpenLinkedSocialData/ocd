@@ -55,7 +55,7 @@ Tabela users, 45 colunas, 23079 linhas
 17 'topicos_count', 3470 registros possuem contagem > 0. Assumido aqui que é a contagem de topicos iniciados pelo usuario.
 18 'comments_count', 4709 registros possuem contagem > 0.
 19 'adesoes_count', 8129 registros possuem contagem > 0.
-20 'relevancia', 10971 registros possuem relavancia > 0. Curioso para saber do que se trata esta coluna
++20 'relevancia', 10971 registros possuem relavancia > 0. Curioso para saber do que se trata esta coluna
 21 'confirmation_sent_at', 3639 registros com data e hora, resto Nulo
 22 'reset_password_token',
 23 'reset_password_sent_at',
@@ -215,12 +215,12 @@ Tabela historico de logins, 4 colunas, 30529 registros
 3 'ip', ip de cada login. Apenas 1 valor "unknown"
 ===
 Tabela estados, 6 colunas, 27 registros
-'id',
-'nome', nome de cada estado e DF.
-'abrev', abreviatra de duas letras para cada estado
-'created_at', data e hora
-'updated_at', 25 registros atualizados
-'relevancia', valores no intervalo [0,10601006]
+0 'id',
++1 'nome', nome de cada estado e DF.
+++2 'abrev', abreviatra de duas letras para cada estado
++3 'created_at', data e hora
++4 'updated_at', 25 registros atualizados
++5 'relevancia', valores no intervalo [0,10601006]
 ===
 Tabela competitions, 20 colunas, 6 registros
 ++0 'id',
@@ -269,20 +269,20 @@ Tabela comments, 11 colunas, 14502 registros
 ===
 Tabela cidades, 7 colunas, 8651 registros
 0 'id',
-1 'nome', nome de cada cidade
-2 'estado_id', id de cada estado
-3 'slug', slug de cada
-4 'created_at', data e hora
-5 'updated_at', 607 registros com update
-6 'relevancia', 375 registros com valor >0
++1 'nome', nome de cada cidade
++2 'estado_id', id de cada estado
++3 'slug', slug de cada
++4 'created_at', data e hora
++5 'updated_at', 607 registros com update
++6 'relevancia', 375 registros com valor >0
 ===
 Tabela bairros, 6 colunas, 11034 registros
-0 'id',
-1 'nome', nome de cada
-2 'cidade_id', id da cidade para cada bairro
-3 'created_at', data e hora
-4'updated_at', 638 registros foram atualizados
-5 'relevancia', 638 registros possuem relevancia > 0
++0 'id',
++1 'nome', nome de cada
++2 'cidade_id', id da cidade para cada bairro
++3 'created_at', data e hora
++4'updated_at', 638 registros foram atualizados
++5 'relevancia', 638 registros possuem relevancia > 0
 ===
 Tabela adesoes, 5 colunas, 29836 registros
 0 'topico_id', id da tabela topico
