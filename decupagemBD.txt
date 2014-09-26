@@ -35,21 +35,21 @@ As tabelas são:
 
 ==========
 Tabela users, 45 colunas, 23079 linhas
-0 'id',
++0 'id', 
 1 'login', parece ser o email, mas é zerado nos ultimos 3629 registros
 2 'name', todos vazios
-3 'email', todos os usuarios possuem email
++3 'email', todos os usuarios possuem email
 4 'encrypted_password',
 5 'password_salt',
-6 'created_at', data e hora
-7 'updated_at', um quarto somente dos usuários possuem este campo igual ao created
++6 'created_at', data e hora
++7 'updated_at', um quarto somente dos usuários possuem este campo igual ao created
 8 'remember_token',
 9 'remember_token_expires_at',
 10 'confirmation_token',
 11 'confirmed_at', data e hora de confirmação
-12 'state', um destes 4: ['active', 'deleted', 'suspended', 'pending']
-13 'deleted_at', 473 datas de delecao
-14 'type', => ('Empresa', 25),  ('Organizacao', 80), ('Movimento', 24), ('Admin', 4), ('Igreja', 1), ('Ong', 71), ('Cidadao', 22607), ('Parlamentar', 48), ('GestorPublico', 192), ('Conferencia', 19), ('PoderPublico', 8)
++12 'state', um destes 4: ['active', 'deleted', 'suspended', 'pending']
++13 'deleted_at', 473 datas de delecao
++14 'type', => ('Empresa', 25),  ('Organizacao', 80), ('Movimento', 24), ('Admin', 4), ('Igreja', 1), ('Ong', 71), ('Cidadao', 22607), ('Parlamentar', 48), ('GestorPublico', 192), ('Conferencia', 19), ('PoderPublico', 8)
 15 'parent_id', 7 registros possuem parent id
 16 'slug', tudo vazio
 17 'topicos_count', 3470 registros possuem contagem > 0. Assumido aqui que é a contagem de topicos iniciados pelo usuario.
@@ -83,37 +83,37 @@ Existem como rótulos das colunas, mas não existem as colunas:
 44 'timeslot'
 ================
 Tabela user_dados, 12 colunas, 16410 registros
-'id',
-'user_id', parece ser a id da tabela users
-'nome', todos os registros possuem nome
-'fone', 7479 registros possuem telefone, alguns parecem mal formados (com menos dígitos que o mínimo)
-'email_de_contato', 10581 registros com email. Vale verificar se bate com o email da tabela users.
-'site_url', 3451 registros possuem url aqui
-'descricao', 6960 registros com apresentação dos usuários sobre si mesmos
-'sexo', sexo de cada um dos registros.
-'aniversario', data de nascimento de cada registro (apenas 3 não possuem nada nessa coluna)
-'fax', 1013 números de fax
-'created_at', datas de criação
-'updated_at',  e atualização para cada um dos registros. Vale conferir se bate com os campos da tabela users
+0 'id',
+1 'user_id', parece ser a id da tabela users
++2 'nome', todos os registros possuem nome
++3 'fone', 7479 registros possuem telefone, alguns parecem mal formados (com menos dígitos que o mínimo)
++4 'email_de_contato', 10581 registros com email. Vale verificar se bate com o email da tabela users.
++5 'site_url', 3451 registros possuem url aqui
++6 'descricao', 6960 registros com apresentação dos usuários sobre si mesmos
++7 'sexo', sexo de cada um dos registros.
++8 'aniversario', data de nascimento de cada registro (apenas 3 não possuem nada nessa coluna)
++9 'fax', 1013 números de fax
++10 'created_at', datas de criação
++11 'updated_at',  e atualização para cada um dos registros. Vale conferir se bate com os campos da tabela users
 ===========
 Tabela topicos, 16 colunas, 6707 registros.
 Parecem postagens
 0 'id',
-1 'type', => ["Proposta" ou "Problema"]
-2 'user_id', parece ser o ID da tabela users do usuário que criou o tópico
-3 'titulo', titulos para cada registro.
-4 'descricao', parece ser o corpo de cada postagem
++1 'type', => ["Proposta" ou "Problema"]
++2 'user_id', parece ser o ID da tabela users do usuário que criou o tópico
++3 'titulo', titulos para cada registro.
++4 'descricao', parece ser o corpo de cada postagem
 5 'complementar', tudo None
 6 'parent_id',  tudo None
-7 'slug', slug para cada um dos registros
-8 'created_at', data e hora para cada registro
-9 'updated_at', pouco mais de 1/3 tem a mesma data que de criação
-10 'comments_count', 2980 registros possuem contagem > 0
-11 'adesoes_count', 3250 registros possuem contagem > 0
-12 'relevancia', 3999 possuem relevância > 0
-13 'seguidores_count', 1780 registros possuem contagem > 0
-14 'site', 34 registros possuem a entrara "uspocupa"
-15 'competition_id', 1872 registros possuem ids [0,1,2,3,4,5,6]
+++7 'slug', slug para cada um dos registros
++8 'created_at', data e hora para cada registro
++9 'updated_at', pouco mais de 1/3 tem a mesma data que de criação
++10 'comments_count', 2980 registros possuem contagem > 0
++11 'adesoes_count', 3250 registros possuem contagem > 0
++12 'relevancia', 3999 possuem relevância > 0
++13 'seguidores_count', 1780 registros possuem contagem > 0
+14 'site', 34 registros possuem a entrada "uspocupa"
++15 'competition_id', 1872 registros possuem ids [0,1,2,3,4,5,6]
 ====
 Tabela tags, 7 colunas, 3 colunas efetivas, 7291 registros
 'id',
@@ -255,17 +255,17 @@ Tabela competition_prizes, 8 colunas, 83 registros
 7 'updated_at', 11 registros tem update
 ===
 Tabela comments, 11 colunas, 14502 registros
-0 'id',
-1 'commentable_id', id do item a comentar
+++0 'id',
++1 'commentable_id', id do item a comentar
 2 'commentable_type', todos "Topico"
-3 'body', corpo da mensagem, 33 registros com corpo None ou string vazia
-4 'user_id', id do usuario que fez o comentario, da tabela users
++3 'body', corpo da mensagem, 33 registros com corpo None ou string vazia
++4 'user_id', id do usuario que fez o comentario, da tabela users
 5 'parent_id', tudo None
-6 'lft', inteiros entre 1 e 1037
+6 'lft', inteiros entre 1 e 1037 TTM
 7 'rgt', inteiros entre 0 e 1038
-8 'tipo', um dentre: ['resposta', 'pergunta', 'comentario', 'ideia']
-9 'created_at', data e hora
-10 'updated_at', 594 registros tiveram update
++8 'tipo', um dentre: ['resposta', 'pergunta', 'comentario', 'ideia']
++9 'created_at', data e hora
++10 'updated_at', 594 registros tiveram update
 ===
 Tabela cidades, 7 colunas, 8651 registros
 0 'id',
