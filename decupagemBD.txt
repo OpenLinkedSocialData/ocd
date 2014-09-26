@@ -116,19 +116,19 @@ Parecem postagens
 +15 'competition_id', 1872 registros possuem ids [0,1,2,3,4,5,6]
 ====
 Tabela tags, 7 colunas, 3 colunas efetivas, 7291 registros
-'id',
-'name', palavra-chave, hashtag ou, menos comu, algum termo mais extenso
- 'relevancia, 2267 registros possuem relevância >0
+++0 'id',
++1 'name', palavra-chave, hashtag ou, menos comu, algum termo mais extenso
++2 'relevancia, 2267 registros possuem relevância >0
 ====
 Tabela taggings, 8 colunas, 31787 registros
 0 'id',
-1 'tag_id', aparente id da tabela tag
-2 'taggable_id', aparente id na tabela do recurso taggeado
-3 'tagger_id', aparente id do usuario (tabela users)
-4 'tagger_type', 31651 "User", resto é None.
-5 'taggable_type', 31651 "Topico", resto é "Macrotag"
++1 'tag_id', aparente id da tabela tag
++2 'taggable_id', aparente id na tabela do recurso taggeado
++3 'tagger_id', aparente id do usuario (tabela users)
++4 'tagger_type', 31651 "User", resto é None.
++5 'taggable_type', 31651 "Topico", resto é "Macrotag"
 6 'context', todos os registros com "tags"
-7 'created_at', data e hora
++7 'created_at', data e hora
 ===
 Tabela seguidos, 5 colunas, 6664 registros, não parece de interesse para esta primeira triplificação.
 'id', 'topico_id', 'user_id', 'created_at', 'updated_at'

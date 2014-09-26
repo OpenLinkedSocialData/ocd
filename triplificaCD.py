@@ -192,9 +192,35 @@ for competition in d["competitions"]:
     G(uri,ocd.awards,r.Literal(aw))
     G(uri,ocd.partners,r.Literal(part))
     
-# taggings
+# Tags
 for tag in d["tags"]:
-    
+    tid=tag[0] # Ok.
+    tag_=tag[1] # Ok.
+    relevancia=tag[2] # ok.
 
+    uri=ocd.Tag+"#"+tid
+    G(uri,rdf.type,ocd.Tag)
+    G(uri,ocd.tagText,r.Literal(tag_))
+    G(uri,ocd.relevancia,r.Literal(relevancia))
+
+# e taggings
+for tagging in d["taggings"]:
+    tid_=tagging[0] #tagging Ok.
+    tid=tagging[1] #tag Ok.
+    toid=tagging[2] #topic Ok.
+    uid=tagging[3] #user Ok.
+    utype=tagging[4] # ok.
+    ttype-tagging[5] # ok.
+    created=tagging[7] # ok.
+
+    uri=ocd.Tagging+"#"+tid_
+    G(uri,rdf.type,ocd.Tagging)
+    G(uri,ocd.tag,ocd.Tag+"#"+tid)
+    if utype:
+        G(uri,ocd.tagger,ocdp+"#"+uid)
+    if ttype=="Topico":
+        G(uri,ocd.tagged,dp[toip])
+    G(uri,ocd.created,r.Literal(parse(created)))
+    
 # triplificar as relevâncias
 print time.time()-T
