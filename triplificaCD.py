@@ -31,6 +31,9 @@ rdf = r.namespace.RDF
 ocd = r.Namespace("http://purl.org/socialparticipation/ocd/")
 xsd = r.namespace.XSD
 
+def G(S,P,O):
+    g.add((S,P,O))
+
 # triplifica users
 ocdp=ocd.User
 du={}
@@ -43,6 +46,7 @@ for user in d["users"]:
     deleted=user[13]
     ttype=user[14]
     relevance=user[20]
+    insp_count=user[30]
     du[uid]=(email,created,updated)
 
     uri=ocdp+"#"+uid
@@ -56,6 +60,8 @@ for user in d["users"]:
         g.add((uri,ocd.deleted,r.Literal(parse(deleted))))
     g.add((uri,ocd.type,r.Literal(ttype)))
     g.add((uri,ocd.relevance,r.Literal(relevance)))
+    if insp_count:
+        g.add((uri,ocd.inspirationCount,r.Literal(insp_count)))
 foo=[]
 contac=0
 contau=0
@@ -103,8 +109,6 @@ for userd in d["user_dados"]:
         print uid
 
 # posts
-def G(S,P,O):
-    g.add((S,P,O))
 dp={}
 for topico in d["topicos"]:
     # ttype,uid,titulo,desc,slug,created,updated,ccomment, cadesoes,relevancia,cseguidores,competition_id=topico[1:5]+topico[7:14]+topico[15:]
@@ -201,7 +205,7 @@ for prize in d["competition_prizes"]:
     competition_id=prize[3] # ok.
     offerer_id=prize[4] # ok.
     tid=winning_topic_id=prize[5] # ok.
-    created_at=datprize[6] # ok.
+    created_at=prize[6] # ok.
     updated_at=prize[7] # ok.
 
     uri=ocd.Prize+"#"+pid
@@ -248,7 +252,7 @@ for tagging in d["taggings"]:
     if ttype=="Topico":
         G(uri,ocd.tagged,dp[toid])
     else:
-        G(uri,ocd.tagged,ocd.Macrotag+"#"toid)
+        G(uri,ocd.tagged,ocd.Macrotag+"#"+toid)
     G(uri,ocd.created,r.Literal(parse(created)))
 
 de={}
@@ -260,8 +264,8 @@ for estado in d["estados"]:
     updated=estado[4] # ok.
     relevance=estado[5] # ok.
 
-    uri=ocd.State+"#"abr
-    de[ied]=uri
+    uri=ocd.State+"#"+abr
+    de[eid]=uri
     G(uri,rdf.type,ocd.State)
     G(uri,ocd.abreviation,r.Literal(abr))
     G(uri,ocd.name,r.Literal(name))
@@ -282,7 +286,7 @@ for cidade in d["cidades"]:
 
     uri=ocd.City+"#"+slug
     dc[cid]=uri
-    G(uri,rdf.type,rdf.City)
+    G(uri,rdf.type,ocd.City)
     G(uri,ocd.state,de[eid])
     G(uri,ocd.name,r.Literal(nome))
     G(uri,ocd.created,r.Literal(parse(created)))
@@ -323,21 +327,26 @@ for local in d["locais"]:
 
     uri=ocd.Place+"#"+lid
     G(uri,rdf.type,ocd.Place)
-    G(uri,ocd.cep,r.Literal(cep))
-    G(uri,ocd.state,de[eid])
-    G(uri,ocd.city,dc[cid])
-    G(uri,ocd.neighborhood,ocd.Neighborhood+"#"+bid)
+    if cep:
+        G(uri,ocd.cep,r.Literal(cep))
+    if eid:
+        G(uri,ocd.state,de[eid])
+    if cid:
+        G(uri,ocd.city,dc[cid])
+    if bid:
+        G(uri,ocd.neighborhood,ocd.Neighborhood+"#"+bid)
     if rtype=="Topico":
         uri_=dp[rid]
     elif rtype=="User":
-        uri_=ocd.User+"#"rid
+        uri_=ocd.User+"#"+rid
     elif rtype=="Competition":
-        uri_=ocd.Competition+"#"rid
+        uri_=ocd.Competition+"#"+rid
     elif rtype=="Observatorio":
-        uri_=ocd.Observatory+"#"rid
+        uri_=ocd.Observatory+"#"+rid
     if rtype:
         G(uri,ocd.responsible,uri_)
-    G(uri,ocd.created,r.Literal(parse(created)))
+    if created:
+        G(uri,ocd.created,r.Literal(parse(created)))
     if updated != created:
         G(uri,ocd.updated,r.Literal(parse(updated)))
 for adesao in d["adesoes"]:
@@ -350,7 +359,7 @@ for adesao in d["adesoes"]:
     uri=ocd.Support+"#"+aid
     G(uri,rdf.type,ocd.Support)
     G(uri,ocd.topic,dp[tid])
-    G(uri,ocd.supporter,ocd.User+"#"rid)
+    G(uri,ocd.supporter,ocd.User+"#"+rid)
 
     G(uri,ocd.created,r.Literal(parse(created)))
     if updated != created:
@@ -367,31 +376,33 @@ for link in d['links']:
     G(uri,rdf.type,ocd.Link)
     G(uri,ocd.description,r.Literal(nome))
     G(uri,ocd.url,r.Literal(url))
-    G(uri,ocd.topic,dp[tid])
-    G(uri,ocd.created,r.Literal(parse(created)))
+    if tid:
+        G(uri,ocd.topic,dp[tid])
+    if created:
+        G(uri,ocd.created,r.Literal(parse(created)))
     if updated != created:
         G(uri,ocd.updated,r.Literal(parse(updated)))
-for observatorio in observatorios:
+for observatorio in d["observatorios"]:
     oid=observatorio[0]
     uid=observatorio[1]
     recebe_email=observatorio[3]
     created=observatorio[4]
     updated=observatorio[5]
 
-    uri=ocd.Observatory+"#"oid
+    uri=ocd.Observatory+"#"+oid
     G(uri,rdf.type,ocd.Observatory)
     G(uri,ocd.user,ocd.User+"#"+uid)
     G(uri,ocd.emailTrigger,r.Literal(recebe_email))
     G(uri,ocd.created,r.Literal(parse(created)))
     if updated != created:
         G(uri,ocd.updated,r.Literal(parse(updated)))
-for ot observatorios_tem_tags:
+for ot in d["observatorios_tem_tags"]:
     oid=ot[0]
     tid=ot[1]
-    uri=ocd.Observatory+"#"oid
+    uri=ocd.Observatory+"#"+oid
     uri_=ocd.Tag+"#"+tid
     G(uri_,ocd.tagged,uri)
-for login in d["logins"]:
+for login in d["historico_de_logins"]:
     lid=login[0] # ok.
     uid=login[1] # ok.
     created=login[2] # ok.
@@ -401,5 +412,65 @@ for login in d["logins"]:
     G(uri,ocd.user,ocd.User+"#"+uid)
     G(uri,ocd.created,r.Literal(parse(created)))
     G(uri,ocd.ip,r.Literal(ip))
+for inspiration in d["inspirations"]:
+    iid=inspiration[0] # ok.
+    cid=inspiration[1] # ok.
+    desc=inspiration[2]  # ok.
+    created=inspiration[3] # ok.
+    updated=inspiration[4] # ok.
+    image=inspiration[5] # ok.
+    uid=inspiration[6] # ok.
+    title=inspiration[7] # ok.
 
+    uri=ocd.Inspiration+"#"+iid
+    G(uri,rdf.type,ocd.Inspiration)
+    G(uri,ocd.competition,ocd.Competition+"#"+cid)
+    G(uri,ocd.description,r.Literal(desc))
+    G(uri,ocd.title,r.Literal(title))
+    G(uri,ocd.user,ocd.User+"#"+uid)
+    G(uri,ocd.image,r.Literal(image))
+    G(uri,ocd.created,r.Literal(parse(created)))
+    if updated!=created:
+        G(uri,ocd.updated,r.Literal(parse(updated)))
+
+for imagem in d["imagens"]:
+    iid=imagem[0] # ok.
+    rid=imagem[1] # ok.
+    rtype=imagem[2] # ok.
+    size=imagem[3]
+    ctype=imagem[4]
+    fname=imagem[5]
+    height=imagem[6]
+    width=imagem[7]
+    legenda=imagem[11]
+    created=imagem[12]
+    updated=imagem[13]
+
+    uri=ocd.Image+"#"+iid
+    G(uri,rdf.type,pcd.Image)
+    if rtype=="User":
+        G(uri,ocd.responsible,ocd.User+"#"+rid)
+    if rtype=="Topico":
+        G(uri,ocd.responsible,ocd.Post+"#"+rid)
+    if size:
+        G(uri,ocd.size,r.Literal(size))
+    if ctype:
+        G(uri,ocd.contentType,r.Literal(ctype))
+    if fname:
+        G(uri,ocd.filename,r.Literal(fname))
+    if height:
+        G(uri,ocd.height,r.Literal(height))
+    if width:
+        G(uri,ocd.width,r.Literal(width))
+    if legenda:
+        G(uri,ocd.caption,r.Literal(legenda))
+
+    G(uri,ocd.created,r.Literal(parse(created)))
+    if updated != created:
+        G(uri,ocd.updated,r.Literal(parse(updated)))
+
+
+
+# macro_tags
+# especificação de datai e demais informacoes da triplificacao
 print time.time()-T

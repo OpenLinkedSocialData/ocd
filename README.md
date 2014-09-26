@@ -25,3 +25,5 @@ Os recursos disponibilizados são, principalmente:
     * Pq os observatórios tem tags? Do que se tratam?
     * Não há info de latitude e longitude em lugar algum, confirmam?
     * Do que se tratam os observatórios?
+    * Adiantado das datas e horas, que são parseadas para não dar conflito com xsd:dateTime. Procurando motivo para usar literais tipados, mas deixando de fora enquanto isso por simplicidade.
+    * Adicionadas imagens como nomes, mas a imagem em si não está acessível. Ver se está disponivel online em uma URL ou se incluimos da triplificacao a imagem diretamente.

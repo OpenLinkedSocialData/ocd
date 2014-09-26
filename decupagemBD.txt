@@ -65,7 +65,7 @@ Tabela users, 45 colunas, 23079 linhas
 27 'last_sign_in_at', vazios
 28 'current_sign_in_ip', vazios
 29 'last_sign_in_ip', vazios
-30 'inspirations_count', 36 registros com contagem > 0
++30 'inspirations_count', 36 registros com contagem > 0 TTM
 Existem como rótulos das colunas, mas não existem as colunas:
 31 'id',
 32 'email',
@@ -183,32 +183,32 @@ Tabela joining_topic_topicos, 6 colunas, 290 registros
 Assumindo aqui que esta tabela destaca tópicos que foram unidos. O tópico do joining topicos pode ser unido a um tópico já existente ("to") ou pode ter servido de referência para outros tópicos serem unidos ("from").
 ===
 Tabela inspirations, 8 colunas, 110 registros
-0 'id',
-1 'competition_id', id para cada registro, acho que da tabela competitions
-2 'description', descrição para cada registro
-3 'created_at', data e hora
-4 'updated_at', apenas um registro exibe update
-5 'image', string de nome de arquivo imagem para cada inspiration
-6 'user_id', id da tabela users do usuário que registrou a inspiração (inferido)
-7 'title', titulo para cada registro
+++0 'id',
++1 'competition_id', id para cada registro, acho que da tabela competitions
++2 'description', descrição para cada registro
++3 'created_at', data e hora
++4 'updated_at', apenas um registro exibe update
++5 'image', string de nome de arquivo imagem para cada inspiration
++6 'user_id', id da tabela users do usuário que registrou a inspiração (inferido)
++7 'title', titulo para cada registro
 ===
 Tabela imagens, 14 colunas, 20349 registros
-0 'id',
-1 'responsavel_id',
-2 'responsavel_type', 6186 registros com valor [User, Topico], resto None
-3 'size', acho q o tamanho em kB
-4 'content_type', um dentre ['image/jpeg','image/png','image/gif','image/bmp','image/pjpeg','image/x-png']
-5 'filename', nome do arquivo de imagem
-6 'height', 18885 registros com altura (acho que) em pixels, resto None
-7 'width', 18885 registros com largura (acho que em pixels), resto None
-8 'parent_id', 14163 registros com id no intervalo [13, 31035] resto None
-9 'thumbnail', 14163 registros com valor ['small', 'mini', 'thumb'], resto None
-10 'position', posicao para todos os registros, com valor no intervalo [1,14152], não sei para que serve esta coluna
-11 'legenda', 868 registros com legenda, resto None ou string vazia
-12 'created_at', data e hora para todos os registros
-13 'updated_at', 204 registros possuem atualização
++0 'id',
++1 'responsavel_id',
++2 'responsavel_type', 6186 registros com valor [User, Topico], resto None
++3 'size', acho q o tamanho em kB
++4 'content_type', um dentre ['image/jpeg','image/png','image/gif','image/bmp','image/pjpeg','image/x-png']
++5 'filename', nome do arquivo de imagem
++6 'height', 18885 registros com altura (acho que) em pixels, resto None
++7 'width', 18885 registros com largura (acho que em pixels), resto None
++8 'parent_id', 14163 registros com id no intervalo [13, 31035] resto None # O que é TTM?
++9 'thumbnail', 14163 registros com valor ['small', 'mini', 'thumb'], resto None
++10 'position', posicao para todos os registros, com valor no intervalo [1,14152], não sei para que serve esta coluna
++11 'legenda', 868 registros com legenda, resto None ou string vazia
++12 'created_at', data e hora para todos os registros
++13 'updated_at', 204 registros possuem atualização
 ===
-Tabela historico de logins, 4 colunas, 30529 registros
+Tabela historico_de_logins, 4 colunas, 30529 registros
 ++0 'id',
 +1 'user_id', id do usuario que logou, da tabela users
 +2 'created_at', data e hora
