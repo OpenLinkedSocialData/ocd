@@ -140,27 +140,27 @@ Tabela macro_tags, 4 colunas, 2 registros
 2 updated_at: repete o created_at
 ===
 Tabela locais, 12 colunas, 29596 registros
-0 'id',
-1 'responsavel_id', parece id da tabela users
-2 'responsavel_type', um dentre: ['Competition', 'Observatorio', None, 'User', 'Topico'] (um None)
-3 'bairro_id', 12818 ids (acho que da tabela bairros), resto None
-4 'cidade_id', 26912 ids, o resto é None
+++0 'id',
++1 'responsavel_id', parece id da tabela users
++2 'responsavel_type', um dentre: ['Competition', 'Observatorio', None, 'User', 'Topico'] (um None)
++3 'bairro_id', 12818 ids (acho que da tabela bairros), resto None
++4 'cidade_id', 26912 ids, o resto é None
 5 'lat', tudo None 
 6 'lng', tudo None
-7 'created_at', data e hora para os registros (um None)
-8 'updated_at', 2306 registros com data diferente do created_at
-9 'cep', 7956 CEPs, resto None ou string vazia
-10 'estado_id', ids para cada postagem, deve ser da tabela estados
++7 'created_at', data e hora para os registros (um None)
++8 'updated_at', 2306 registros com data diferente do created_at
++9 'cep', 7956 CEPs, resto None ou string vazia
++10 'estado_id', ids para cada postagem, deve ser da tabela estados
 11 'pais_id', tudo 1 que é Brasil
 ===
 Tabela links, 7 colunas, 884 registros
-0 'id',
-1 'nome', todos os links possuem nomes, que varia de um título a uma breve descrição
-2 'url', cada registro possui sua url
-3 'position', posição de 0 a 14 (não sei o que quer dizer)
-4 'topico_id', deve ser o id do tópico em que apareceu. 882 dos registros possuem valor razoável para o campo
-5 'created_at', data e hora de criação
-6 'updated_at', 66 registros foram atualizados depois de criados
+++0 'id',
++1 'nome', todos os links possuem nomes, que varia de um título a uma breve descrição
++2 'url', cada registro possui sua url
+3 'position', posição de 0 a 14 (não sei o que quer dizer) TTM
++4 'topico_id', deve ser o id do tópico em que apareceu. 882 dos registros possuem valor razoável para o campo
++5 'created_at', data e hora de criação
++6 'updated_at', 66 registros foram atualizados depois de criados
 ===
 Tabela joining_topics, 9 colunas, 64 registros
 0 'id',
@@ -245,14 +245,14 @@ Tabela competitions, 20 colunas, 6 registros
 19 'finished', ['3', '2', '5', '20', '4', '2'] TTM
 ===
 Tabela competition_prizes, 8 colunas, 83 registros
-0 'id',
-1 'name', nome, parece ser o nome da competicao
-2 'description', descricao de cada registro
-3 'competition_id', id da competicao
-4 'offerer_id', id do oferecedor (acho que quem oferece o premio)
-5 'winning_topic_id', id acho que da tabela topics
-6 'created_at', data e hora
-7 'updated_at', 11 registros tem update
+++0 'id',
++1 'name', nome, parece ser o nome da competicao
++2 'description', descricao de cada registro
++3 'competition_id', id da competicao
++4 'offerer_id', id do oferecedor (acho que quem oferece o premio)
++5 'winning_topic_id', id acho que da tabela topics
++6 'created_at', data e hora
++7 'updated_at', 11 registros tem update
 ===
 Tabela comments, 11 colunas, 14502 registros
 ++0 'id',
@@ -271,13 +271,13 @@ Tabela cidades, 7 colunas, 8651 registros
 0 'id',
 +1 'nome', nome de cada cidade
 +2 'estado_id', id de cada estado
-+3 'slug', slug de cada
+++3 'slug', slug de cada
 +4 'created_at', data e hora
 +5 'updated_at', 607 registros com update
 +6 'relevancia', 375 registros com valor >0
 ===
 Tabela bairros, 6 colunas, 11034 registros
-+0 'id',
+++0 'id',
 +1 'nome', nome de cada
 +2 'cidade_id', id da cidade para cada bairro
 +3 'created_at', data e hora
@@ -285,11 +285,11 @@ Tabela bairros, 6 colunas, 11034 registros
 +5 'relevancia', 638 registros possuem relevancia > 0
 ===
 Tabela adesoes, 5 colunas, 29836 registros
-0 'topico_id', id da tabela topico
-1 'user_id', id da tabela users
-2 'created_at', data e hora
-3 'updated_at', 7 registros possuem atualizações
-4 'id', deve ser a chave primária em ordem incomum.
++0 'topico_id', id da tabela topico
++1 'user_id', id da tabela users
++2 'created_at', data e hora
++3 'updated_at', 7 registros possuem atualizações
+++4 'id', deve ser a chave primária em ordem incomum.
 ===
 Tabela active_admin_comments
 há um único comentário:

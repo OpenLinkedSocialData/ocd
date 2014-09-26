@@ -156,6 +156,7 @@ for comment in d["comments"]:
     updated=comment[10] # Ok.
     uri=ocd.Comment+"#"+cid
     G(uri,rdf.type,ocd.Comment)
+    G(uri,ocd.topic,dp[tid])
     if body:
         G(uri,ocd.commentBody,r.Literal(body))
     uri_u=ocdp+"#"+uid
@@ -187,12 +188,36 @@ for competition in d["competitions"]:
         G(uri,ocd.created,r.Literal(parse(created)))
     if start:
         G(uri,ocd.start,r.Literal(parse(start)))
-    G(uri,ocd.competitionName,r.Literal(title))
+    G(uri,ocd.name,r.Literal(title))
     G(uri,ocd.longDescription,r.Literal(ldesc))
     G(uri,ocd.authorDescription,r.Literal(adesc))
     G(uri,ocd.regulation,r.Literal(reg))
     G(uri,ocd.awards,r.Literal(aw))
     G(uri,ocd.partners,r.Literal(part))
+for prize in d["competition_prizes"]:
+    pid=prize[0] # ok.
+    name=prize[1] # ok.
+    description=prize[2] # ok.
+    competition_id=prize[3] # ok.
+    offerer_id=prize[4] # ok.
+    tid=winning_topic_id=prize[5] # ok.
+    created_at=datprize[6] # ok.
+    updated_at=prize[7] # ok.
+
+    uri=ocd.Prize+"#"+pid
+    G(uri,rdf.type,ocd.Prize)
+    G(uri,ocd.name,r.Literal(name))
+    G(uri,ocd.description,r.Literal(desc))
+    uri_=ocd.Competition+"#"+coid
+    G(uri,ocd.competition,uri_)
+    G(uri,ocd.topic,dp[tid])
+    G(uri,ocd.offerer,ocd.User+"#"+offerer_id)
+
+    
+
+    G(uri,ocd.created,r.Literal(parse(created)))
+    if updated!=created:
+        G(uri,ocd.updated,r.Literal(parse(updated)))
     
 # Tags
 for tag in d["tags"]:
@@ -202,7 +227,7 @@ for tag in d["tags"]:
 
     uri=ocd.Tag+"#"+tid
     G(uri,rdf.type,ocd.Tag)
-    G(uri,ocd.tagText,r.Literal(tag_))
+    G(uri,ocd.text,r.Literal(tag_))
     G(uri,ocd.relevance,r.Literal(relevancia))
 
 # e taggings
@@ -239,7 +264,7 @@ for estado in d["estados"]:
     de[ied]=uri
     G(uri,rdf.type,ocd.State)
     G(uri,ocd.abreviation,r.Literal(abr))
-    G(uri,ocd.stateName,r.Literal(name))
+    G(uri,ocd.name,r.Literal(name))
     G(uri,ocd.created,r.Literal(parse(created)))
     if updated != created:
         G(uri,ocd.updated,r.Literal(parse(updated)))
@@ -259,8 +284,7 @@ for cidade in d["cidades"]:
     dc[cid]=uri
     G(uri,rdf.type,rdf.City)
     G(uri,ocd.state,de[eid])
-    G(uri,ocd.state,de[eid])
-    G(uri,ocd.cityName,r.Literal(nome))
+    G(uri,ocd.name,r.Literal(nome))
     G(uri,ocd.created,r.Literal(parse(created)))
     if updated != created:
         G(uri,ocd.updated,r.Literal(parse(updated)))
@@ -277,7 +301,7 @@ for bairro in d["bairros"]:
     uri=ocd.Neighborhood+"#"+bid
     G(uri,rdf.type,ocd.Neighborhood)
     if nome:
-        G(uri,ocd.neighborhoodName,r.Literal(nome))
+        G(uri,ocd.name,r.Literal(nome))
     G(uri,ocd.city,dc[cid])
 
     G(uri,ocd.created,r.Literal(parse(created)))
@@ -285,11 +309,69 @@ for bairro in d["bairros"]:
         G(uri,ocd.updated,r.Literal(parse(updated)))
     G(uri,ocd.relevance,r.Literal(relevance))
 
-# bairros -
 # locais -
-# adesoes -
-# links -
-# competition prizes
+for local in d["locais"]:
+    lid=local[0] # ok.
+    rid=local[1]
+    rtype=local[2]
+    bid=local[3] # ok.
+    cid=local[4] # ok.
+    created=local[7] # ok.
+    updated=local[8] # ok.
+    cep=local[9] # ok.
+    eid=local[10] # ok.
+
+    uri=ocd.Place+"#"+lid
+    G(uri,rdf.type,ocd.Place)
+    G(uri,ocd.cep,r.Literal(cep))
+    G(uri,ocd.state,de[eid])
+    G(uri,ocd.city,dc[cid])
+    G(uri,ocd.neighborhood,ocd.Neighborhood+"#"+bid)
+    if rtype=="Topico":
+        uri_=dp[rid]
+    elif rtype=="User":
+        uri_=ocd.User+"#"rid
+    elif rtype=="Competition":
+        uri_=ocd.Competition+"#"rid
+    elif rtype=="Observatorio":
+        uri_=ocd.Observatory+"#"rid
+    if rtype:
+        G(uri,ocd.responsible,uri_)
+    G(uri,ocd.created,r.Literal(parse(created)))
+    if updated != created:
+        G(uri,ocd.updated,r.Literal(parse(updated)))
+for adesao in d["adesoes"]:
+    tid=adesao[0] # ok.
+    uid=adesao[1] # ok.
+    created=adesao[2]
+    updated=adesao[3]
+    aid=adesao[4] # ok.
+
+    uri=ocd.Support+"#"+aid
+    G(uri,rdf.type,ocd.Support)
+    G(uri,ocd.topic,dp[tid])
+    G(uri,ocd.supporter,ocd.User+"#"rid)
+
+    G(uri,ocd.created,r.Literal(parse(created)))
+    if updated != created:
+        G(uri,ocd.updated,r.Literal(parse(updated)))
+for link in d['links']:
+    lid=link[0]
+    nome=link[1]
+    url=link[2]
+    tid=link[4]
+    created=link[5]
+    updated=link[6]
+
+    uri=ocd.Link+"#"+lid
+    G(uri,rdf.type,ocd.Link)
+    G(uri,ocd.description,r.Literal(nome))
+    G(uri,ocd.url,r.Literal(url))
+    G(uri,ocd.topic,dp[tid])
+    G(uri,ocd.created,r.Literal(parse(created)))
+    if updated != created:
+        G(uri,ocd.updated,r.Literal(parse(updated)))
+
 # triplificar conexoes
 # observatorios. Pq os observatórios tem tags? Do que se tratam?
 # 
