@@ -24,3 +24,4 @@ Os recursos disponibilizados são, principalmente:
     * Vale triplificar regioes (estados, cidades e bairros) e entender como se relaciona com o resto do portal
     * Pq os observatórios tem tags? Do que se tratam?
     * Não há info de latitude e longitude em lugar algum, confirmam?
+    * Do que se tratam os observatórios?

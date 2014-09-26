@@ -371,8 +371,35 @@ for link in d['links']:
     G(uri,ocd.created,r.Literal(parse(created)))
     if updated != created:
         G(uri,ocd.updated,r.Literal(parse(updated)))
+for observatorio in observatorios:
+    oid=observatorio[0]
+    uid=observatorio[1]
+    recebe_email=observatorio[3]
+    created=observatorio[4]
+    updated=observatorio[5]
 
-# triplificar conexoes
-# observatorios. Pq os observatórios tem tags? Do que se tratam?
-# 
+    uri=ocd.Observatory+"#"oid
+    G(uri,rdf.type,ocd.Observatory)
+    G(uri,ocd.user,ocd.User+"#"+uid)
+    G(uri,ocd.emailTrigger,r.Literal(recebe_email))
+    G(uri,ocd.created,r.Literal(parse(created)))
+    if updated != created:
+        G(uri,ocd.updated,r.Literal(parse(updated)))
+for ot observatorios_tem_tags:
+    oid=ot[0]
+    tid=ot[1]
+    uri=ocd.Observatory+"#"oid
+    uri_=ocd.Tag+"#"+tid
+    G(uri_,ocd.tagged,uri)
+for login in d["logins"]:
+    lid=login[0] # ok.
+    uid=login[1] # ok.
+    created=login[2] # ok.
+    ip=login[3] # ok.
+    uri=ocd.Login+"#"+lid
+    G(uri,rdf.type,ocd.Login)
+    G(uri,ocd.user,ocd.User+"#"+uid)
+    G(uri,ocd.created,r.Literal(parse(created)))
+    G(uri,ocd.ip,r.Literal(ip))
+
 print time.time()-T
