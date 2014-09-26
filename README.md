@@ -21,3 +21,5 @@ Os recursos disponibilizados são, principalmente:
     * Fizeram participação no mesmo período de tempo
     * Responderam à postagens uns dos outros
     * Comentaram as mesmas postagens
+    * Vale triplificar regioes (estados, cidades e bairros) e entender como se relaciona com o resto do portal
+    * Pq os observatórios tem tags? Do que se tratam?

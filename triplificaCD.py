@@ -210,7 +210,7 @@ for tagging in d["taggings"]:
     toid=tagging[2] #topic Ok.
     uid=tagging[3] #user Ok.
     utype=tagging[4] # ok.
-    ttype-tagging[5] # ok.
+    ttype=tagging[5] # ok.
     created=tagging[7] # ok.
 
     uri=ocd.Tagging+"#"+tid_
@@ -219,8 +219,14 @@ for tagging in d["taggings"]:
     if utype:
         G(uri,ocd.tagger,ocdp+"#"+uid)
     if ttype=="Topico":
-        G(uri,ocd.tagged,dp[toip])
+        G(uri,ocd.tagged,dp[toid])
     G(uri,ocd.created,r.Literal(parse(created)))
     
 # triplificar as relevâncias
+# triplificar conexoes
+# estados, cidades, bairros
+# competition prizes
+# observatorios. Pq os observatórios tem tags? Do que se tratam?
+# adesoes
+# 
 print time.time()-T
