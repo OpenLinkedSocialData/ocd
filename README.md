@@ -12,4 +12,12 @@ Os recursos disponibilizados são, principalmente:
 * Há dois ids no user\_dados que não encontramos users: '168', '16657'
 * Datas de criação e update não batem do users e do user\_dados. Usado do users
 * A URI dada ao Participante é feita com a ID da tabela users. Uma slug seria melhor, mas não parece ser usada para usuario na plataforma.
-* É bom verificar se há URLs padrão para as postagens e para os usuários. Registrar isso talvez como a URI.
+* É bom verificar se há URLs padrão para as postagens e para os usuários. Registrar isso talvez como a própria URI.
+* Análises informativas com as tags usadas. Confrontar com as palavras mais usadas no texto produzido.
+* Usuários não possuem relação de amizade, mas se relacionam pelos seguintes modos:
+    * Seguem postagens iguais
+    * Usam tags iguais
+    * Usam palavras iguais
+    * Fizeram participação no mesmo período de tempo
+    * Responderam à postagens uns dos outros
+    * Comentaram as mesmas postagens

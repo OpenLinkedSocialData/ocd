@@ -223,26 +223,26 @@ Tabela estados, 6 colunas, 27 registros
 'relevancia', valores no intervalo [0,10601006]
 ===
 Tabela competitions, 20 colunas, 6 registros
-0 'id',
-1 'short_description', descricao curta para cada registro
+++0 'id',
++1 'short_description', descricao curta para cada registro
 2 'published', tudo "1" (acho que se houver "0" nao está publicado)
-3 'created_at', data e hora
-4 'updated_at', todos os registros foram atualizados
-5 'start_date', data
-6 'inspiration_phase', valores ['9', '0', '0', '20', '25', '12'], não sei o que são
++3 'created_at', data e hora
++4 'updated_at', todos os registros foram atualizados
++5 'start_date', data
+6 'inspiration_phase', valores ['9', '0', '0', '20', '25', '12'], não sei o que são TTM
 7 'proposals_phase', valores ['49', '100', '40', '100', '80', '28'], não sei o que são
 8 'support_phase', ['10', '33', '22', '35', '25', '30']
 9 'joining_phase', ['14', '0', '0', '21', '15', '0']
 10 'announce_phase', ['3', '2', '5', '20', '4', '2']
-11 'title', titulo para cada registro
-12 'image', nome do arquivo de imagem
-13 'current_phase_cd', ['4', '4', '4', '4', '4', '1']
-14 'long_description', descrição detalhada de cada registro
-15 'author_description', parece uma rescrição do responsável pelo concurso
-16 'regulation', regras para os concursos
-17 'awards', descrição da premiação a ser feita
-18 'partners', dois registros apresentam parceiros, o resto eh None
-19 'finished', ['3', '2', '5', '20', '4', '2']
++11 'title', titulo para cada registro
+12 'image', nome do arquivo de imagem TTM podemos apontar
+13 'current_phase_cd', ['4', '4', '4', '4', '4', '1'] TTM
++14 'long_description', descrição detalhada de cada registro
++15 'author_description', parece uma rescrição do responsável pelo concurso
++16 'regulation', regras para os concursos
++17 'awards', descrição da premiação a ser feita
++18 'partners', dois registros apresentam parceiros, o resto eh None
+19 'finished', ['3', '2', '5', '20', '4', '2'] TTM
 ===
 Tabela competition_prizes, 8 colunas, 83 registros
 0 'id',

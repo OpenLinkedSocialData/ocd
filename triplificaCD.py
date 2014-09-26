@@ -100,8 +100,6 @@ for userd in d["user_dados"]:
     except:
         print uid
 
-ocdpt=ocd.Post
-ocdc=ocd.Competition
 # posts
 def G(S,P,O):
     g.add((S,P,O))
@@ -117,15 +115,15 @@ for topico in d["topicos"]:
     slug=topico[7]  # OK
     created=topico[8] # OK
     updated=topico[9] # OK
-    ccomment=topico[10] # OK
+    ccomments=topico[10] # OK
     cadesoes=topico[11] # OK
     relevancia=topico[12] # OK
     cseguidores=topico[13] # OK
     competition_id=topico[15] # OK
 
-    uri=ocdpt+"#"+slug
+    uri=ocd.Post+"#"+slug.decode("utf-8")
     dp[topico[0]]=uri
-    G(uri,rdf.type,ocdt)
+    G(uri,rdf.type,ocd.Post)
     if ttype=="Proposta":
         G(uri,rdf.type,ocd.Proposal)
     elif ttype=="Problema":
@@ -142,7 +140,7 @@ for topico in d["topicos"]:
     G(uri,ocd.relevance,r.Literal(relevancia))
     G(uri,ocd.followersCount,r.Literal(cseguidores))
     if competition_id: # Vínculo com Competition
-        uri_=ocdc+"#"+competition_id
+        uri_=ocd.Competition+"#"+competition_id
         G(uri,ocd.competition,uri_)
     
 # Tabela Comments
@@ -157,7 +155,7 @@ for comment in d["comments"]:
     uri=ocd.Comment+"#"+cid
     G(uri,rdf.type,ocd.Comment)
     if body:
-        G(uri,ocd.commentBody,body)
+        G(uri,ocd.commentBody,r.Literal(body))
     uri_u=ocdp+"#"+uid
     G(uri,ocd.author,uri_u)
     G(uri,ocd.commentType,r.Literal(ttype))
@@ -165,11 +163,38 @@ for comment in d["comments"]:
     if updated!=created:
         G(uri,ocd.updated,r.Literal(parse(updated)))
     
-
-    
-    
 # Tabela Competitions    
-    
+for competition in d["competitions"]:
+    coid=competition[0] # OK.
+    sdesc=competition[1] # OK.
+    created=competition[3] # Ok.
+    updated=competition[4] # Ok.
+    start=competition[5]   # Ok.
+    title=competition[11] # Ok.
+    ldesc=competition[14] # Ok.
+    adesc=competition[15] # Ok.
+    reg=competition[16] # Ok.
+    aw=competition[17] # Ok.
+    part=competition[18] # Ok.
 
+    uri=ocd.Competition+"#"+coid
+    G(uri,rdf.type,ocd.Competition)
+    G(uri,ocd.shortDescription,r.Literal(sdesc))
+    G(uri,ocd.created,r.Literal(parse(created)))
+    if created != updated:
+        G(uri,ocd.created,r.Literal(parse(created)))
+    if start:
+        G(uri,ocd.start,r.Literal(parse(start)))
+    G(uri,ocd.competitionName,r.Literal(title))
+    G(uri,ocd.longDescription,r.Literal(ldesc))
+    G(uri,ocd.authorDescription,r.Literal(adesc))
+    G(uri,ocd.regulation,r.Literal(reg))
+    G(uri,ocd.awards,r.Literal(aw))
+    G(uri,ocd.partners,r.Literal(part))
     
 # taggings
+for tag in d["tags"]:
+    
+
+# triplificar as relevâncias
+print time.time()-T
