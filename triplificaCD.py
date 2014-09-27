@@ -1,6 +1,7 @@
 #!/usr/bin/python
 #-*- coding: utf-8 -*-
 import rdflib as r
+import os
 import _mysql
 import time
 import unicodedata
@@ -140,7 +141,7 @@ for topico in d["topicos"]:
     else:
         print u"tipo de postagem não identificada"
     G(uri,ocd.title,r.Literal(titulo))
-    G(uri,ocd.articleBody,r.Literal(desc))
+    G(uri,ocd.articleBody,r.Literal(RCC(desc)))
     G(uri,ocd.created,r.Literal(parse(created)))
     if updated != created:
         G(uri,ocd.updated,r.Literal(parse(updated)))
@@ -165,7 +166,7 @@ for comment in d["comments"]:
     G(uri,rdf.type,ocd.Comment)
     G(uri,ocd.topic,dp[tid])
     if body:
-        G(uri,ocd.commentBody,r.Literal(body))
+        G(uri,ocd.commentBody,r.Literal(RCC(body)))
     uri_u=ocdp+"#"+uid
     G(uri,ocd.author,uri_u)
     G(uri,ocd.commentType,r.Literal(ttype))
@@ -190,15 +191,15 @@ for competition in d["competitions"]:
 
     uri=ocd.Competition+"#"+coid
     G(uri,rdf.type,ocd.Competition)
-    G(uri,ocd.shortDescription,r.Literal(sdesc))
+    G(uri,ocd.shortDescription,r.Literal(RCC(sdesc)))
     G(uri,ocd.created,r.Literal(parse(created)))
     if created != updated:
         G(uri,ocd.created,r.Literal(parse(created)))
     if start:
         G(uri,ocd.start,r.Literal(parse(start)))
     G(uri,ocd.name,r.Literal(title))
-    G(uri,ocd.longDescription,r.Literal(ldesc))
-    G(uri,ocd.authorDescription,r.Literal(adesc))
+    G(uri,ocd.longDescription,r.Literal(RCC(ldesc)))
+    G(uri,ocd.authorDescription,r.Literal(RCC(adesc)))
     G(uri,ocd.regulation,r.Literal(reg))
     G(uri,ocd.awards,r.Literal(aw))
     G(uri,ocd.partners,r.Literal(part))
@@ -215,7 +216,7 @@ for prize in d["competition_prizes"]:
     uri=ocd.Prize+"#"+pid
     G(uri,rdf.type,ocd.Prize)
     G(uri,ocd.name,r.Literal(name))
-    G(uri,ocd.description,r.Literal(desc))
+    G(uri,ocd.description,r.Literal(RCC(desc)))
     uri_=ocd.Competition+"#"+coid
     G(uri,ocd.competition,uri_)
     G(uri,ocd.topic,dp[tid])
@@ -517,14 +518,17 @@ f=open("cdTriplestore.rdf","wb")
 f.write(g.serialize())
 f.close()
 print("feito rdf xml: %.2f"%(time.time()-T,))
-f=open("cdTriplestore.ttl","wb")
-f.write(g.serialize(format="turtle"))
-f.close()
-print("feito ttl: %.2f"%(time.time()-T,))
 try:
-    import os
     os.system("tar -zcvf cdTriplestore.rdf.tar.gz cdTriplestore.rdf")
-    os.system("tar -zcvf cdTriplestore.ttl.tar.gz cdTriplestore.ttl")
-    print("feitos arquivos compactos ttl: %.2f"%(time.time()-T,))
+    print("feitos compacto rdf.tar.gz: %.2f"%(time.time()-T,))
 except:
     pass
+#f=open("cdTriplestore.ttl","wb")
+#f.write(g.serialize(format="turtle"))
+#f.close()
+#print("feito ttl: %.2f"%(time.time()-T,))
+#try:
+#    os.system("tar -zcvf cdTriplestore.ttl.tar.gz cdTriplestore.ttl")
+#    print("feitos compacto ttl.tar.gz: %.2f"%(time.time()-T,))
+#except:
+#    pass
