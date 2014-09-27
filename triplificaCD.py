@@ -1,9 +1,8 @@
 #!/usr/bin/python
 #-*- coding: utf-8 -*-
 import rdflib as r
-import os
 import _mysql
-import time
+import os, time
 import unicodedata
 from dateutil.parser import parse
 T=time.time()
@@ -523,12 +522,12 @@ try:
     print("feitos compacto rdf.tar.gz: %.2f"%(time.time()-T,))
 except:
     pass
-#f=open("cdTriplestore.ttl","wb")
-#f.write(g.serialize(format="turtle"))
-#f.close()
-#print("feito ttl: %.2f"%(time.time()-T,))
-#try:
-#    os.system("tar -zcvf cdTriplestore.ttl.tar.gz cdTriplestore.ttl")
-#    print("feitos compacto ttl.tar.gz: %.2f"%(time.time()-T,))
-#except:
-#    pass
+f=open("cdTriplestore.ttl","wb")
+f.write(g.serialize(format="turtle"))
+f.close()
+print("feito ttl: %.2f"%(time.time()-T,))
+try:
+    os.system("tar -zcvf cdTriplestore.ttl.tar.gz cdTriplestore.ttl")
+    print("feitos compacto ttl.tar.gz: %.2f"%(time.time()-T,))
+except:
+    pass
