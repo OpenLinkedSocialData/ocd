@@ -134,10 +134,10 @@ Tabela seguidos, 5 colunas, 6664 registros, não parece de interesse para esta p
 'id', 'topico_id', 'user_id', 'created_at', 'updated_at'
 ===
 Tabela macro_tags, 4 colunas, 2 registros
-0 id
-1 title: "Meio ambiente" e "#bigardiprometeu" com ids 1 e 2.
-2 created_at: data e hora
-2 updated_at: repete o created_at
+++0 id
++1 title: "Meio ambiente" e "#bigardiprometeu" com ids 1 e 2.
++2 created_at: data e hora
++3 updated_at: repete o created_at
 ===
 Tabela locais, 12 colunas, 29596 registros
 ++0 'id',
@@ -201,9 +201,9 @@ Tabela imagens, 14 colunas, 20349 registros
 +5 'filename', nome do arquivo de imagem
 +6 'height', 18885 registros com altura (acho que) em pixels, resto None
 +7 'width', 18885 registros com largura (acho que em pixels), resto None
-+8 'parent_id', 14163 registros com id no intervalo [13, 31035] resto None # O que é TTM?
-+9 'thumbnail', 14163 registros com valor ['small', 'mini', 'thumb'], resto None
-+10 'position', posicao para todos os registros, com valor no intervalo [1,14152], não sei para que serve esta coluna
+8 'parent_id', 14163 registros com id no intervalo [13, 31035] resto None # O que é TTM?
+9 'thumbnail', 14163 registros com valor ['small', 'mini', 'thumb'], resto None
+10 'position', posicao para todos os registros, com valor no intervalo [1,14152], não sei para que serve esta coluna
 +11 'legenda', 868 registros com legenda, resto None ou string vazia
 +12 'created_at', data e hora para todos os registros
 +13 'updated_at', 204 registros possuem atualização

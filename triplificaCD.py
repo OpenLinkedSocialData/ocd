@@ -3,6 +3,7 @@
 import rdflib as r
 import _mysql
 import time
+import unicodedata
 from dateutil.parser import parse
 T=time.time()
 db=_mysql.connect(user="root",passwd="foobar",db="cd")
@@ -31,10 +32,12 @@ rdf = r.namespace.RDF
 ocd = r.Namespace("http://purl.org/socialparticipation/ocd/")
 xsd = r.namespace.XSD
 
+def remove_control_characters(s):
+    #return "".join(ch for ch in s if unicodedata.category(ch)[0]!="C")
+    return ''.join(c for c in s if ord(c) >= 32) 
+RCC=remove_control_characters
 def G(S,P,O):
     g.add((S,P,O))
-
-# triplifica users
 ocdp=ocd.User
 du={}
 for user in d["users"]:
@@ -62,6 +65,7 @@ for user in d["users"]:
     g.add((uri,ocd.relevance,r.Literal(relevance)))
     if insp_count:
         g.add((uri,ocd.inspirationCount,r.Literal(insp_count)))
+print("triplificada tabela users: %.2f"%(time.time()-T,))
 foo=[]
 contac=0
 contau=0
@@ -89,26 +93,25 @@ for userd in d["user_dados"]:
 #        print "usuario existe no user_dados mas nao no users"
 #        foo.append(uid)
     g.add((uri,ocd.site,r.Literal(site)))
-    g.add((uri,ocd.userDescription,r.Literal(desc)))
+    g.add((uri,ocd.userDescription,r.Literal(RCC(desc))))
     g.add((uri,ocd.gender,r.Literal(gen)))
     if ani:
         g.add((uri,ocd.birthday,r.Literal(parse(ani))))
     g.add((uri,ocd.fax,r.Literal(fax)))
-    try:
-        if created==du[uid][1]:
-            print "criado certin"
-        else:
-            contac+=1
-            print "criacao n bate"
-        if updated==du[uid][2]:
-            print "updated certin"
-        else:
-            contau+=1
-            print "update n bate"
-    except:
-        print uid
-
-# posts
+#    try:
+#        if created==du[uid][1]:
+#            print "criado certin"
+#        else:
+#            contac+=1
+#            print "criacao n bate"
+#        if updated==du[uid][2]:
+#            print "updated certin"
+#        else:
+#            contau+=1
+#            print "update n bate"
+#    except:
+#        print uid
+print("triplificada tabela user_dados: %.2f"%(time.time()-T,))
 dp={}
 for topico in d["topicos"]:
     # ttype,uid,titulo,desc,slug,created,updated,ccomment, cadesoes,relevancia,cseguidores,competition_id=topico[1:5]+topico[7:14]+topico[15:]
@@ -148,7 +151,7 @@ for topico in d["topicos"]:
     if competition_id: # Vínculo com Competition
         uri_=ocd.Competition+"#"+competition_id
         G(uri,ocd.competition,uri_)
-    
+print("triplificada tabela topicos: %.2f"%(time.time()-T,))
 # Tabela Comments
 for comment in d["comments"]:
     cid=comment[0] # Ok.
@@ -169,6 +172,7 @@ for comment in d["comments"]:
     G(uri,ocd.created,r.Literal(parse(created)))
     if updated!=created:
         G(uri,ocd.updated,r.Literal(parse(updated)))
+print("triplificada tabela comments: %.2f"%(time.time()-T,))
     
 # Tabela Competitions    
 for competition in d["competitions"]:
@@ -222,6 +226,8 @@ for prize in d["competition_prizes"]:
     G(uri,ocd.created,r.Literal(parse(created)))
     if updated!=created:
         G(uri,ocd.updated,r.Literal(parse(updated)))
+print("triplificada tabela competitions: %.2f"%(time.time()-T,))
+
     
 # Tags
 for tag in d["tags"]:
@@ -233,6 +239,7 @@ for tag in d["tags"]:
     G(uri,rdf.type,ocd.Tag)
     G(uri,ocd.text,r.Literal(tag_))
     G(uri,ocd.relevance,r.Literal(relevancia))
+print("triplificada tabela tags: %.2f"%(time.time()-T,))
 
 # e taggings
 for tagging in d["taggings"]:
@@ -252,8 +259,9 @@ for tagging in d["taggings"]:
     if ttype=="Topico":
         G(uri,ocd.tagged,dp[toid])
     else:
-        G(uri,ocd.tagged,ocd.Macrotag+"#"+toid)
+        G(uri,ocd.tagged,ocd.MacroTag+"#"+toid)
     G(uri,ocd.created,r.Literal(parse(created)))
+print("triplificada tabela taggings: %.2f"%(time.time()-T,))
 
 de={}
 for estado in d["estados"]:
@@ -273,6 +281,7 @@ for estado in d["estados"]:
     if updated != created:
         G(uri,ocd.updated,r.Literal(parse(updated)))
     G(uri,ocd.relevance,r.Literal(relevance))
+print("triplificada tabela estados: %.2f"%(time.time()-T,))
 
 dc={}
 for cidade in d["cidades"]:
@@ -293,6 +302,7 @@ for cidade in d["cidades"]:
     if updated != created:
         G(uri,ocd.updated,r.Literal(parse(updated)))
     G(uri,ocd.relevance,r.Literal(relevance))
+print("triplificada tabela cidades: %.2f"%(time.time()-T,))
 
 for bairro in d["bairros"]:
     bid=bairro[0] # ok.
@@ -312,6 +322,7 @@ for bairro in d["bairros"]:
     if updated != created:
         G(uri,ocd.updated,r.Literal(parse(updated)))
     G(uri,ocd.relevance,r.Literal(relevance))
+print("triplificada tabela bairros: %.2f"%(time.time()-T,))
 
 # locais -
 for local in d["locais"]:
@@ -349,6 +360,7 @@ for local in d["locais"]:
         G(uri,ocd.created,r.Literal(parse(created)))
     if updated != created:
         G(uri,ocd.updated,r.Literal(parse(updated)))
+print("triplificada tabela locais: %.2f"%(time.time()-T,))
 for adesao in d["adesoes"]:
     tid=adesao[0] # ok.
     uid=adesao[1] # ok.
@@ -364,6 +376,7 @@ for adesao in d["adesoes"]:
     G(uri,ocd.created,r.Literal(parse(created)))
     if updated != created:
         G(uri,ocd.updated,r.Literal(parse(updated)))
+print("triplificada tabela adesoes: %.2f"%(time.time()-T,))
 for link in d['links']:
     lid=link[0]
     nome=link[1]
@@ -382,6 +395,7 @@ for link in d['links']:
         G(uri,ocd.created,r.Literal(parse(created)))
     if updated != created:
         G(uri,ocd.updated,r.Literal(parse(updated)))
+print("triplificada tabela links: %.2f"%(time.time()-T,))
 for observatorio in d["observatorios"]:
     oid=observatorio[0]
     uid=observatorio[1]
@@ -396,12 +410,14 @@ for observatorio in d["observatorios"]:
     G(uri,ocd.created,r.Literal(parse(created)))
     if updated != created:
         G(uri,ocd.updated,r.Literal(parse(updated)))
+print("triplificada tabela observatorios: %.2f"%(time.time()-T,))
 for ot in d["observatorios_tem_tags"]:
     oid=ot[0]
     tid=ot[1]
     uri=ocd.Observatory+"#"+oid
     uri_=ocd.Tag+"#"+tid
     G(uri_,ocd.tagged,uri)
+print("triplificada tabela observatorios_tem_tags: %.2f"%(time.time()-T,))
 for login in d["historico_de_logins"]:
     lid=login[0] # ok.
     uid=login[1] # ok.
@@ -412,6 +428,7 @@ for login in d["historico_de_logins"]:
     G(uri,ocd.user,ocd.User+"#"+uid)
     G(uri,ocd.created,r.Literal(parse(created)))
     G(uri,ocd.ip,r.Literal(ip))
+print("triplificada tabela historico_de_logins: %.2f"%(time.time()-T,))
 for inspiration in d["inspirations"]:
     iid=inspiration[0] # ok.
     cid=inspiration[1] # ok.
@@ -432,7 +449,7 @@ for inspiration in d["inspirations"]:
     G(uri,ocd.created,r.Literal(parse(created)))
     if updated!=created:
         G(uri,ocd.updated,r.Literal(parse(updated)))
-
+print("triplificada tabela inspirations: %.2f"%(time.time()-T,))
 for imagem in d["imagens"]:
     iid=imagem[0] # ok.
     rid=imagem[1] # ok.
@@ -447,7 +464,7 @@ for imagem in d["imagens"]:
     updated=imagem[13]
 
     uri=ocd.Image+"#"+iid
-    G(uri,rdf.type,pcd.Image)
+    G(uri,rdf.type,ocd.Image)
     if rtype=="User":
         G(uri,ocd.responsible,ocd.User+"#"+rid)
     if rtype=="Topico":
@@ -468,9 +485,46 @@ for imagem in d["imagens"]:
     G(uri,ocd.created,r.Literal(parse(created)))
     if updated != created:
         G(uri,ocd.updated,r.Literal(parse(updated)))
+print("triplificada tabela imagens: %.2f"%(time.time()-T,))
 
+for mt in d["macro_tags"]:
+    mtid=mt[0]
+    title=mt[1]
+    created=mt[2]
+    updated=mt[3]
 
+    uri=ocd.MacroTag+"#"+mtid
+    G(uri,rdf.type,ocd.MacroTag)
+    if title:
+        G(uri,ocd.title,r.Literal(title))
+    G(uri,ocd.created,r.Literal(parse(created)))
+    if updated != created:
+        G(uri,ocd.updated,r.Literal(parse(updated)))
+uri=ocd.Triplestore+"#This"
+G(uri,rdf.type,ocd.Triplestore)
+G(uri,ocd.created,r.Literal(parse(time.ctime())))
+G(uri,ocd.software,r.Literal("http://github.com/ttm/pcd"))
+G(uri,ocd.relatedOntology,r.Literal("http://github.com/ttm/ocd/ocd.owl"))
+G(uri,ocd.relatedOntology,r.Literal("http://github.com/ttm/ocd/ocd.ttl"))
+G(uri,ocd.url,r.Literal("http://github.com/ttm/ocd/cdTriplestore.rdf"))
+G(uri,ocd.url,r.Literal("http://github.com/ttm/ocd/cdTriplestore.ttl"))
+G(uri,ocd.contact,r.Literal(u"Renato Fabbri or any member of Participa.br or Cidade Democrática staffs"))
+print("triplificada tabela macro_tags: %.2f"%(time.time()-T,))
 
-# macro_tags
-# especificação de datai e demais informacoes da triplificacao
-print time.time()-T
+# especificação de data e demais informacoes da triplificacao
+print("escrevendo rdf: %.2f"%(time.time()-T,))
+f=open("cdTriplestore.rdf","wb")
+f.write(g.serialize())
+f.close()
+print("feito rdf xml: %.2f"%(time.time()-T,))
+f=open("cdTriplestore.ttl","wb")
+f.write(g.serialize(format="turtle"))
+f.close()
+print("feito ttl: %.2f"%(time.time()-T,))
+try:
+    import os
+    os.system("tar -zcvf cdTriplestore.rdf.tar.gz cdTriplestore.rdf")
+    os.system("tar -zcvf cdTriplestore.ttl.tar.gz cdTriplestore.ttl")
+    print("feitos arquivos compactos ttl: %.2f"%(time.time()-T,))
+except:
+    pass

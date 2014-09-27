@@ -5,8 +5,9 @@ de conteúdo semanticamente enriquecido do Cidade Democrática através.
 Os recursos disponibilizados são, principalmente:
 * Script para triplificação dos dados do Cidade Democrática: triplificaCD.py
 * Script para síntese da ontologia do Cidade Democrática: OCD.py
-* Dados triplificados do portal: dadosCD.rdf
+* Dados triplificados do portal: cdTriplestore.rdf
 * Ontologia do portal: OCD.owl
+Compactações nas triplas são feitas para estar de acordo com as normas do github.
 
 ## Anotações
 * Há dois ids no user\_dados que não encontramos users: '168', '16657'
