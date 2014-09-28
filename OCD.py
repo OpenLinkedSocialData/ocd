@@ -216,7 +216,7 @@ PREFIX ocd: <http://purl.org/socialparticipation/ocd/>"""
 #    for aa in ant:
 #        if "cs" in aa.keys():
 #            tobj=aa["cs"]["value"]
-#            ant_.append((cc["p"]["value"],tobj))
+#            ant_.append((tobj,aa["p"]["value"]))
 #        elif (("ds" in aa.keys()) and ("w3.org" not in aa["p"]["value"])):
 #            tobj=aa["ds"]["value"]
 #            ant_.append((tobj,aa["p"]["value"]))
@@ -245,28 +245,124 @@ fo=open("dumpVV.pickle","rb")
 vv_=pickle.load(fo)
 fo.close()
 kk=vv_[1].keys()
-cl=kk[2]
-cl_=cl.split("/")[-1]
-ex=vv_[1][cl]
-A=gv.AGraph(directed=True)
-for i in xrange(len(ex[0])):
-    label=ex[0][i][1].split("/")[-1]
-    A.add_node(label,style="filled",fillcolor="blue")
-    #A.add_node(label,style="filled",fillcolor="blue")
-    A.add_edge(label,cl_)
-    n=A.get_node(label)
-    #n.attr['fillcolor']="#%2x0000"%(i*16)
-    #n.attr['label']=label
-    n.attr['color']="blue"
-    #n.attr['height']="%s"%(i/16.0+0.5)
-    #n.attr['width']="%s"%(i/16.0+0.5)
-n=A.get_node(cl_)
-n.attr['style']="filled"
-n.attr['color']="red"
-A.draw('star.png',prog="circo") # draw to png using circo
-print("Wrote star.png")
+for tkey in kk:
+    cl=tkey
+    cl_=cl.split("/")[-1]
+    ex=vv_[1][cl]
+    A=gv.AGraph(directed=True)
+    A.graph_attr["label"]=("classe: %s, no namespace interno: http://purl.org/socialparticipation/ocd/"%(cl_,))
+    for i in xrange(len(ex[0])):
+        label=ex[0][i][0].split("/")[-1]
+        elabel=ex[0][i][1].split("/")[-1]
+        print elabel
+        A.add_node(label,style="filled")
+        #A.add_node(label,style="filled",fillcolor="blue")
+        A.add_edge(label,cl_)
+        e=A.get_edge(label,cl_)
+        e.attr["label"]=elabel
+        n=A.get_node(label)
+        #n.attr['fillcolor']="#%2x0000"%(i*16)
+        #n.attr['label']=label
+        #n.attr['color']="blue"
+        n.attr['color']="#A2F3D1"
+        #n.attr['height']="%s"%(i/16.0+0.5)
+        #n.attr['width']="%s"%(i/16.0+0.5)
+
+    print("\n\n")
+    for i in xrange(len(ex[1])):
+        label=ex[1][i][1].split("/")[-1]
+        elabel=ex[1][i][0].split("/")[-1]
+        print elabel, label
+        if "XMLS" in label:
+            label_=i
+        else:
+            label_=label
+        A.add_node(label_,style="filled")
+        #A.add_node(label,style="filled",fillcolor="blue")
+        #A.add_edge(label,cl_)
+        #e=A.get_edge(label,cl_)
+        A.add_edge(cl_,label_)
+        e=A.get_edge(cl_,label_)
+        e.attr["label"]=elabel
+        n=A.get_node(label_)
+        #n.attr['fillcolor']="#%2x0000"%(i*16)
+        n.attr['label']=label
+        #n.attr['color']="blue"
+        if "XMLS" in label:
+            n.attr['color']="#FFE4AA"
+        else:
+            n.attr['color']="#A2F3D1"
+
+    n=A.get_node(cl_)
+    n.attr['style']="filled"
+    #n.attr['color']="red"
+    n.attr['color']="#6EAA91"
+
+    #A.draw('star.png',prog="circo") # draw to png using circo
+    nome=("%s.png"%(cl_,))
+    A.draw(nome,prog="dot") # draw to png using circo
+    print("Wrote %s"%(nome,))
 
 # 4) Faz estrutura geral e figura geral
+A=gv.AGraph(directed=True)
+A.graph_attr["label"]="Diagrama geral da OCD no namespace interno: http://purl.org/socialparticipation/ocd/"
+ii=1
+for tkey in kk:
+    cl_=tkey.split("/")[-1]
+    if cl_ not in A.nodes():
+        A.add_node(cl_,style="filled")
+        n=A.get_node(cl_)
+        n.attr['color']="#A2F3D1"
+    ex=vv_[1][tkey]
+
+    for i in xrange(len(ex[0])):
+        label=ex[0][i][0].split("/")[-1]
+        elabel=ex[0][i][1].split("/")[-1]
+        print elabel
+        if label not in A.nodes():
+            A.add_node(label,style="filled")
+            n=A.get_node(label)
+            n.attr['color']="#A2F3D1"
+        #A.add_node(label,style="filled",fillcolor="blue")
+        A.add_edge(label,cl_)
+        e=A.get_edge(label,cl_)
+        e.attr["label"]=elabel
+        #n.attr['fillcolor']="#%2x0000"%(i*16)
+        #n.attr['label']=label
+        #n.attr['color']="blue"
+ 
+    print("\n\n")
+    for i in xrange(len(ex[1])):
+        label=ex[1][i][1].split("/")[-1]
+        elabel=ex[1][i][0].split("/")[-1]
+        print elabel, label
+        if "XMLS" in label:
+            label_=ii; ii+=1
+            color="#FFE4AA"
+        else:
+            label_=label
+            color="#A2F3D1"
+        if label_ not in A.nodes():
+            A.add_node(label_,style="filled")
+            n=A.get_node(label_)
+            n.attr['label']=label.split("#")[-1]
+            n.attr['color']=color
+        #A.add_node(label,style="filled",fillcolor="blue")
+        #A.add_edge(label,cl_)
+        #e=A.get_edge(label,cl_)
+        A.add_edge(cl_,label_)
+        e=A.get_edge(cl_,label_)
+        e.attr["label"]=elabel
+        e.attr["color"]=color
+        e.attr["penwidth"]=2
+        #n.attr['fillcolor']="#%2x0000"%(i*16)
+        #n.attr['color']="blue"
+
+nome=("OCD.png")
+#A.draw(nome,prog="circo") # draw to png using circo
+A.draw("OCD.png",prog="twopi",args="-Granksep=4")
+A.draw("OCD2.png",prog="dot",args="-Granksep=.4 -Gsize='1000,1000'")
+print("Wrote %s"%(nome,))
 
 # 5) Observando as triplas, observar conceitos especificos do namespace,
 # como commentBody e userName. Esta parte pode ser pulada para deixar
