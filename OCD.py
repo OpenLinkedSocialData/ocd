@@ -251,12 +251,18 @@ ex=vv_[1][cl]
 A=gv.AGraph(directed=True)
 for i in xrange(len(ex[0])):
     label=ex[0][i][1].split("/")[-1]
+    A.add_node(label,style="filled",fillcolor="blue")
+    #A.add_node(label,style="filled",fillcolor="blue")
     A.add_edge(label,cl_)
     n=A.get_node(label)
-    n.attr['fillcolor']="#%2x0000"%(i*16)
+    #n.attr['fillcolor']="#%2x0000"%(i*16)
+    #n.attr['label']=label
+    n.attr['color']="blue"
     #n.attr['height']="%s"%(i/16.0+0.5)
     #n.attr['width']="%s"%(i/16.0+0.5)
-    n.attr['label']=label
+n=A.get_node(cl_)
+n.attr['style']="filled"
+n.attr['color']="red"
 A.draw('star.png',prog="circo") # draw to png using circo
 print("Wrote star.png")
 
