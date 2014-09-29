@@ -139,6 +139,8 @@ for topico in d["topicos"]:
         G(uri,rdf.type,ocd.Problem)
     else:
         print u"tipo de postagem não identificada"
+    uri_u=ocdp+"#"+uid
+    G(uri,ocd.author,uri_u)
     G(uri,ocd.title,r.Literal(titulo))
     G(uri,ocd.body,r.Literal(RCC(desc)))
     G(uri,ocd.created,r.Literal(parse(created)))
@@ -369,7 +371,7 @@ for adesao in d["adesoes"]:
     uri=ocd.Support+"#"+aid
     G(uri,rdf.type,ocd.Support)
     G(uri,ocd.topic,dp[tid])
-    G(uri,ocd.supporter,ocd.User+"#"+rid)
+    G(uri,ocd.supporter,ocd.User+"#"+uid)
 
     G(uri,ocd.created,r.Literal(parse(created)))
     if updated != created:
@@ -443,7 +445,7 @@ for inspiration in d["inspirations"]:
     G(uri,ocd.competition,ocd.Competition+"#"+cid)
     G(uri,ocd.description,r.Literal(desc))
     G(uri,ocd.title,r.Literal(title))
-    G(uri,ocd.user,ocd.User+"#"+uid)
+    G(uri,ocd.author,ocd.User+"#"+uid)
     G(uri,ocd.image,r.Literal(image))
     G(uri,ocd.created,r.Literal(parse(created)))
     if updated!=created:
