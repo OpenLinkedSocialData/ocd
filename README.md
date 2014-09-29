@@ -22,9 +22,11 @@ Compactações nas triplas são feitas para estar de acordo com as normas do git
     * Fizeram participação no mesmo período de tempo
     * Responderam à postagens uns dos outros
     * Comentaram as mesmas postagens
-    * Vale triplificar regioes (estados, cidades e bairros) e entender como se relaciona com o resto do portal
-    * Pq os observatórios tem tags? Do que se tratam?
-    * Não há info de latitude e longitude em lugar algum, confirmam?
-    * Do que se tratam os observatórios?
-    * Adiantado das datas e horas, que são parseadas para não dar conflito com xsd:dateTime. Procurando motivo para usar literais tipados, mas deixando de fora enquanto isso por simplicidade.
-    * Adicionadas imagens como nomes, mas a imagem em si não está acessível. Ver se está disponivel online em uma URL ou se incluimos da triplificacao a imagem diretamente.
+* Pq os observatórios tem tags? Do que se tratam?
+* Não há info de latitude e longitude em lugar algum, confirmam?
+* Do que se tratam os observatórios?
+* Adiantado das datas e horas, que são parseadas para não dar conflito com xsd:dateTime. Procurando motivo para usar literais tipados, mas deixando de fora enquanto isso por simplicidade.
+* Adicionadas imagens como nomes, mas a imagem em si não está acessível. Ver se está disponivel online em uma URL ou se incluimos da triplificacao a imagem diretamente.
+* A propriedade ocd:tagged é usada tanto no caso:
+    * ocd:tag ocd:tagged ocd:obs, quanto:
+    * ocd:tagging ocd:tagged ocd:topico

@@ -149,98 +149,100 @@ PREFIX schema: <http://schema.org/>
 PREFIX aa: <http://purl.org/socialparticipation/aa/>
 PREFIX ocd: <http://purl.org/socialparticipation/ocd/>"""
 
-#q="SELECT DISTINCT ?o WHERE {?s rdf:type ?o}"
-#NOW=time.time()
-##sparql = SPARQLWrapper("http://200.144.255.210:8082/cidadedemocratica/query")
-#sparql = SPARQLWrapper("http://200.144.255.210:8082/cd/query")
-#sparql.setQuery(PREFIX+q)
-#sparql.setReturnFormat(JSON)
-#results = sparql.query().convert()
-#print("%.2f segundos para puxar todas as classes"%
-#      (time.time()-NOW,))
-#classes=[i["o"]["value"] for i in results["results"]["bindings"] if "w3.org" not in i["o"]["value"]]
-#
-## 2) Obtem todas as propriedades
-## ?p where { ?s ?p ?o. }
-## com algumas excessoes
-#q="SELECT DISTINCT ?p WHERE {?s ?p ?o}"
-#NOW=time.time()
-##sparql = SPARQLWrapper("http://200.144.255.210:8082/cidadedemocratica/query")
-#sparql = SPARQLWrapper("http://200.144.255.210:8082/cd/query")
-#sparql.setQuery(PREFIX+q)
-#sparql.setReturnFormat(JSON)
-#results = sparql.query().convert()
-#print("%.2f segundos para puxar todas as propriedades"%
-#      (time.time()-NOW,))
-##props_=[i["p"]["value"] for i in results["results"]["bindings"]]
-#props=[i["p"]["value"] for i in results["results"]["bindings"] if "w3.org" not in i["p"]["value"]]
-#
-## 3) Faz estrutura para cada classe e uma figura:
-## classe no meio, dados à esquerda, classes à direita
-## para cada classe, para cada individuo da classe,
-## ver as relacoes estabelecidas com o individuo como
-## sujeito e como objeto. Anotar a propriedade e o tipo de dado
-## na ponta
-## guarda a estrutura de relacionamento da classe.
-#
-## buscar todas as distintas propriedades 
-##foo={}
-##for classe in classes:
-##    q=("SELECT DISTINCT ?p WHERE { ?i a <%s> . ?i ?p ?o }"%(classe,))
-##    NOW=time.time()
-##    #sparql = SPARQLWrapper("http://200.144.255.210:8082/cidadedemocratica/query")
-##    sparql = SPARQLWrapper("http://200.144.255.210:8082/cd/query")
-##    sparql.setQuery(PREFIX+q)
-##    sparql.setReturnFormat(JSON)
-##    results = sparql.query().convert()
-##    propsc=[i["p"]["value"] for i in results["results"]["bindings"]]
-##    print("%.2f segundos para puxar as propriedades consequentes"%(time.time()-NOW,))
-##    q=("SELECT DISTINCT ?p WHERE { ?i a <%s> . ?s ?p ?i }"%(classe,))
-##    NOW=time.time()
-##    sparql = SPARQLWrapper("http://200.144.255.210:8082/cd/query")
-##    sparql.setQuery(PREFIX+q)
-##    sparql.setReturnFormat(JSON)
-##    results = sparql.query().convert()
-##    propsa=[i["p"]["value"] for i in results["results"]["bindings"]]
-##    print("%.2f segundos para puxar as propriedades antecedentes"%(time.time()-NOW,))
-##    foo[classe]=[propsa,propsc]
-### faz figuras
-#vizinhanca={}
-#vizinhanca_={}
+q="SELECT DISTINCT ?o WHERE {?s rdf:type ?o}"
+NOW=time.time()
+#sparql = SPARQLWrapper("http://200.144.255.210:8082/cidadedemocratica/query")
+sparql = SPARQLWrapper("http://200.144.255.210:8082/cd/query")
+sparql.setQuery(PREFIX+q)
+sparql.setReturnFormat(JSON)
+results = sparql.query().convert()
+print("%.2f segundos para puxar todas as classes"%
+      (time.time()-NOW,))
+classes=[i["o"]["value"] for i in results["results"]["bindings"] if "w3.org" not in i["o"]["value"]]
+
+# 2) Obtem todas as propriedades
+# ?p where { ?s ?p ?o. }
+# com algumas excessoes
+q="SELECT DISTINCT ?p WHERE {?s ?p ?o}"
+NOW=time.time()
+#sparql = SPARQLWrapper("http://200.144.255.210:8082/cidadedemocratica/query")
+sparql = SPARQLWrapper("http://200.144.255.210:8082/cd/query")
+sparql.setQuery(PREFIX+q)
+sparql.setReturnFormat(JSON)
+results = sparql.query().convert()
+print("%.2f segundos para puxar todas as propriedades"%
+      (time.time()-NOW,))
+#props_=[i["p"]["value"] for i in results["results"]["bindings"]]
+props=[i["p"]["value"] for i in results["results"]["bindings"] if "w3.org" not in i["p"]["value"]]
+
+# 3) Faz estrutura para cada classe e uma figura:
+# classe no meio, dados à esquerda, classes à direita
+# para cada classe, para cada individuo da classe,
+# ver as relacoes estabelecidas com o individuo como
+# sujeito e como objeto. Anotar a propriedade e o tipo de dado
+# na ponta
+# guarda a estrutura de relacionamento da classe.
+
+# buscar todas as distintas propriedades 
+#foo={}
 #for classe in classes:
-#    #res=fazQuery("SELECT DISTINCT ?p (datatype(?o) as ?do) WHERE { ?i a <%s> . ?i ?p ?o }"%(classe,))
+#    q=("SELECT DISTINCT ?p WHERE { ?i a <%s> . ?i ?p ?o }"%(classe,))
 #    NOW=time.time()
-#    print "\nant:"
-#    ant=fazQuery("SELECT DISTINCT ?p ?cs (datatype(?s) as ?ds) WHERE { ?i a <%s> . ?s ?p ?i . OPTIONAL { ?s a ?cs . } }"%(classe,))
-#    ant_=[]
-#    for aa in ant:
-#        if "cs" in aa.keys():
-#            tobj=aa["cs"]["value"]
-#            ant_.append((tobj,aa["p"]["value"]))
-#        elif (("ds" in aa.keys()) and ("w3.org" not in aa["p"]["value"])):
-#            tobj=aa["ds"]["value"]
-#            ant_.append((tobj,aa["p"]["value"]))
-#    print "cons:"
-#    cons=fazQuery("SELECT DISTINCT ?p ?co (datatype(?o) as ?do) WHERE { ?i a <%s> . ?i ?p ?o . OPTIONAL { ?o a ?co . } }"%(classe,))
-#    cons_=[]
-#    for cc in cons:
-#        if "co" in cc.keys():
-#            tobj=cc["co"]["value"]
-#            cons_.append((cc["p"]["value"],tobj))
-#        elif (("do" in cc.keys()) and ("w3.org" not in cc["p"]["value"])):
-#            tobj=cc["do"]["value"]
-#            cons_.append((cc["p"]["value"],tobj))
-#    vizinhanca[classe]=(ant,cons)
-#    vizinhanca_[classe]=(ant_,cons_)
 #    #sparql = SPARQLWrapper("http://200.144.255.210:8082/cidadedemocratica/query")
-#    #sparql = SPARQLWrapper("http://200.144.255.210:8082/cd/query")
-#    #sparql.setQuery(PREFIX+q)
-#    #sparql.setReturnFormat(JSON)
-#    #results = sparql.query().convert()
-#f=open("dumpVV.pickle","wb")
-#vv=(vizinhanca,vizinhanca_)
-#pickle.dump(vv,f)
-#f.close()
+#    sparql = SPARQLWrapper("http://200.144.255.210:8082/cd/query")
+#    sparql.setQuery(PREFIX+q)
+#    sparql.setReturnFormat(JSON)
+#    results = sparql.query().convert()
+#    propsc=[i["p"]["value"] for i in results["results"]["bindings"]]
+#    print("%.2f segundos para puxar as propriedades consequentes"%(time.time()-NOW,))
+#    q=("SELECT DISTINCT ?p WHERE { ?i a <%s> . ?s ?p ?i }"%(classe,))
+#    NOW=time.time()
+#    sparql = SPARQLWrapper("http://200.144.255.210:8082/cd/query")
+#    sparql.setQuery(PREFIX+q)
+#    sparql.setReturnFormat(JSON)
+#    results = sparql.query().convert()
+#    propsa=[i["p"]["value"] for i in results["results"]["bindings"]]
+#    print("%.2f segundos para puxar as propriedades antecedentes"%(time.time()-NOW,))
+#    foo[classe]=[propsa,propsc]
+## faz figuras
+vizinhanca={}
+vizinhanca_={}
+for classe in classes:
+    #res=fazQuery("SELECT DISTINCT ?p (datatype(?o) as ?do) WHERE { ?i a <%s> . ?i ?p ?o }"%(classe,))
+    NOW=time.time()
+    print("\n%s antecedente, consequente: "%(classe.split("/")[-1],))
+    ant=fazQuery("SELECT DISTINCT ?p ?cs (datatype(?s) as ?ds) WHERE { ?i a <%s> . ?s ?p ?i . OPTIONAL { ?s a ?cs . } }"%(classe,))
+    ant_=[]
+    for aa in ant:
+        if "cs" in aa.keys():
+            tobj=aa["cs"]["value"]
+            ant_.append((tobj,aa["p"]["value"]))
+        elif (("ds" in aa.keys()) and ("w3.org" not in aa["p"]["value"])):
+            tobj=aa["ds"]["value"]
+            ant_.append((tobj,aa["p"]["value"]))
+    cons=fazQuery("SELECT DISTINCT ?p ?co (datatype(?o) as ?do) WHERE { ?i a <%s> . ?i ?p ?o . OPTIONAL { ?o a ?co . } }"%(classe,))
+    cons_=[]
+    for cc in cons:
+        if "co" in cc.keys():
+            tobj=cc["co"]["value"]
+            cons_.append((cc["p"]["value"],tobj))
+        elif (("do" in cc.keys()) and ("w3.org" not in cc["p"]["value"])):
+            tobj=cc["do"]["value"]
+            cons_.append((cc["p"]["value"],tobj))
+        elif "/mbox" in cc["p"]["value"]:
+            tobj="XMLSchema#anyURI"
+            cons_.append((cc["p"]["value"],tobj))
+    vizinhanca[classe]=(ant,cons)
+    vizinhanca_[classe]=(ant_,cons_)
+    #sparql = SPARQLWrapper("http://200.144.255.210:8082/cidadedemocratica/query")
+    #sparql = SPARQLWrapper("http://200.144.255.210:8082/cd/query")
+    #sparql.setQuery(PREFIX+q)
+    #sparql.setReturnFormat(JSON)
+    #results = sparql.query().convert()
+f=open("dumpVV.pickle","wb")
+vv=(vizinhanca,vizinhanca_)
+pickle.dump(vv,f)
+f.close()
 fo=open("dumpVV.pickle","rb")
 vv_=pickle.load(fo)
 fo.close()
@@ -248,13 +250,14 @@ kk=vv_[1].keys()
 for tkey in kk:
     cl=tkey
     cl_=cl.split("/")[-1]
+    print cl_
     ex=vv_[1][cl]
     A=gv.AGraph(directed=True)
     A.graph_attr["label"]=("classe: %s, no namespace interno: http://purl.org/socialparticipation/ocd/"%(cl_,))
     for i in xrange(len(ex[0])):
         label=ex[0][i][0].split("/")[-1]
         elabel=ex[0][i][1].split("/")[-1]
-        print elabel
+        print label, elabel
         A.add_node(label,style="filled")
         #A.add_node(label,style="filled",fillcolor="blue")
         A.add_edge(label,cl_)
@@ -364,6 +367,8 @@ A.draw("OCD.png",prog="twopi",args="-Granksep=4")
 A.draw("OCD2.png",prog="dot",args="-Granksep=.4 -Gsize='1000,1000'")
 print("Wrote %s"%(nome,))
 
+# 4.5) qualificar literais
+
 # 5) Observando as triplas, observar conceitos especificos do namespace,
 # como commentBody e userName. Esta parte pode ser pulada para deixar
 # a inferência mais leve e o namespace menos populoso.
@@ -377,4 +382,7 @@ print("Wrote %s"%(nome,))
 # 8) Escreve OWL, TTL e PNG
 
 # 9) Sobe no endpoint para mais testes
+
+# EXTRA: faz figura centrada na propriedade,
+# Como foi feita para cada classe, mas centrada na propriedade
 print "total time: ", time.time()-T
