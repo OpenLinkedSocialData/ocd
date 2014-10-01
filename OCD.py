@@ -340,11 +340,40 @@ for classe in classes[:3]:
     inds_=[i["s"]["value"] for i in inds]
     Ci[classe]=inds_
     for pc in props_c_:
-        query3="SELECT DISTINCT ?s WHERE {?s a <%s>. ?s <%s> ?o .}"%(classe,pc)
+        query3="SELECT DISTINCT ?s ?co  (datatype(?o) as ?do) WHERE {?s a <%s>. ?s <%s> ?o . OPTIONAL {?o a ?co . }}"%(classe,pc)
         inds2=fazQuery(query3)
-        inds2_=[i["s"]["value"] for i in inds2]
+        inds2_=set([i["s"]["value"] for i in inds2])
+        objs=set([i["co"]["value"] for i in inds2 if "co" in i.keys()])
+        vals=set([i["do"]["value"] for i in inds2 if "do" in i.keys()])
+        print vals
+        print objs
         if len(inds_)==len(inds2_):
-            print "%s,%s existencial"%(classe,pc)
+            print "%s, %s existencial"%(classe,pc)
+            b_=r.BNode()
+            G(U(classe), rdfs.subClassOf, b_)
+            G(b_,rdf.type,owl.Restriction)
+            G(b_,owl.onProperty,U(pc))
+            if len(vals):
+                ob=list(vals)[0]
+            else:
+                ob=list(objs)[0]
+            G(b_,owl.someValuesFrom,r.URIRef(ob))
+
+        query4="SELECT DISTINCT ?s WHERE { ?s <%s> ?o .}"%(pc,)
+        inds3=fazQuery(query4)
+        inds3_=[i["s"]["value"] for i in inds3]
+        if len(inds_)==len(inds3_):
+            print "%s, %s universal"%(classe,pc)
+            b_=r.BNode()
+            G(U(classe), rdfs.subClassOf, b_)
+            G(b_,rdf.type,owl.Restriction)
+            G(b_,owl.onProperty,U(pc))
+            if len(vals):
+                ob=list(vals)[0]
+            else:
+                ob=list(objs)[0]
+            G(b_,owl.allValuesFrom,r.URIRef(ob))
+
 
 # 6.1) Enriquece figura
 
