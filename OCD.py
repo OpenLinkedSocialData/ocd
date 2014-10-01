@@ -28,6 +28,8 @@ rdf = r.namespace.RDF
 rdfs = r.namespace.RDFS
 ocd = r.Namespace("http://purl.org/socialparticipation/ocd/")
 xsd = r.namespace.XSD
+notFunctionalProperties=["tagged","contact","supporter"]
+notFunctionalProperties_=[ocd+i for i in notFunctionalProperties]
 ####
 # Roteiro de métodos para construção da ontologia baseada nos dados
 # data driven ontology
@@ -296,87 +298,191 @@ PREFIX ocd: <http://purl.org/socialparticipation/ocd/>"""
 fo=open("dumpCheck.pickle","rb")
 g,props,classes,vv_,P_=pickle.load(fo)
 fo.close()
-# 6.2) qualificação das propriedades: range, domain e axioma de propriedade
-# owl:ObjectProperty, owl:DatatypeProperty or owl:AnnotationProperty
-propsD={}
-for prop in props: propsD[prop]=0 # 1 quando propriedade estiver ok.
-# Aplicando automaticamente os critérios de
-# range, domain, functional ou não
-notFunctionalProperties=["tagged","contact","supporter"]
-notFunctionalProperties_=[ocd+i for i in notFunctionalProperties]
-for prop in props:
-    if prop not in notFunctionalProperties_:
-        G(U(prop),rdf.type,owl.functionalProperty)
-    ant,cons=P_[prop.split("/")[-1]]
-    if len(cons) and ("XMLS" in cons[0]):
-        G(U(prop), rdf.type, owl.DatatypeProperty)
-    else:
-        G(U(prop), rdf.type, owl.ObjectProperty)
-    if len(ant)>1:
-        B=r.BNode()
-        G(U(prop), rdfs.domain, B)
-        for ant_ in ant:
-            G(B, owl.unionOf, U(ocd+ant_))
-    elif ant:
-        G(U(prop), rdfs.domain, U(ocd+ant[0]))
-        
-    if len(cons)>1:
-        B=r.BNode()
-        G(U(prop), rdfs.range, B)
-        for cons_ in cons:
-            G(B, owl.unionOf, U(ocd+cons_))
-    elif cons:
-        G(U(prop), rdfs.domain, U(ocd+cons[0]))
-# restrições de classe
-C={}
-Ci={}
-for classe in classes[:3]:
-    query="SELECT DISTINCT ?p WHERE {?s a <%s>. ?s ?p ?o .}"%(classe,)
-    props_c=fazQuery(query)
-    props_c_=[i["p"]["value"] for i in props_c if "22-rdf-syntax" not in i["p"]["value"]]
-    C[classe]=props_c_
-    query2="SELECT DISTINCT ?s WHERE {?s a <%s>}"%(classe,)
-    inds=fazQuery(query2)
-    inds_=[i["s"]["value"] for i in inds]
-    Ci[classe]=inds_
-    for pc in props_c_:
-        query3="SELECT DISTINCT ?s ?co  (datatype(?o) as ?do) WHERE {?s a <%s>. ?s <%s> ?o . OPTIONAL {?o a ?co . }}"%(classe,pc)
-        inds2=fazQuery(query3)
-        inds2_=set([i["s"]["value"] for i in inds2])
-        objs=set([i["co"]["value"] for i in inds2 if "co" in i.keys()])
-        vals=set([i["do"]["value"] for i in inds2 if "do" in i.keys()])
-        print vals
-        print objs
-        if len(inds_)==len(inds2_):
-            print "%s, %s existencial"%(classe,pc)
-            b_=r.BNode()
-            G(U(classe), rdfs.subClassOf, b_)
-            G(b_,rdf.type,owl.Restriction)
-            G(b_,owl.onProperty,U(pc))
-            if len(vals):
-                ob=list(vals)[0]
-            else:
-                ob=list(objs)[0]
-            G(b_,owl.someValuesFrom,r.URIRef(ob))
+## 6.2) qualificação das propriedades: range, domain e axioma de propriedade
+## owl:ObjectProperty, owl:DatatypeProperty or owl:AnnotationProperty
+## Aplicando automaticamente os critérios de
+## range, domain, functional ou não
+#for prop in props:
+#    if prop not in notFunctionalProperties_:
+#        G(U(prop),rdf.type,owl.functionalProperty)
+#    ant,cons=P_[prop.split("/")[-1]]
+#    if len(cons) and ("XMLS" in cons[0]):
+#        G(U(prop), rdf.type, owl.DatatypeProperty)
+#    else:
+#        G(U(prop), rdf.type, owl.ObjectProperty)
+#    if len(ant)>1:
+#        B=r.BNode()
+#        G(U(prop), rdfs.domain, B)
+#        for ant_ in ant:
+#            G(B, owl.unionOf, U(ocd+ant_))
+#    elif ant:
+#        G(U(prop), rdfs.domain, U(ocd+ant[0]))
+#        
+#    if len(cons)>1:
+#        B=r.BNode()
+#        G(U(prop), rdfs.range, B)
+#        for cons_ in cons:
+#            G(B, owl.unionOf, U(ocd+cons_))
+#    elif cons:
+#        G(U(prop), rdfs.domain, U(ocd+cons[0]))
+## restrições de classe
+#C={}
+#Ci={}
+#Ru={}
+#Re={}
+#for classe in classes:
+#    query="SELECT DISTINCT ?p WHERE {?s a <%s>. ?s ?p ?o .}"%(classe,)
+#    props_c=fazQuery(query)
+#    props_c_=[i["p"]["value"] for i in props_c if "22-rdf-syntax" not in i["p"]["value"]]
+#    C[classe]=props_c_
+#    query2="SELECT DISTINCT ?s WHERE {?s a <%s>}"%(classe,)
+#    inds=fazQuery(query2)
+#    inds_=[i["s"]["value"] for i in inds]
+#    Ci[classe]=inds_
+#    for pc in props_c_:
+#        query3="SELECT DISTINCT ?s ?co  (datatype(?o) as ?do) WHERE {?s a <%s>. ?s <%s> ?o . OPTIONAL {?o a ?co . }}"%(classe,pc)
+#        inds2=fazQuery(query3)
+#        inds2_=set([i["s"]["value"] for i in inds2])
+#        objs=set([i["co"]["value"] for i in inds2 if "co" in i.keys()])
+#        vals=set([i["do"]["value"] for i in inds2 if "do" in i.keys()])
+#        print "%s --> %s , %s"%(classe, vals, objs)
+#        if len(inds_)==len(inds2_):
+#            print "%s, %s existencial"%(classe,pc)
+#            b_=r.BNode()
+#            G(U(classe), rdfs.subClassOf, b_)
+#            G(b_,rdf.type,owl.Restriction)
+#            G(b_,owl.onProperty,U(pc))
+#            if len(vals):
+#                ob=list(vals)[0]
+#            else:
+#                try:
+#                    ob=list(objs)[0]
+#                except:
+#                    print classe, pc
+#                    ob=0
+#            if ob:
+#                G(b_,owl.someValuesFrom,r.URIRef(ob))
+#                if classe in Re.keys():
+#                    Re[classe].append((pc,ob))
+#                else:
+#                    Re[classe]=[(pc,ob)]
+#
+#        query4="SELECT DISTINCT ?s WHERE { ?s <%s> ?o .}"%(pc,)
+#        inds3=fazQuery(query4)
+#        inds3_=[i["s"]["value"] for i in inds3]
+#        if len(inds_)==len(inds3_):
+#            print "%s, %s universal"%(classe,pc)
+#            b_=r.BNode()
+#            G(U(classe), rdfs.subClassOf, b_)
+#            G(b_,rdf.type,owl.Restriction)
+#            G(b_,owl.onProperty,U(pc))
+#            if len(vals):
+#                ob=list(vals)[0]
+#            else:
+#                try:
+#                    ob=list(objs)[0]
+#                except:
+#                    print classe, pc
+#                    ob=0
+#            if ob:
+#                G(b_,owl.allValuesFrom,r.URIRef(ob))
+#                if classe in Ru.keys():
+#                    Ru[classe].append((pc,ob))
+#                else:
+#                    Ru[classe]=[(pc,ob)]
+#f=open("dumpREST.pickle","wb")
+#tudo=(Re,Ru,C,Ci)
+#pickle.dump(tudo,f)
+#f.close()
+## CHECKPOINT
 
-        query4="SELECT DISTINCT ?s WHERE { ?s <%s> ?o .}"%(pc,)
-        inds3=fazQuery(query4)
-        inds3_=[i["s"]["value"] for i in inds3]
-        if len(inds_)==len(inds3_):
-            print "%s, %s universal"%(classe,pc)
-            b_=r.BNode()
-            G(U(classe), rdfs.subClassOf, b_)
-            G(b_,rdf.type,owl.Restriction)
-            G(b_,owl.onProperty,U(pc))
-            if len(vals):
-                ob=list(vals)[0]
-            else:
-                ob=list(objs)[0]
-            G(b_,owl.allValuesFrom,r.URIRef(ob))
+fo=open("dumpREST.pickle","rb")
+Re,Ru,C,Ci=pickle.load(fo)
+fo.close()
 
-
-# 6.1) Enriquece figura
-
+# 6.1) Enriquece figuras: classes, propriedades e geral
+kk=vv_[1].keys()
+for tkey in kk:
+    cl=tkey
+    cl_=cl.split("/")[-1]
+    print cl_
+    ex=vv_[1][cl]
+    A=gv.AGraph(directed=True)
+    A.graph_attr["label"]=("classe: %s, no namespace interno: http://purl.org/socialparticipation/ocd/"%(cl_,))
+    for i in xrange(len(ex[0])): # antecedentes
+        label=ex[0][i][0].split("/")[-1]
+        elabel=ex[0][i][1].split("/")[-1]
+        elabel_=ex[0][i][1]
+        print label, elabel
+        A.add_node(label,style="filled")
+        A.add_edge(label,cl_)
+        e=A.get_edge(label,cl_)
+        e.attr["label"]=elabel
+        if elabel in notFunctionalProperties:
+            e.attr["style"]="dotted"
+        if ex[0][i][0] in Re.keys():
+            tr=Re[ex[0][i][0]]
+            pp=[ii[0] for ii in tr]
+            oo=[ii[1] for ii in tr]
+            if (elabel_ in pp) and (oo[pp.index(elabel_)]==cl):
+                e.attr["color"]="#A0E0A0"
+                print "EXISTENCIAL ANTECEDENTE"
+        if ex[0][i][0] in Ru.keys():
+            tr=Ru[ex[0][i][0]]
+            pp=[ii[0] for ii in tr]
+            oo=[ii[1] for ii in tr]
+            if (elabel_ in pp) and (oo[pp.index(elabel_)]==cl):
+                e.attr["arrowhead"]="inv"
+                e.attr["arrowsize"]=2.
+                print "EXISTENCIAL ANTECEDENTE"
+        e.attr["penwidth"]=2.
+        e.attr["arrowsize"]=2.
+        n=A.get_node(label)
+        n.attr['color']="#A2F3D1"
+    print("\n\n")
+    for i in xrange(len(ex[1])): # consequentes
+        label=ex[1][i][1].split("/")[-1]
+        elabel=ex[1][i][0].split("/")[-1]
+        elabel_=ex[1][i][0]
+        print elabel, label
+        if "XMLS" in label:
+            label_=i
+        else:
+            label_=label
+        A.add_node(label_,style="filled")
+        A.add_edge(cl_,label_)
+        e=A.get_edge(cl_,label_)
+        e.attr["label"]=elabel
+        if elabel in notFunctionalProperties:
+            e.attr["style"]="dotted"
+        if cl in Re.keys():
+            tr=Re[cl]
+            pp=[ii[0] for ii in tr]
+            if elabel_ in pp:
+                e.attr["color"]="#A0E0A0"
+                print "EXISTENCIAL"
+        if cl in Ru.keys():
+            tr=Ru[cl]
+            pp=[ii[0] for ii in tr]
+            if elabel_ in pp:
+                e.attr["arrowhead"]="inv"
+                e.attr["arrowsize"]=2.
+                print "UNIVERSAL"
+        e.attr["penwidth"]=2.
+        e.attr["arrowsize"]=2.
+        n=A.get_node(label_)
+        n.attr['label']=label
+        if "XMLS" in label:
+            n.attr['color']="#FFE4AA"
+        else:
+            n.attr['color']="#A2F3D1"
+    n=A.get_node(cl_)
+    n.attr['style']="filled"
+    n.attr['color']="#6EAA91"
+    nome=("imgs/classes_/%s.png"%(cl_,))
+    A.draw(nome,prog="dot") # draw to png using circo
+    print("Wrote %s"%(nome,))
+#
 # Também pode ser pulada esta etapa para simplificar ontologia e evitar incompatibilidades com bancos de dados atualizados e maiores detalhes dados pelos especialitas.
 
 # 7) O namespace é relacionado com namespaces externos através de: super classes e propriedades, e equivalentes classes e propriedades.
