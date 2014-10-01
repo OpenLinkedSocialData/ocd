@@ -3,6 +3,7 @@
 import cPickle as pickle, time
 from SPARQLWrapper import SPARQLWrapper, JSON
 import rdflib as r, pygraphviz as gv
+import pylab as pl
 
 # variaveis principais:
 # classes (kk), props,
@@ -222,7 +223,7 @@ PREFIX ocd: <http://purl.org/socialparticipation/ocd/>"""
 #        e.attr["penwidth"]=2
 #A.draw("imgs/OCD.png",prog="twopi",args="-Granksep=4")
 #A.draw("imgs/OCD2.png",prog="dot",args="-Granksep=.4 -Gsize='1000,1000'")
-#print("Wrote %s"%(nome,))
+#print("Wrote geral")
 #
 ## 4.5) qualificar literais
 ### ok.
@@ -395,7 +396,6 @@ fo.close()
 #pickle.dump(tudo,f)
 #f.close()
 ## CHECKPOINT
-
 fo=open("dumpREST.pickle","rb")
 Re,Ru,C,Ci=pickle.load(fo)
 fo.close()
@@ -408,7 +408,6 @@ for tkey in kk:
     print cl_
     ex=vv_[1][cl]
     A=gv.AGraph(directed=True)
-    A.graph_attr["label"]=("classe: %s, no namespace interno: http://purl.org/socialparticipation/ocd/"%(cl_,))
     for i in xrange(len(ex[0])): # antecedentes
         label=ex[0][i][0].split("/")[-1]
         elabel=ex[0][i][1].split("/")[-1]
@@ -479,9 +478,61 @@ for tkey in kk:
     n=A.get_node(cl_)
     n.attr['style']="filled"
     n.attr['color']="#6EAA91"
+    A.graph_attr["label"]=(u"classe: %s, no namespace interno: http://purl.org/socialparticipation/ocd/. Aresta pontilhada: propriedade não funcional. Aresta verde: restrição existencial. Ponta de seta invertida: restrição universal"%(cl_,))
     nome=("imgs/classes_/%s.png"%(cl_,))
     A.draw(nome,prog="dot") # draw to png using circo
     print("Wrote %s"%(nome,))
+
+# figura geral
+
+A=gv.AGraph(directed=True)
+A.graph_attr["label"]="Diagrama geral da OCD no namespace interno: http://purl.org/socialparticipation/ocd/"
+ii=1
+for tkey in kk:
+    cl_=tkey.split("/")[-1]
+    if cl_ not in A.nodes():
+        A.add_node(cl_,style="filled")
+        n=A.get_node(cl_)
+        n.attr['color']="#A2F3D1"
+    ex=vv_[1][tkey]
+    for i in xrange(len(ex[0])):
+        label=ex[0][i][0].split("/")[-1]
+        elabel=ex[0][i][1].split("/")[-1]
+        print elabel
+        if label not in A.nodes():
+            A.add_node(label,style="filled")
+            n=A.get_node(label)
+            n.attr['color']="#A2F3D1"
+        A.add_edge(label,cl_)
+        e=A.get_edge(label,cl_)
+        e.attr["label"]=elabel
+    print("\n\n")
+    for i in xrange(len(ex[1])):
+        label=ex[1][i][1].split("/")[-1]
+        elabel=ex[1][i][0].split("/")[-1]
+        print elabel, label
+        if "XMLS" in label:
+            label_=ii; ii+=1
+            color="#FFE4AA"
+        else:
+            label_=label
+            color="#A2F3D1"
+        if label_ not in A.nodes():
+            A.add_node(label_,style="filled")
+            n=A.get_node(label_)
+            n.attr['label']=label.split("#")[-1]
+            n.attr['color']=color
+        A.add_edge(cl_,label_)
+        e=A.get_edge(cl_,label_)
+        e.attr["label"]=elabel
+        e.attr["color"]=color
+        e.attr["penwidth"]=2
+A.draw("imgs/OCD_.png",prog="twopi",args="-Granksep=4")
+A.draw("imgs/OCD_2.png",prog="dot",args="-Granksep=.4 -Gsize='1000,1000'")
+print("Wrote geral _ ")
+
+
+# figura com as propriedades
 #
 # Também pode ser pulada esta etapa para simplificar ontologia e evitar incompatibilidades com bancos de dados atualizados e maiores detalhes dados pelos especialitas.
 
