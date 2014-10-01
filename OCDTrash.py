@@ -99,3 +99,50 @@ print time.time()-T
 
 
 #sparql = SPARQLWrapper("http://200.144.255.210:8082/cidadedemocratica/query") # com reasoner
+
+
+G(ocd.abbreviation, rdf.type, owl.DatatypeProperty)
+G(ocd.abbreviation, rdf.type, owl.functionalProperty)
+G(ocd.abbreviation, rdfs.range, xsd.string)
+G(ocd.abbreviation, rdfs.domain, ocd.State)
+propsD[ocd.abbreviation]=1
+
+
+G(ocd.accountable, rdf.type, owl.ObjectProperty)
+G(ocd.accountable, rdf.type, owl.functionalProperty)
+B=r.BNode()
+G(ocd.accountable, rdfs.range, B)
+G(B, owl.unionOf, ocd.User)
+G(B, owl.unionOf, ocd.Post)
+G(B, owl.unionOf, ocd.Proposal)
+G(B, owl.unionOf, ocd.Observatory)
+G(B, owl.unionOf, ocd.Problem)
+G(B, owl.unionOf, ocd.Competition)
+B2=r.BNode()
+G(ocd.accountable, rdfs.domain, B2)
+G(B2, owl.unionOf, ocd.Place)
+G(B2, owl.unionOf, ocd.Image)
+propsD[ocd.accountable]=1
+
+G(ocd.author, rdf.type, owl.ObjectProperty)
+G(ocd.author, rdf.type, owl.functionalProperty)
+G(ocd.author, rdfs.range, ocd.User)
+B=r.BNode()
+G(ocd.author, rdfs.domain, B)
+G(B, owl.unionOf, ocd.Proposal)
+G(B, owl.unionOf, ocd.Post)
+G(B, owl.unionOf, ocd.Problem)
+G(B, owl.unionOf, ocd.Comment)
+G(B, owl.unionOf, ocd.Inspiration)
+propsD[ocd.author]=1
+
+G(ocd.authorDescription, rdf.type, owl.DatatypeProperty)
+G(ocd.authorDescription, rdf.type, owl.functionalProperty)
+G(ocd.authorDescription, rdfs.range, xsd.string)
+G(ocd.authorDescription, rdfs.domain, ocd.Competition)
+
+G(ocd.autoDescription, rdf.type, owl.DatatypeProperty)
+G(ocd.autoDescription, rdf.type, owl.functionalProperty)
+G(ocd.autoDescription, rdfs.range, xsd.string)
+G(ocd.autoDescription, rdfs.domain, ocd.User)
+
