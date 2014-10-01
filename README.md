@@ -31,5 +31,6 @@ Compactações nas triplas são feitas para estar de acordo com as normas do git
     * ocd:tag ocd:tagged ocd:obs, quanto:
     * ocd:tagging ocd:tagged ocd:topico
 * userName é a propriedade name com a restricao de possuir domínio com a classe User. "Defined properties" neste formato de intersecção parece ainda não ser possível. Uma alternativa, caso isso seja desejado, é fazer a busca de todas as triplas { ?s ocd:name ?nome . ?s a ocd:User } e acrescentar na triplestore as triplas ?s ocd:userName ?nome. Além disso, é importante colocar na ontologia que ocd:userName rdfs:subPropertyOf ocd:name. Esta parte pode ser pulada para deixar mais leve e simples a ontologia e a triplificação. Para esta primeira versão, é o que foi feito.
+* Usar ocd:body para ocd:text, usado somente em ocd:Tag ocd:text litera(string)?
 
 

@@ -432,7 +432,6 @@ for tkey in kk:
             oo=[ii[1] for ii in tr]
             if (elabel_ in pp) and (oo[pp.index(elabel_)]==cl):
                 e.attr["arrowhead"]="inv"
-                e.attr["arrowsize"]=2.
                 print "EXISTENCIAL ANTECEDENTE"
         e.attr["penwidth"]=2.
         e.attr["arrowsize"]=2.
@@ -490,6 +489,7 @@ A.graph_attr["label"]="Diagrama geral da OCD no namespace interno: http://purl.o
 ii=1
 for tkey in kk:
     cl_=tkey.split("/")[-1]
+    cl=tkey
     if cl_ not in A.nodes():
         A.add_node(cl_,style="filled")
         n=A.get_node(cl_)
@@ -506,10 +506,30 @@ for tkey in kk:
         A.add_edge(label,cl_)
         e=A.get_edge(label,cl_)
         e.attr["label"]=elabel
+        if elabel in notFunctionalProperties:
+            e.attr["style"]="dotted"
+        if ex[0][i][0] in Re.keys():
+            tr=Re[ex[0][i][0]]
+            pp=[iii[0] for iii in tr]
+            oo=[iii[1] for iii in tr]
+            if (elabel_ in pp) and (oo[pp.index(elabel_)]==cl):
+                e.attr["color"]="#A0E0A0"
+                print "EXISTENCIAL ANTECEDENTE"
+        if ex[0][i][0] in Ru.keys():
+            tr=Ru[ex[0][i][0]]
+            pp=[iii[0] for iii in tr]
+            oo=[iii[1] for iii in tr]
+            if (elabel_ in pp) and (oo[pp.index(elabel_)]==cl):
+                e.attr["arrowhead"]="inv"
+                print "EXISTENCIAL ANTECEDENTE"
+        e.attr["penwidth"]=2.
+        e.attr["arrowsize"]=2.
+
     print("\n\n")
-    for i in xrange(len(ex[1])):
+    for i in xrange(len(ex[1])): # consequentes
         label=ex[1][i][1].split("/")[-1]
         elabel=ex[1][i][0].split("/")[-1]
+        elabel_=ex[1][i][0]
         print elabel, label
         if "XMLS" in label:
             label_=ii; ii+=1
@@ -527,8 +547,24 @@ for tkey in kk:
         e.attr["label"]=elabel
         e.attr["color"]=color
         e.attr["penwidth"]=2
-A.draw("imgs/OCD_.png",prog="twopi",args="-Granksep=4")
-A.draw("imgs/OCD_2.png",prog="dot",args="-Granksep=.4 -Gsize='1000,1000'")
+        if elabel in notFunctionalProperties:
+            e.attr["style"]="dotted"
+        if cl in Re.keys():
+            tr=Re[cl]
+            pp=[iii[0] for iii in tr]
+            if elabel_ in pp:
+                e.attr["color"]="#A0E0A0"
+                print "EXISTENCIAL"
+        if cl in Ru.keys():
+            tr=Ru[cl]
+            pp=[iii[0] for iii in tr]
+            if elabel_ in pp:
+                e.attr["arrowhead"]="inv"
+                e.attr["arrowsize"]=2.
+                print "UNIVERSAL"
+
+A.draw("imgs/OCD_.png",prog="twopi",args="-Granksep=14")
+A.draw("imgs/OCD_2.png",prog="dot",args="-Granksep=14 -Gsize='1000,1000'")
 print("Wrote geral _ ")
 
 
