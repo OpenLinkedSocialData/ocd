@@ -1,26 +1,14 @@
 #!/usr/bin/python
 #-*- coding: utf-8 -*-
-import rdflib as r, cPickle as pickle, time
+import cPickle as pickle, time
 from SPARQLWrapper import SPARQLWrapper, JSON
-import pygraphviz as gv
+import rdflib as r, pygraphviz as gv
+
+# variaveis principais:
+# classes (kk), props,
+# vizinhanca_ (de classes)
 
 T=time.time()
-#g = r.Graph()
-#g.load("cdTriplestore.rdf")
-#print time.time()-T
-
-# mais de 4 minutos para carregar
-#ss=set([s for s in g.subjects()])
-#len(ss)
-#oo=set([s for s in g.objects()])
-#len(ss)
-#len(oo)
-#pp=set([s for s in g.predicates()])
-
-#classes=g.objects(predicate=r.RDF.type)
-# classes que apareceram na triplificacao dos dados
-#classes_=set([cc for cc in classes])
-#properties=set([s for s in g.predicates()])
 def fazQuery(query):
     NOW=time.time()
     #sparql = SPARQLWrapper("http://200.144.255.210:8082/cidadedemocratica/query")
@@ -30,90 +18,6 @@ def fazQuery(query):
     results = sparql.query().convert()
     print time.time()-NOW
     return results["results"]["bindings"]
-
-
-propriedades=[r.term.URIRef(u'http://purl.org/socialparticipation/ocd/commentCount'),
-     r.term.URIRef(u'http://purl.org/socialparticipation/ocd/cep'),
-     r.term.URIRef(u'http://purl.org/socialparticipation/ocd/commentBody'),
-     r.term.URIRef(u'http://purl.org/socialparticipation/ocd/supporter'),
-     r.term.URIRef(u'http://purl.org/socialparticipation/ocd/contact'),
-     r.term.URIRef(u'http://purl.org/socialparticipation/ocd/start'),
-     r.term.URIRef(u'http://purl.org/socialparticipation/ocd/tagger'),
-     r.term.URIRef(u'http://purl.org/socialparticipation/ocd/partners'),
-     r.term.URIRef(u'http://purl.org/socialparticipation/ocd/mbox'),
-     r.term.URIRef(u'http://purl.org/socialparticipation/ocd/tagged'),
-     r.term.URIRef(u'http://purl.org/socialparticipation/ocd/relatedOntology'),
-     r.term.URIRef(u'http://purl.org/socialparticipation/ocd/inspirationCount'),
-     r.term.URIRef(u'http://purl.org/socialparticipation/ocd/commentType'),
-     r.term.URIRef(u'http://purl.org/socialparticipation/ocd/abreviation'),
-     r.term.URIRef(u'http://purl.org/socialparticipation/ocd/state'),
-     r.term.URIRef(u'http://purl.org/socialparticipation/ocd/text'),
-     r.term.URIRef(u'http://purl.org/socialparticipation/ocd/author'),
-     r.term.URIRef(u'http://purl.org/socialparticipation/ocd/neighborhood'),
-     r.term.URIRef(u'http://purl.org/socialparticipation/ocd/image'),
-     r.term.URIRef(u'http://purl.org/socialparticipation/ocd/relevance'),
-     r.term.URIRef(u'http://purl.org/socialparticipation/ocd/description'),
-     r.term.URIRef(u'http://purl.org/socialparticipation/ocd/contentType'),
-     r.term.URIRef(u'http://purl.org/socialparticipation/ocd/size'),
-     r.term.URIRef(u'http://purl.org/socialparticipation/ocd/authorDescription'),
-     r.term.URIRef(u'http://purl.org/socialparticipation/ocd/ip'),
-     r.term.URIRef(u'http://purl.org/socialparticipation/ocd/supportCount'),
-     r.term.URIRef(u'http://purl.org/socialparticipation/ocd/longDescription'),
-     r.term.URIRef(u'http://purl.org/socialparticipation/ocd/offerer'),
-     r.term.URIRef(u'http://purl.org/socialparticipation/ocd/birthday'),
-     r.term.URIRef(u'http://purl.org/socialparticipation/ocd/emailTrigger'),
-     r.term.URIRef(u'http://purl.org/socialparticipation/ocd/city'),
-     r.term.URIRef(u'http://purl.org/socialparticipation/ocd/competition'),
-     r.term.URIRef(u'http://purl.org/socialparticipation/ocd/height'),
-     r.term.URIRef(u'http://purl.org/socialparticipation/ocd/user'),
-     r.term.URIRef(u'http://purl.org/socialparticipation/ocd/userDescription'),
-     r.term.URIRef(u'http://purl.org/socialparticipation/ocd/updated'),
-     r.term.URIRef(u'http://purl.org/socialparticipation/ocd/phone'),
-     r.term.URIRef(u'http://purl.org/socialparticipation/ocd/followersCount'),
-     r.term.URIRef(u'http://purl.org/socialparticipation/ocd/status'),
-     r.term.URIRef(u'http://purl.org/socialparticipation/ocd/filename'),
-     r.term.URIRef(u'http://purl.org/socialparticipation/ocd/regulation'),
-     r.term.URIRef(u'http://purl.org/socialparticipation/ocd/tag'),
-     r.term.URIRef(u'http://purl.org/socialparticipation/ocd/width'),
-     r.term.URIRef(u'http://purl.org/socialparticipation/ocd/created'),
-     r.term.URIRef(u'http://purl.org/socialparticipation/ocd/shortDescription'),
-     r.term.URIRef(u'http://purl.org/socialparticipation/ocd/name'),
-     r.term.URIRef(u'http://www.w3.org/1999/02/22-rdf-syntax-ns#type'),
-     r.term.URIRef(u'http://purl.org/socialparticipation/ocd/caption'),
-     r.term.URIRef(u'http://purl.org/socialparticipation/ocd/software'),
-     r.term.URIRef(u'http://purl.org/socialparticipation/ocd/type'),
-     r.term.URIRef(u'http://purl.org/socialparticipation/ocd/fax'),
-     r.term.URIRef(u'http://purl.org/socialparticipation/ocd/url'),
-     r.term.URIRef(u'http://purl.org/socialparticipation/ocd/awards'),
-     r.term.URIRef(u'http://purl.org/socialparticipation/ocd/deleted'),
-     r.term.URIRef(u'http://purl.org/socialparticipation/ocd/responsible'),
-     r.term.URIRef(u'http://purl.org/socialparticipation/ocd/gender'),
-     r.term.URIRef(u'http://purl.org/socialparticipation/ocd/title'),
-     r.term.URIRef(u'http://purl.org/socialparticipation/ocd/site'),
-     r.term.URIRef(u'http://purl.org/socialparticipation/ocd/articleBody'),
-     r.term.URIRef(u'http://purl.org/socialparticipation/ocd/topic')]
-classes=[r.term.URIRef(u'http://purl.org/socialparticipation/ocd/Login'),
-     r.term.URIRef(u'http://purl.org/socialparticipation/ocd/Problem'),
-     r.term.URIRef(u'http://purl.org/socialparticipation/ocd/Triplestore'),
-     r.term.URIRef(u'http://purl.org/socialparticipation/ocd/Image'),
-     r.term.URIRef(u'http://purl.org/socialparticipation/ocd/Inspiration'),
-     r.term.URIRef(u'http://purl.org/socialparticipation/ocd/Neighborhood'),
-     r.term.URIRef(u'http://purl.org/socialparticipation/ocd/Tag'),
-     r.term.URIRef(u'http://purl.org/socialparticipation/ocd/Post'),
-     r.term.URIRef(u'http://purl.org/socialparticipation/ocd/Observatory'),
-     r.term.URIRef(u'http://purl.org/socialparticipation/ocd/Comment'),
-     r.term.URIRef(u'http://purl.org/socialparticipation/ocd/Competition'),
-     r.term.URIRef(u'http://purl.org/socialparticipation/ocd/State'),
-     r.term.URIRef(u'http://purl.org/socialparticipation/ocd/Proposal'),
-     r.term.URIRef(u'http://purl.org/socialparticipation/ocd/Tagging'),
-     r.term.URIRef(u'http://purl.org/socialparticipation/ocd/MacroTag'),
-     r.term.URIRef(u'http://purl.org/socialparticipation/ocd/Place'),
-     r.term.URIRef(u'http://purl.org/socialparticipation/ocd/Support'),
-     r.term.URIRef(u'http://purl.org/socialparticipation/ocd/City'),
-     r.term.URIRef(u'http://purl.org/socialparticipation/ocd/Prize'),
-     r.term.URIRef(u'http://purl.org/socialparticipation/ocd/Link'),
-     r.term.URIRef(u'http://purl.org/socialparticipation/ocd/User')]
-print time.time()-T
 
 ####
 # Roteiro de métodos para construção da ontologia baseada nos dados
@@ -151,7 +55,6 @@ PREFIX ocd: <http://purl.org/socialparticipation/ocd/>"""
 
 q="SELECT DISTINCT ?o WHERE {?s rdf:type ?o}"
 NOW=time.time()
-#sparql = SPARQLWrapper("http://200.144.255.210:8082/cidadedemocratica/query")
 sparql = SPARQLWrapper("http://200.144.255.210:8082/cd/query")
 sparql.setQuery(PREFIX+q)
 sparql.setReturnFormat(JSON)
@@ -165,14 +68,12 @@ classes=[i["o"]["value"] for i in results["results"]["bindings"] if "w3.org" not
 # com algumas excessoes
 q="SELECT DISTINCT ?p WHERE {?s ?p ?o}"
 NOW=time.time()
-#sparql = SPARQLWrapper("http://200.144.255.210:8082/cidadedemocratica/query")
 sparql = SPARQLWrapper("http://200.144.255.210:8082/cd/query")
 sparql.setQuery(PREFIX+q)
 sparql.setReturnFormat(JSON)
 results = sparql.query().convert()
 print("%.2f segundos para puxar todas as propriedades"%
       (time.time()-NOW,))
-#props_=[i["p"]["value"] for i in results["results"]["bindings"]]
 props=[i["p"]["value"] for i in results["results"]["bindings"] if "w3.org" not in i["p"]["value"]]
 
 # 3) Faz estrutura para cada classe e uma figura:
@@ -184,11 +85,10 @@ props=[i["p"]["value"] for i in results["results"]["bindings"] if "w3.org" not i
 # guarda a estrutura de relacionamento da classe.
 
 # buscar todas as distintas propriedades 
-foo={}
+classes_=foo={}
 for classe in classes:
     q=("SELECT DISTINCT ?p WHERE { ?i a <%s> . ?i ?p ?o }"%(classe,))
     NOW=time.time()
-    #sparql = SPARQLWrapper("http://200.144.255.210:8082/cidadedemocratica/query")
     sparql = SPARQLWrapper("http://200.144.255.210:8082/cd/query")
     sparql.setQuery(PREFIX+q)
     sparql.setReturnFormat(JSON)
@@ -203,7 +103,7 @@ for classe in classes:
     results = sparql.query().convert()
     propsa=[i["p"]["value"] for i in results["results"]["bindings"]]
     print("%.2f segundos para puxar as propriedades antecedentes"%(time.time()-NOW,))
-    foo[classe]=[propsa,propsc]
+    classes_[classe]=foo[classe]=[propsa,propsc]
 # faz figuras
 vizinhanca={}
 vizinhanca_={}
@@ -234,11 +134,6 @@ for classe in classes:
             cons_.append((cc["p"]["value"],tobj))
     vizinhanca[classe]=(ant,cons)
     vizinhanca_[classe]=(ant_,cons_)
-    #sparql = SPARQLWrapper("http://200.144.255.210:8082/cidadedemocratica/query")
-    #sparql = SPARQLWrapper("http://200.144.255.210:8082/cd/query")
-    #sparql.setQuery(PREFIX+q)
-    #sparql.setReturnFormat(JSON)
-    #results = sparql.query().convert()
 f=open("dumpVV.pickle","wb")
 vv=(vizinhanca,vizinhanca_)
 pickle.dump(vv,f)
@@ -254,25 +149,18 @@ for tkey in kk:
     ex=vv_[1][cl]
     A=gv.AGraph(directed=True)
     A.graph_attr["label"]=("classe: %s, no namespace interno: http://purl.org/socialparticipation/ocd/"%(cl_,))
-    for i in xrange(len(ex[0])):
+    for i in xrange(len(ex[0])): # antecedentes
         label=ex[0][i][0].split("/")[-1]
         elabel=ex[0][i][1].split("/")[-1]
         print label, elabel
         A.add_node(label,style="filled")
-        #A.add_node(label,style="filled",fillcolor="blue")
         A.add_edge(label,cl_)
         e=A.get_edge(label,cl_)
         e.attr["label"]=elabel
         n=A.get_node(label)
-        #n.attr['fillcolor']="#%2x0000"%(i*16)
-        #n.attr['label']=label
-        #n.attr['color']="blue"
         n.attr['color']="#A2F3D1"
-        #n.attr['height']="%s"%(i/16.0+0.5)
-        #n.attr['width']="%s"%(i/16.0+0.5)
-
     print("\n\n")
-    for i in xrange(len(ex[1])):
+    for i in xrange(len(ex[1])): # consequentes
         label=ex[1][i][1].split("/")[-1]
         elabel=ex[1][i][0].split("/")[-1]
         print elabel, label
@@ -281,28 +169,18 @@ for tkey in kk:
         else:
             label_=label
         A.add_node(label_,style="filled")
-        #A.add_node(label,style="filled",fillcolor="blue")
-        #A.add_edge(label,cl_)
-        #e=A.get_edge(label,cl_)
         A.add_edge(cl_,label_)
         e=A.get_edge(cl_,label_)
         e.attr["label"]=elabel
         n=A.get_node(label_)
-        #n.attr['fillcolor']="#%2x0000"%(i*16)
         n.attr['label']=label
-        #n.attr['color']="blue"
         if "XMLS" in label:
             n.attr['color']="#FFE4AA"
         else:
             n.attr['color']="#A2F3D1"
-
     n=A.get_node(cl_)
     n.attr['style']="filled"
-    #n.attr['color']="red"
     n.attr['color']="#6EAA91"
-
-    #A.draw('star.png',prog="circo") # draw to png using circo
-    #nome=("imgs/properties/%s.png"%(prop_,))
     nome=("imgs/classes/%s.png"%(cl_,))
     A.draw(nome,prog="dot") # draw to png using circo
     print("Wrote %s"%(nome,))
@@ -318,7 +196,6 @@ for tkey in kk:
         n=A.get_node(cl_)
         n.attr['color']="#A2F3D1"
     ex=vv_[1][tkey]
-
     for i in xrange(len(ex[0])):
         label=ex[0][i][0].split("/")[-1]
         elabel=ex[0][i][1].split("/")[-1]
@@ -327,14 +204,9 @@ for tkey in kk:
             A.add_node(label,style="filled")
             n=A.get_node(label)
             n.attr['color']="#A2F3D1"
-        #A.add_node(label,style="filled",fillcolor="blue")
         A.add_edge(label,cl_)
         e=A.get_edge(label,cl_)
         e.attr["label"]=elabel
-        #n.attr['fillcolor']="#%2x0000"%(i*16)
-        #n.attr['label']=label
-        #n.attr['color']="blue"
- 
     print("\n\n")
     for i in xrange(len(ex[1])):
         label=ex[1][i][1].split("/")[-1]
@@ -351,19 +223,11 @@ for tkey in kk:
             n=A.get_node(label_)
             n.attr['label']=label.split("#")[-1]
             n.attr['color']=color
-        #A.add_node(label,style="filled",fillcolor="blue")
-        #A.add_edge(label,cl_)
-        #e=A.get_edge(label,cl_)
         A.add_edge(cl_,label_)
         e=A.get_edge(cl_,label_)
         e.attr["label"]=elabel
         e.attr["color"]=color
         e.attr["penwidth"]=2
-        #n.attr['fillcolor']="#%2x0000"%(i*16)
-        #n.attr['color']="blue"
-
-nome=("OCD.png")
-#A.draw(nome,prog="circo") # draw to png using circo
 A.draw("OCD.png",prog="twopi",args="-Granksep=4")
 A.draw("OCD2.png",prog="dot",args="-Granksep=.4 -Gsize='1000,1000'")
 print("Wrote %s"%(nome,))
@@ -372,17 +236,7 @@ print("Wrote %s"%(nome,))
 ## ok.
 
 # 5) Observando as triplas, observar hierarquias e conceitos especificos do namespace,
-# como commentBody e userName. Esta parte pode ser pulada para deixar mais leve e simples a ontologia.
-
-# userName eh a propriedade name com a restricao de possuir domínio com a classe User
-# defined properties neste formato de intersecção parece ainda
-# não ser possível
-# Ou incluido nas restricoes de classes abaixo:
-# bodys
-# names
-
-# PULADO
-# Problem e Proposal sao subclasses de Post
+# como commentBody e userName. Ver README.md.
 owl = r.namespace.OWL
 rdf = r.namespace.RDF
 rdfs = r.namespace.RDFS
@@ -399,14 +253,14 @@ G(ocd.supportCount, rdfs.subPropertyOf    ,ocd.counting)
 G(ocd.inspirationCount, rdfs.subPropertyOf,ocd.counting)
 G(ocd.commentCount, rdfs.subPropertyOf    ,ocd.counting)
 G(ocd.followersCount, rdfs.subPropertyOf  ,ocd.counting)
-G(ocd.counting, rdfs.range,xsd.integer)
-G(ocd.author, rdfs.range,ocd.User)
 
 # 6) As propriedades são qualificadas e as restrições de classe aplicadas.
-# para cada propriedade, ver onde ela incinde e fazer as restricoes
+# para cada propriedade, ver o que incide no domínio e no âmbito.
+# Ao mesmo tempo, fazer os axiomas de classe
+
+# 6.1) estrutura básica e figuras:
 P={}
 P_={}
-props=propriedades
 import string
 for prop in props:
     # observar todos os subjeitos com q ela ocorre
@@ -450,10 +304,11 @@ for prop in props:
     nome=("imgs/properties/%s.png"%(prop_,))
     A.draw(nome,prog="dot") # draw to png using circo
     print("Wrote %s"%(nome,))
-# qualificação das propriedades: range, domain e axioma de propriedade
+
+# 6.2) qualificação das propriedades: range, domain e axioma de propriedade
 # owl:ObjectProperty, owl:DatatypeProperty or owl:AnnotationProperty
 propsD={}
-for prop in props: propsD[prop]=0
+for prop in props: propsD[prop]=0 # 1 quando propriedade estiver ok.
 G(ocd.abbreviation, rdf.type, owl.DatatypeProperty)
 G(ocd.abbreviation, rdf.type, owl.functionalProperty)
 G(ocd.abbreviation, rdfs.range, xsd.string)
@@ -500,6 +355,7 @@ G(ocd.autoDescription, rdfs.range, xsd.string)
 G(ocd.autoDescription, rdfs.domain, ocd.User)
 # restrições de classe
 
+G(ocd.counting, rdfs.range,xsd.integer)
 # 6.1) Enriquece figura
 
 # Também pode ser pulada esta etapa para simplificar ontologia e evitar incompatibilidades com bancos de dados atualizados e maiores detalhes dados pelos especialitas.
