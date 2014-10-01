@@ -149,41 +149,41 @@ PREFIX schema: <http://schema.org/>
 PREFIX aa: <http://purl.org/socialparticipation/aa/>
 PREFIX ocd: <http://purl.org/socialparticipation/ocd/>"""
 
-q="SELECT DISTINCT ?o WHERE {?s rdf:type ?o}"
-NOW=time.time()
-#sparql = SPARQLWrapper("http://200.144.255.210:8082/cidadedemocratica/query")
-sparql = SPARQLWrapper("http://200.144.255.210:8082/cd/query")
-sparql.setQuery(PREFIX+q)
-sparql.setReturnFormat(JSON)
-results = sparql.query().convert()
-print("%.2f segundos para puxar todas as classes"%
-      (time.time()-NOW,))
-classes=[i["o"]["value"] for i in results["results"]["bindings"] if "w3.org" not in i["o"]["value"]]
-
-# 2) Obtem todas as propriedades
-# ?p where { ?s ?p ?o. }
-# com algumas excessoes
-q="SELECT DISTINCT ?p WHERE {?s ?p ?o}"
-NOW=time.time()
-#sparql = SPARQLWrapper("http://200.144.255.210:8082/cidadedemocratica/query")
-sparql = SPARQLWrapper("http://200.144.255.210:8082/cd/query")
-sparql.setQuery(PREFIX+q)
-sparql.setReturnFormat(JSON)
-results = sparql.query().convert()
-print("%.2f segundos para puxar todas as propriedades"%
-      (time.time()-NOW,))
-#props_=[i["p"]["value"] for i in results["results"]["bindings"]]
-props=[i["p"]["value"] for i in results["results"]["bindings"] if "w3.org" not in i["p"]["value"]]
-
-# 3) Faz estrutura para cada classe e uma figura:
-# classe no meio, dados à esquerda, classes à direita
-# para cada classe, para cada individuo da classe,
-# ver as relacoes estabelecidas com o individuo como
-# sujeito e como objeto. Anotar a propriedade e o tipo de dado
-# na ponta
-# guarda a estrutura de relacionamento da classe.
-
-# buscar todas as distintas propriedades 
+#q="SELECT DISTINCT ?o WHERE {?s rdf:type ?o}"
+#NOW=time.time()
+##sparql = SPARQLWrapper("http://200.144.255.210:8082/cidadedemocratica/query")
+#sparql = SPARQLWrapper("http://200.144.255.210:8082/cd/query")
+#sparql.setQuery(PREFIX+q)
+#sparql.setReturnFormat(JSON)
+#results = sparql.query().convert()
+#print("%.2f segundos para puxar todas as classes"%
+#      (time.time()-NOW,))
+#classes=[i["o"]["value"] for i in results["results"]["bindings"] if "w3.org" not in i["o"]["value"]]
+#
+## 2) Obtem todas as propriedades
+## ?p where { ?s ?p ?o. }
+## com algumas excessoes
+#q="SELECT DISTINCT ?p WHERE {?s ?p ?o}"
+#NOW=time.time()
+##sparql = SPARQLWrapper("http://200.144.255.210:8082/cidadedemocratica/query")
+#sparql = SPARQLWrapper("http://200.144.255.210:8082/cd/query")
+#sparql.setQuery(PREFIX+q)
+#sparql.setReturnFormat(JSON)
+#results = sparql.query().convert()
+#print("%.2f segundos para puxar todas as propriedades"%
+#      (time.time()-NOW,))
+##props_=[i["p"]["value"] for i in results["results"]["bindings"]]
+#props=[i["p"]["value"] for i in results["results"]["bindings"] if "w3.org" not in i["p"]["value"]]
+#
+## 3) Faz estrutura para cada classe e uma figura:
+## classe no meio, dados à esquerda, classes à direita
+## para cada classe, para cada individuo da classe,
+## ver as relacoes estabelecidas com o individuo como
+## sujeito e como objeto. Anotar a propriedade e o tipo de dado
+## na ponta
+## guarda a estrutura de relacionamento da classe.
+#
+## buscar todas as distintas propriedades 
 #foo={}
 #for classe in classes:
 #    q=("SELECT DISTINCT ?p WHERE { ?i a <%s> . ?i ?p ?o }"%(classe,))
@@ -366,7 +366,7 @@ props=[i["p"]["value"] for i in results["results"]["bindings"] if "w3.org" not i
 #A.draw("OCD.png",prog="twopi",args="-Granksep=4")
 #A.draw("OCD2.png",prog="dot",args="-Granksep=.4 -Gsize='1000,1000'")
 #print("Wrote %s"%(nome,))
-#
+
 ## 4.5) qualificar literais
 ### ok.
 #
@@ -388,20 +388,22 @@ ocd = r.Namespace("http://purl.org/socialparticipation/ocd/")
 xsd = r.namespace.XSD
 g=r.Graph()
 def G(S,P,O):
+    global g
     g.add((S,P,O))
 G(ocd.Problem, rdfs.subClassOf,ocd.Post)
 G(ocd.Proposal, rdfs.subClassOf,ocd.Post)
 
-G(ocd.supportCount, rdfs.subPropertyOf,ocd.count)
-G(ocd.inspirationCount, rdfs.subPropertyOf,ocd.count)
-G(ocd.commentCount, rdfs.subPropertyOf,ocd.count)
-G(ocd.followersCount, rdfs.subPropertyOf,ocd.count)
-G(ocd.count, rdfs.range,xsd.integer)
+G(ocd.supportCount, rdfs.subPropertyOf    ,ocd.counting)
+G(ocd.inspirationCount, rdfs.subPropertyOf,ocd.counting)
+G(ocd.commentCount, rdfs.subPropertyOf    ,ocd.counting)
+G(ocd.followersCount, rdfs.subPropertyOf  ,ocd.counting)
+G(ocd.counting, rdfs.range,xsd.integer)
 G(ocd.author, rdfs.range,ocd.User)
 
 # 6) As propriedades são qualificadas e as restrições de classe aplicadas.
 # para cada propriedade, ver onde ela incinde e fazer as restricoes
 P={}
+props=propriedades
 import string
 for prop in props:
     # observar todos os subjeitos com q ela ocorre
@@ -442,7 +444,17 @@ for prop in props:
     nome=("imgs/properties/%s.png"%(prop_,))
     A.draw(nome,prog="dot") # draw to png using circo
     print("Wrote %s"%(nome,))
+# qualificação das propriedades: range, domain e axioma de propriedade
+# owl:ObjectProperty, owl:DatatypeProperty or owl:AnnotationProperty
+propsD={}
+for prop in props: propsD[prop]=0
+G(ocd.abbreviation, rdf.type, owl.DatatypeProperty)
+G(ocd.abbreviation, rdf.type, owl.functionalProperty)
+G(ocd.abbreviation, rdfs.range, xsd.string)
+G(ocd.abbreviation, rdfs.domain, ocd.State)
+propsD[ocd.abbreviation]=1
 
+# restrições de classe
 
 # 6.1) Enriquece figura
 

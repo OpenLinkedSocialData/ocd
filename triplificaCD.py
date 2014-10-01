@@ -275,7 +275,7 @@ for estado in d["estados"]:
     uri=ocd.State+"#"+abr
     de[eid]=uri
     G(uri,rdf.type,ocd.State)
-    G(uri,ocd.abreviation,r.Literal(abr))
+    G(uri,ocd.abbreviation,r.Literal(abr))
     G(uri,ocd.name,r.Literal(name))
     G(uri,ocd.created,r.Literal(parse(created)))
     if updated != created:
