@@ -75,6 +75,7 @@ results = sparql.query().convert()
 print("%.2f segundos para puxar todas as propriedades"%
       (time.time()-NOW,))
 props=[i["p"]["value"] for i in results["results"]["bindings"] if "w3.org" not in i["p"]["value"]]
+props_=[i.split("/")[-1] for i in props]
 
 # 3) Faz estrutura para cada classe e uma figura:
 # classe no meio, dados à esquerda, classes à direita
@@ -353,6 +354,29 @@ G(ocd.autoDescription, rdf.type, owl.DatatypeProperty)
 G(ocd.autoDescription, rdf.type, owl.functionalProperty)
 G(ocd.autoDescription, rdfs.range, xsd.string)
 G(ocd.autoDescription, rdfs.domain, ocd.User)
+for prop in props:
+    if prop not in functionalBlackList:
+        G(prop,rdf.type,owl.functionalProperty)
+    ant,cons=P_[prop.split("/")[-1]]
+    if len(cons) and ("XMLS" in cons[0]):
+        G(prop, rdf.type, owl.DatatypeProperty)
+    else:
+        G(prop, rdf.type, owl.ObjectProperty)
+    if len(ant)>1:
+        B=r.BNode()
+        G(prop, rdfs.domain, B)
+        for ant_ in ant:
+            G(B, owl.unionOf, ocd+ant_)
+    elif ant:
+        G(prop, rdfs.domain, ocd+ant[0])
+        
+    if len(cons)>1:
+        B=r.BNode()
+        G(prop, rdfs.range, B)
+        for cons_ in cons:
+            G(B, owl.unionOf, ocd+cons_)
+    elif cons:
+        G(prop, rdfs.domain, ocd+cons[0])
 # restrições de classe
 
 G(ocd.counting, rdfs.range,xsd.integer)
