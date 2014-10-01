@@ -9,6 +9,7 @@ import rdflib as r, pygraphviz as gv
 # vizinhanca_ (de classes)
 
 T=time.time()
+U=r.URIRef
 def fazQuery(query):
     NOW=time.time()
     #sparql = SPARQLWrapper("http://200.144.255.210:8082/cidadedemocratica/query")
@@ -84,28 +85,6 @@ props_=[i.split("/")[-1] for i in props]
 # sujeito e como objeto. Anotar a propriedade e o tipo de dado
 # na ponta
 # guarda a estrutura de relacionamento da classe.
-
-# buscar todas as distintas propriedades 
-classes_=foo={}
-for classe in classes:
-    q=("SELECT DISTINCT ?p WHERE { ?i a <%s> . ?i ?p ?o }"%(classe,))
-    NOW=time.time()
-    sparql = SPARQLWrapper("http://200.144.255.210:8082/cd/query")
-    sparql.setQuery(PREFIX+q)
-    sparql.setReturnFormat(JSON)
-    results = sparql.query().convert()
-    propsc=[i["p"]["value"] for i in results["results"]["bindings"]]
-    print("%.2f segundos para puxar as propriedades consequentes"%(time.time()-NOW,))
-    q=("SELECT DISTINCT ?p WHERE { ?i a <%s> . ?s ?p ?i }"%(classe,))
-    NOW=time.time()
-    sparql = SPARQLWrapper("http://200.144.255.210:8082/cd/query")
-    sparql.setQuery(PREFIX+q)
-    sparql.setReturnFormat(JSON)
-    results = sparql.query().convert()
-    propsa=[i["p"]["value"] for i in results["results"]["bindings"]]
-    print("%.2f segundos para puxar as propriedades antecedentes"%(time.time()-NOW,))
-    classes_[classe]=foo[classe]=[propsa,propsc]
-# faz figuras
 vizinhanca={}
 vizinhanca_={}
 for classe in classes:
@@ -229,8 +208,8 @@ for tkey in kk:
         e.attr["label"]=elabel
         e.attr["color"]=color
         e.attr["penwidth"]=2
-A.draw("OCD.png",prog="twopi",args="-Granksep=4")
-A.draw("OCD2.png",prog="dot",args="-Granksep=.4 -Gsize='1000,1000'")
+A.draw("imgs/OCD.png",prog="twopi",args="-Granksep=4")
+A.draw("imgs/OCD2.png",prog="dot",args="-Granksep=.4 -Gsize='1000,1000'")
 print("Wrote %s"%(nome,))
 
 # 4.5) qualificar literais
@@ -306,6 +285,15 @@ for prop in props:
     A.draw(nome,prog="dot") # draw to png using circo
     print("Wrote %s"%(nome,))
 
+# CHECKPOINT
+# variaveis props, classes, vv_, P_
+f=open("dumpCheck.pickle","wb")
+tudo=(propos,classes,vv_,P_)
+pickle.dump(tudo,f)
+f.close()
+fo=open("dumpCheck.pickle","rb")
+propos,classes,vv_,P_=pickle.load(fo)
+fo.close()
 # 6.2) qualificação das propriedades: range, domain e axioma de propriedade
 # owl:ObjectProperty, owl:DatatypeProperty or owl:AnnotationProperty
 propsD={}
@@ -354,29 +342,30 @@ G(ocd.autoDescription, rdf.type, owl.DatatypeProperty)
 G(ocd.autoDescription, rdf.type, owl.functionalProperty)
 G(ocd.autoDescription, rdfs.range, xsd.string)
 G(ocd.autoDescription, rdfs.domain, ocd.User)
+notFunctionalProperties=[]
 for prop in props:
-    if prop not in functionalBlackList:
-        G(prop,rdf.type,owl.functionalProperty)
+    if prop not in notFunctionalProperties:
+        G(U(prop),rdf.type,owl.functionalProperty)
     ant,cons=P_[prop.split("/")[-1]]
     if len(cons) and ("XMLS" in cons[0]):
-        G(prop, rdf.type, owl.DatatypeProperty)
+        G(U(prop), rdf.type, owl.DatatypeProperty)
     else:
-        G(prop, rdf.type, owl.ObjectProperty)
+        G(U(prop), rdf.type, owl.ObjectProperty)
     if len(ant)>1:
         B=r.BNode()
-        G(prop, rdfs.domain, B)
+        G(U(prop), rdfs.domain, B)
         for ant_ in ant:
-            G(B, owl.unionOf, ocd+ant_)
+            G(B, owl.unionOf, U(ocd+ant_))
     elif ant:
-        G(prop, rdfs.domain, ocd+ant[0])
+        G(U(prop), rdfs.domain, U(ocd+ant[0]))
         
     if len(cons)>1:
         B=r.BNode()
-        G(prop, rdfs.range, B)
+        G(U(prop), rdfs.range, B)
         for cons_ in cons:
-            G(B, owl.unionOf, ocd+cons_)
+            G(B, owl.unionOf, U(ocd+cons_))
     elif cons:
-        G(prop, rdfs.domain, ocd+cons[0])
+        G(U(prop), rdfs.domain, U(ocd+cons[0]))
 # restrições de classe
 
 G(ocd.counting, rdfs.range,xsd.integer)
