@@ -1,6 +1,6 @@
 #!/usr/bin/python
 #-*- coding: utf-8 -*-
-import cPickle as pickle, time
+import cPickle as pickle, time, string
 from SPARQLWrapper import SPARQLWrapper, JSON
 import rdflib as r, pygraphviz as gv
 import pylab as pl
@@ -566,6 +566,72 @@ for tkey in kk:
 A.draw("imgs/OCD_.png",prog="twopi",args="-Granksep=14")
 A.draw("imgs/OCD_2.png",prog="dot",args="-Granksep=14 -Gsize='1000,1000'")
 print("Wrote geral _ ")
+
+for prop in props:
+    # observar todos os subjeitos com q ela ocorre
+    # observar todos os objetos com que ela ocorre
+    # fazer estrutura, plotar cada uma
+    prop_=prop.split("/")[-1]
+    #suj=fazQuery("SELECT DISTINCT ?cs WHERE { ?s <%s> ?o . ?s a ?cs . }"%(prop,))
+    #obj=fazQuery("SELECT DISTINCT ?co (datatype(?o) as ?do) WHERE { ?s <%s> ?o . OPTIONAL { ?o a ?co . } }"%(prop,))
+    #P[prop_]=(suj,obj)
+    suj,obj=P_[prop_]
+    A=gv.AGraph(directed=True)
+    A.graph_attr["label"]=("propriedade: %s, no namespace interno: http://purl.org/socialparticipation/ocd/"%(prop_,))
+#    A.add_node(1,style="filled")
+#    A.add_node(2,style="filled")
+    A.add_edge(1,2)
+    e=A.get_edge(1,2)
+    e.attr["label"]=prop_
+    if prop_ in notFunctionalProperties:
+        e.attr["style"]="dotted"
+    for cl in Re.keys():
+        tr=Re[cl]
+        pp=[iii[0] for iii in tr]
+        if prop in pp:
+            e.attr["color"]="#A0E0A0"
+            print "%s, EXISTENCIAL"%(prop_,)
+        
+    for cl in Ru.keys():
+        tr=Ru[cl]
+        pp=[iii[0] for iii in tr]
+        if prop in pp:
+            e.attr["arrowhead"]="inv"
+            e.attr["arrowsize"]=2.
+            print "UNIVERSAL"
+
+
+    n1=A.get_node(1)
+    n2=A.get_node(2)
+    n1.attr['style']="filled"
+    n2.attr['style']="filled"
+    n1.attr['color']="blue"
+    n2.attr['color']="red"
+    # Agiliza tags dos sujeitos
+    #ts=[i["cs"]["value"].split("/")[-1] for i in suj]
+    ts=suj
+    ls=string.join(ts,"<br />")
+    print "ls: "+ls
+    #n1.attr['label']=ls
+    n1.attr['label']=("<%s>"%(ls,))
+    # Agiliza tags dos objetos 
+    if "mbox" in prop_:
+        lo="XMLSchema#anyURI"
+        to=[lo]
+    else:
+        #to1=[i["co"]["value"].split("/")[-1] for i in obj if "co" in i.keys()]
+        #to2=[i["do"]["value"].split("/")[-1] for i in obj if "do" in i.keys()]
+        #to=to1+to2
+        to=obj
+        lo=string.join(to,"<br />")
+    P_[prop_]=(ts,to)
+    print "lo:"+lo
+    n2.attr['label']=("<%s>"%(lo,))
+    nome=("imgs/properties_/%s.png"%(prop_,))
+    A.draw(nome,prog="dot") # draw to png using circo
+    print("Wrote %s"%(nome,))
+
+
 
 
 # figura com as propriedades
