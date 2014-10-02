@@ -418,7 +418,7 @@ for tkey in kk:
         e=A.get_edge(label,cl_)
         e.attr["label"]=elabel
         if elabel in notFunctionalProperties:
-            e.attr["style"]="dotted"
+            e.attr["style"]="dashed"
         if ex[0][i][0] in Re.keys():
             tr=Re[ex[0][i][0]]
             pp=[ii[0] for ii in tr]
@@ -452,7 +452,7 @@ for tkey in kk:
         e=A.get_edge(cl_,label_)
         e.attr["label"]=elabel
         if elabel in notFunctionalProperties:
-            e.attr["style"]="dotted"
+            e.attr["style"]="dashed"
         if cl in Re.keys():
             tr=Re[cl]
             pp=[ii[0] for ii in tr]
@@ -477,7 +477,7 @@ for tkey in kk:
     n=A.get_node(cl_)
     n.attr['style']="filled"
     n.attr['color']="#6EAA91"
-    A.graph_attr["label"]=(u"classe: %s, no namespace interno: http://purl.org/socialparticipation/ocd/. Aresta pontilhada: propriedade não funcional. Aresta verde: restrição existencial. Ponta de seta invertida: restrição universal"%(cl_,))
+    A.graph_attr["label"]=(r"classe: %s, no namespace interno: http://purl.org/socialparticipation/ocd/.\nAresta tracejada: propriedade nao funcional.\nAresta verde: restricao existencial.\nPonta de seta invertida: restricao universal"%(cl_,))
     nome=("imgs/classes_/%s.png"%(cl_,))
     A.draw(nome,prog="dot") # draw to png using circo
     print("Wrote %s"%(nome,))
@@ -485,7 +485,7 @@ for tkey in kk:
 # figura geral
 
 A=gv.AGraph(directed=True)
-A.graph_attr["label"]="Diagrama geral da OCD no namespace interno: http://purl.org/socialparticipation/ocd/"
+A.graph_attr["label"]=r"Diagrama geral da OCD no namespace interno: http://purl.org/socialparticipation/ocd/\nAresta em verde indica restricao existencial,\ncom a ponta invertida indica restricao universal,\ntracejada indica propriedade nao funcional"
 ii=1
 for tkey in kk:
     cl_=tkey.split("/")[-1]
@@ -507,7 +507,7 @@ for tkey in kk:
         e=A.get_edge(label,cl_)
         e.attr["label"]=elabel
         if elabel in notFunctionalProperties:
-            e.attr["style"]="dotted"
+            e.attr["style"]="dashed"
         if ex[0][i][0] in Re.keys():
             tr=Re[ex[0][i][0]]
             pp=[iii[0] for iii in tr]
@@ -548,7 +548,7 @@ for tkey in kk:
         e.attr["color"]=color
         e.attr["penwidth"]=2
         if elabel in notFunctionalProperties:
-            e.attr["style"]="dotted"
+            e.attr["style"]="dashed"
         if cl in Re.keys():
             tr=Re[cl]
             pp=[iii[0] for iii in tr]
@@ -577,14 +577,15 @@ for prop in props:
     #P[prop_]=(suj,obj)
     suj,obj=P_[prop_]
     A=gv.AGraph(directed=True)
-    A.graph_attr["label"]=("propriedade: %s, no namespace interno: http://purl.org/socialparticipation/ocd/"%(prop_,))
+    A.graph_attr["label"]=(r"propriedade: %s, no namespace interno: http://purl.org/socialparticipation/ocd/\nAresta em verde indica restricao existencial,\ncom a ponta invertida indica restricao universal,\ntracejada indica propriedade nao funcional"%(prop_,))
 #    A.add_node(1,style="filled")
 #    A.add_node(2,style="filled")
     A.add_edge(1,2)
     e=A.get_edge(1,2)
     e.attr["label"]=prop_
     if prop_ in notFunctionalProperties:
-        e.attr["style"]="dotted"
+        #e.attr["style"]="dotted"
+        e.attr["style"]="dashed"
     for cl in Re.keys():
         tr=Re[cl]
         pp=[iii[0] for iii in tr]
@@ -600,6 +601,7 @@ for prop in props:
             e.attr["arrowsize"]=2.
             print "UNIVERSAL"
 
+    e.attr["penwidth"]=4
 
     n1=A.get_node(1)
     n2=A.get_node(2)
