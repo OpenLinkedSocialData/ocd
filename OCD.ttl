@@ -1,0 +1,770 @@
+@prefix dc: <http://purl.org/dc/elements/1.1/> .
+@prefix dct: <http://purl.org/dc/terms/> .
+@prefix dcty: <http://purl.org/dc/dcmitype/> .
+@prefix foaf: <http://xmlns.com/foaf/0.1/> .
+@prefix gndo: <http://d-nb.info/standards/elementset/gnd#> .
+@prefix ops: <http://purl.org/socialparticipation/ops#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix schema: <http://schema.org/> .
+@prefix sioc: <http://rdfs.org/sioc/ns#> .
+@prefix xml: <http://www.w3.org/XML/1998/namespace> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+<http://purl.org/socialparticipation/ocd/accountable> a owl:ObjectProperty,
+        owl:functionalProperty ;
+    rdfs:domain [ owl:unionOf <http://purl.org/socialparticipation/ocd/Image>,
+                <http://purl.org/socialparticipation/ocd/Place> ] ;
+    rdfs:range [ owl:unionOf <http://purl.org/socialparticipation/ocd/Competition>,
+                <http://purl.org/socialparticipation/ocd/Observatory>,
+                <http://purl.org/socialparticipation/ocd/Post>,
+                <http://purl.org/socialparticipation/ocd/Problem>,
+                <http://purl.org/socialparticipation/ocd/Proposal>,
+                <http://purl.org/socialparticipation/ocd/User> ] .
+
+<http://purl.org/socialparticipation/ocd/autoDescription> a owl:DatatypeProperty,
+        owl:functionalProperty ;
+    rdfs:domain <http://purl.org/socialparticipation/ocd/User>,
+        <http://purl.org/socialparticipation/ocd/XMLSchema#string> .
+
+<http://purl.org/socialparticipation/ocd/birthday> a owl:DatatypeProperty,
+        owl:functionalProperty ;
+    rdfs:domain <http://purl.org/socialparticipation/ocd/User>,
+        <http://purl.org/socialparticipation/ocd/XMLSchema#dateTime> .
+
+<http://purl.org/socialparticipation/ocd/caption> a owl:DatatypeProperty,
+        owl:functionalProperty ;
+    rdfs:domain <http://purl.org/socialparticipation/ocd/Image>,
+        <http://purl.org/socialparticipation/ocd/XMLSchema#string> .
+
+<http://purl.org/socialparticipation/ocd/cep> a owl:DatatypeProperty,
+        owl:functionalProperty ;
+    rdfs:domain <http://purl.org/socialparticipation/ocd/Place>,
+        <http://purl.org/socialparticipation/ocd/XMLSchema#string> .
+
+<http://purl.org/socialparticipation/ocd/deleted> a owl:DatatypeProperty,
+        owl:functionalProperty ;
+    rdfs:domain <http://purl.org/socialparticipation/ocd/User>,
+        <http://purl.org/socialparticipation/ocd/XMLSchema#dateTime> .
+
+<http://purl.org/socialparticipation/ocd/fax> a owl:DatatypeProperty,
+        owl:functionalProperty ;
+    rdfs:domain <http://purl.org/socialparticipation/ocd/User>,
+        <http://purl.org/socialparticipation/ocd/XMLSchema#string> .
+
+<http://purl.org/socialparticipation/ocd/gender> a owl:DatatypeProperty,
+        owl:functionalProperty ;
+    rdfs:domain <http://purl.org/socialparticipation/ocd/User>,
+        <http://purl.org/socialparticipation/ocd/XMLSchema#string> .
+
+<http://purl.org/socialparticipation/ocd/height> a owl:DatatypeProperty,
+        owl:functionalProperty ;
+    rdfs:domain <http://purl.org/socialparticipation/ocd/Image>,
+        <http://purl.org/socialparticipation/ocd/XMLSchema#integer> .
+
+<http://purl.org/socialparticipation/ocd/inspirationCount> a owl:DatatypeProperty,
+        owl:functionalProperty ;
+    rdfs:domain <http://purl.org/socialparticipation/ocd/User>,
+        <http://purl.org/socialparticipation/ocd/XMLSchema#integer> ;
+    rdfs:subPropertyOf <http://purl.org/socialparticipation/ocd/counting> .
+
+<http://purl.org/socialparticipation/ocd/neighborhood> a owl:ObjectProperty,
+        owl:functionalProperty ;
+    rdfs:domain <http://purl.org/socialparticipation/ocd/Neighborhood>,
+        <http://purl.org/socialparticipation/ocd/Place> .
+
+<http://purl.org/socialparticipation/ocd/ocd.owl> a owl:Ontology ;
+    dct:description "Ontologia do Cidade Democratica, levantada com base nos dados e para conectar com outras instâncias" ;
+    dct:title "Ontologia do Cidade Democrática" ;
+    owl:versionInfo "0.01au" .
+
+<http://purl.org/socialparticipation/ocd/phone> a owl:DatatypeProperty,
+        owl:functionalProperty ;
+    rdfs:domain <http://purl.org/socialparticipation/ocd/User>,
+        <http://purl.org/socialparticipation/ocd/XMLSchema#string> .
+
+<http://purl.org/socialparticipation/ocd/site> a owl:DatatypeProperty,
+        owl:functionalProperty ;
+    rdfs:domain <http://purl.org/socialparticipation/ocd/User>,
+        <http://purl.org/socialparticipation/ocd/XMLSchema#string> .
+
+<http://purl.org/socialparticipation/ocd/tagger> a owl:ObjectProperty,
+        owl:functionalProperty ;
+    rdfs:domain <http://purl.org/socialparticipation/ocd/Tagging>,
+        <http://purl.org/socialparticipation/ocd/User> .
+
+<http://purl.org/socialparticipation/ocd/width> a owl:DatatypeProperty,
+        owl:functionalProperty ;
+    rdfs:domain <http://purl.org/socialparticipation/ocd/Image>,
+        <http://purl.org/socialparticipation/ocd/XMLSchema#integer> .
+
+<http://purl.org/socialparticipation/ocd/city> a owl:ObjectProperty,
+        owl:functionalProperty ;
+    rdfs:domain [ owl:unionOf <http://purl.org/socialparticipation/ocd/Neighborhood>,
+                <http://purl.org/socialparticipation/ocd/Place> ],
+        <http://purl.org/socialparticipation/ocd/City> .
+
+<http://purl.org/socialparticipation/ocd/state> a owl:ObjectProperty,
+        owl:functionalProperty ;
+    rdfs:domain [ owl:unionOf <http://purl.org/socialparticipation/ocd/City>,
+                <http://purl.org/socialparticipation/ocd/Place> ],
+        <http://purl.org/socialparticipation/ocd/State> .
+
+<http://purl.org/socialparticipation/ocd/tagged> a owl:ObjectProperty ;
+    rdfs:domain [ owl:unionOf <http://purl.org/socialparticipation/ocd/Tag>,
+                <http://purl.org/socialparticipation/ocd/Tagging> ] ;
+    rdfs:range [ owl:unionOf <http://purl.org/socialparticipation/ocd/MacroTag>,
+                <http://purl.org/socialparticipation/ocd/Observatory>,
+                <http://purl.org/socialparticipation/ocd/Post>,
+                <http://purl.org/socialparticipation/ocd/Problem>,
+                <http://purl.org/socialparticipation/ocd/Proposal> ] .
+
+<http://purl.org/socialparticipation/ocd/updated> a owl:DatatypeProperty,
+        owl:functionalProperty ;
+    rdfs:domain [ owl:unionOf <http://purl.org/socialparticipation/ocd/City>,
+                <http://purl.org/socialparticipation/ocd/Comment>,
+                <http://purl.org/socialparticipation/ocd/Image>,
+                <http://purl.org/socialparticipation/ocd/Inspiration>,
+                <http://purl.org/socialparticipation/ocd/Link>,
+                <http://purl.org/socialparticipation/ocd/Neighborhood>,
+                <http://purl.org/socialparticipation/ocd/Observatory>,
+                <http://purl.org/socialparticipation/ocd/Place>,
+                <http://purl.org/socialparticipation/ocd/Post>,
+                <http://purl.org/socialparticipation/ocd/Prize>,
+                <http://purl.org/socialparticipation/ocd/Problem>,
+                <http://purl.org/socialparticipation/ocd/Proposal>,
+                <http://purl.org/socialparticipation/ocd/State>,
+                <http://purl.org/socialparticipation/ocd/Support>,
+                <http://purl.org/socialparticipation/ocd/User> ],
+        <http://purl.org/socialparticipation/ocd/XMLSchema#dateTime> .
+
+<http://purl.org/socialparticipation/ocd/abbreviation> a owl:DatatypeProperty,
+        owl:functionalProperty ;
+    rdfs:domain <http://purl.org/socialparticipation/ocd/State>,
+        <http://purl.org/socialparticipation/ocd/XMLSchema#string> .
+
+<http://purl.org/socialparticipation/ocd/authorDescription> a owl:DatatypeProperty,
+        owl:functionalProperty ;
+    rdfs:domain <http://purl.org/socialparticipation/ocd/Competition>,
+        <http://purl.org/socialparticipation/ocd/XMLSchema#string> .
+
+<http://purl.org/socialparticipation/ocd/awards> a owl:DatatypeProperty,
+        owl:functionalProperty ;
+    rdfs:domain <http://purl.org/socialparticipation/ocd/Competition>,
+        <http://purl.org/socialparticipation/ocd/XMLSchema#string> .
+
+<http://purl.org/socialparticipation/ocd/competition> a owl:ObjectProperty,
+        owl:functionalProperty ;
+    rdfs:domain [ owl:unionOf <http://purl.org/socialparticipation/ocd/Inspiration>,
+                <http://purl.org/socialparticipation/ocd/Post>,
+                <http://purl.org/socialparticipation/ocd/Prize>,
+                <http://purl.org/socialparticipation/ocd/Problem>,
+                <http://purl.org/socialparticipation/ocd/Proposal> ],
+        <http://purl.org/socialparticipation/ocd/Competition> .
+
+<http://purl.org/socialparticipation/ocd/condition> a owl:DatatypeProperty,
+        owl:functionalProperty ;
+    rdfs:domain <http://purl.org/socialparticipation/ocd/User>,
+        <http://purl.org/socialparticipation/ocd/XMLSchema#string> .
+
+<http://purl.org/socialparticipation/ocd/contact> a owl:DatatypeProperty ;
+    rdfs:domain <http://purl.org/socialparticipation/ocd/Triplestore>,
+        <http://purl.org/socialparticipation/ocd/XMLSchema#string> .
+
+<http://purl.org/socialparticipation/ocd/emailTrigger> a owl:DatatypeProperty,
+        owl:functionalProperty ;
+    rdfs:domain <http://purl.org/socialparticipation/ocd/Observatory>,
+        <http://purl.org/socialparticipation/ocd/XMLSchema#boolean> .
+
+<http://purl.org/socialparticipation/ocd/filename> a owl:DatatypeProperty,
+        owl:functionalProperty ;
+    rdfs:domain <http://purl.org/socialparticipation/ocd/Image>,
+        <http://purl.org/socialparticipation/ocd/XMLSchema#string> .
+
+<http://purl.org/socialparticipation/ocd/image> a owl:DatatypeProperty,
+        owl:functionalProperty ;
+    rdfs:domain <http://purl.org/socialparticipation/ocd/Inspiration>,
+        <http://purl.org/socialparticipation/ocd/XMLSchema#string> .
+
+<http://purl.org/socialparticipation/ocd/ip> a owl:DatatypeProperty,
+        owl:functionalProperty ;
+    rdfs:domain <http://purl.org/socialparticipation/ocd/Login>,
+        <http://purl.org/socialparticipation/ocd/XMLSchema#string> .
+
+<http://purl.org/socialparticipation/ocd/longDescription> a owl:DatatypeProperty,
+        owl:functionalProperty ;
+    rdfs:domain <http://purl.org/socialparticipation/ocd/Competition>,
+        <http://purl.org/socialparticipation/ocd/XMLSchema#string> .
+
+<http://purl.org/socialparticipation/ocd/mbox> a owl:DatatypeProperty,
+        owl:functionalProperty ;
+    rdfs:domain <http://purl.org/socialparticipation/ocd/User>,
+        <http://purl.org/socialparticipation/ocd/XMLSchema#anyURI> .
+
+<http://purl.org/socialparticipation/ocd/offerer> a owl:ObjectProperty,
+        owl:functionalProperty ;
+    rdfs:domain <http://purl.org/socialparticipation/ocd/Prize>,
+        <http://purl.org/socialparticipation/ocd/User> .
+
+<http://purl.org/socialparticipation/ocd/partners> a owl:DatatypeProperty,
+        owl:functionalProperty ;
+    rdfs:domain <http://purl.org/socialparticipation/ocd/Competition>,
+        <http://purl.org/socialparticipation/ocd/XMLSchema#string> .
+
+<http://purl.org/socialparticipation/ocd/regulation> a owl:DatatypeProperty,
+        owl:functionalProperty ;
+    rdfs:domain <http://purl.org/socialparticipation/ocd/Competition>,
+        <http://purl.org/socialparticipation/ocd/XMLSchema#string> .
+
+<http://purl.org/socialparticipation/ocd/relatedOntology> a owl:DatatypeProperty,
+        owl:functionalProperty ;
+    rdfs:domain <http://purl.org/socialparticipation/ocd/Triplestore>,
+        <http://purl.org/socialparticipation/ocd/XMLSchema#string> .
+
+<http://purl.org/socialparticipation/ocd/shortDescription> a owl:DatatypeProperty,
+        owl:functionalProperty ;
+    rdfs:domain <http://purl.org/socialparticipation/ocd/Competition>,
+        <http://purl.org/socialparticipation/ocd/XMLSchema#string> .
+
+<http://purl.org/socialparticipation/ocd/size> a owl:DatatypeProperty,
+        owl:functionalProperty ;
+    rdfs:domain <http://purl.org/socialparticipation/ocd/Image>,
+        <http://purl.org/socialparticipation/ocd/XMLSchema#integer> .
+
+<http://purl.org/socialparticipation/ocd/software> a owl:DatatypeProperty,
+        owl:functionalProperty ;
+    rdfs:domain <http://purl.org/socialparticipation/ocd/Triplestore>,
+        <http://purl.org/socialparticipation/ocd/XMLSchema#string> .
+
+<http://purl.org/socialparticipation/ocd/start> a owl:DatatypeProperty,
+        owl:functionalProperty ;
+    rdfs:domain <http://purl.org/socialparticipation/ocd/Competition>,
+        <http://purl.org/socialparticipation/ocd/XMLSchema#dateTime> .
+
+<http://purl.org/socialparticipation/ocd/supporter> a owl:ObjectProperty ;
+    rdfs:domain <http://purl.org/socialparticipation/ocd/Support>,
+        <http://purl.org/socialparticipation/ocd/User> .
+
+<http://purl.org/socialparticipation/ocd/tag> a owl:ObjectProperty,
+        owl:functionalProperty ;
+    rdfs:domain <http://purl.org/socialparticipation/ocd/Tag>,
+        <http://purl.org/socialparticipation/ocd/Tagging> .
+
+<http://purl.org/socialparticipation/ocd/text> a owl:DatatypeProperty,
+        owl:functionalProperty ;
+    rdfs:domain <http://purl.org/socialparticipation/ocd/Tag>,
+        <http://purl.org/socialparticipation/ocd/XMLSchema#string> .
+
+<http://purl.org/socialparticipation/ocd/url> a owl:DatatypeProperty,
+        owl:functionalProperty ;
+    rdfs:domain [ owl:unionOf <http://purl.org/socialparticipation/ocd/Link>,
+                <http://purl.org/socialparticipation/ocd/Triplestore> ],
+        <http://purl.org/socialparticipation/ocd/XMLSchema#string> .
+
+<http://purl.org/socialparticipation/ocd/user> a owl:ObjectProperty,
+        owl:functionalProperty ;
+    rdfs:domain [ owl:unionOf <http://purl.org/socialparticipation/ocd/Login>,
+                <http://purl.org/socialparticipation/ocd/Observatory> ],
+        <http://purl.org/socialparticipation/ocd/User> .
+
+<http://purl.org/socialparticipation/ocd/Login> rdfs:subClassOf [ a owl:Restriction ;
+            owl:allValuesFrom xsd:string ;
+            owl:onProperty <http://purl.org/socialparticipation/ocd/ip> ],
+        [ a owl:Restriction ;
+            owl:onProperty <http://purl.org/socialparticipation/ocd/user> ;
+            owl:someValuesFrom <http://purl.org/socialparticipation/ocd/User> ],
+        [ a owl:Restriction ;
+            owl:onProperty <http://purl.org/socialparticipation/ocd/created> ;
+            owl:someValuesFrom xsd:dateTime ],
+        [ a owl:Restriction ;
+            owl:onProperty <http://purl.org/socialparticipation/ocd/ip> ;
+            owl:someValuesFrom xsd:string ] .
+
+<http://purl.org/socialparticipation/ocd/body> a owl:DatatypeProperty,
+        owl:functionalProperty ;
+    rdfs:domain [ owl:unionOf <http://purl.org/socialparticipation/ocd/Comment>,
+                <http://purl.org/socialparticipation/ocd/Post>,
+                <http://purl.org/socialparticipation/ocd/Problem>,
+                <http://purl.org/socialparticipation/ocd/Proposal> ],
+        <http://purl.org/socialparticipation/ocd/XMLSchema#string> .
+
+<http://purl.org/socialparticipation/ocd/description> a owl:DatatypeProperty,
+        owl:functionalProperty ;
+    rdfs:domain [ owl:unionOf <http://purl.org/socialparticipation/ocd/Inspiration>,
+                <http://purl.org/socialparticipation/ocd/Link>,
+                <http://purl.org/socialparticipation/ocd/Prize> ],
+        <http://purl.org/socialparticipation/ocd/XMLSchema#string> .
+
+<http://purl.org/socialparticipation/ocd/topic> a owl:ObjectProperty,
+        owl:functionalProperty ;
+    rdfs:domain [ owl:unionOf <http://purl.org/socialparticipation/ocd/Comment>,
+                <http://purl.org/socialparticipation/ocd/Link>,
+                <http://purl.org/socialparticipation/ocd/Prize>,
+                <http://purl.org/socialparticipation/ocd/Support> ] ;
+    rdfs:range [ owl:unionOf <http://purl.org/socialparticipation/ocd/Post>,
+                <http://purl.org/socialparticipation/ocd/Problem>,
+                <http://purl.org/socialparticipation/ocd/Proposal> ] .
+
+<http://purl.org/socialparticipation/ocd/type> a owl:DatatypeProperty,
+        owl:functionalProperty ;
+    rdfs:domain [ owl:unionOf <http://purl.org/socialparticipation/ocd/Comment>,
+                <http://purl.org/socialparticipation/ocd/Image>,
+                <http://purl.org/socialparticipation/ocd/User> ],
+        <http://purl.org/socialparticipation/ocd/XMLSchema#string> .
+
+<http://purl.org/socialparticipation/ocd/MacroTag> rdfs:subClassOf [ a owl:Restriction ;
+            owl:onProperty <http://purl.org/socialparticipation/ocd/created> ;
+            owl:someValuesFrom xsd:dateTime ],
+        [ a owl:Restriction ;
+            owl:onProperty <http://purl.org/socialparticipation/ocd/title> ;
+            owl:someValuesFrom xsd:string ] .
+
+<http://purl.org/socialparticipation/ocd/Support> rdfs:subClassOf [ a owl:Restriction ;
+            owl:onProperty <http://purl.org/socialparticipation/ocd/created> ;
+            owl:someValuesFrom xsd:dateTime ],
+        [ a owl:Restriction ;
+            owl:onProperty <http://purl.org/socialparticipation/ocd/topic> ;
+            owl:someValuesFrom <http://purl.org/socialparticipation/ocd/Proposal> ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom <http://purl.org/socialparticipation/ocd/User> ;
+            owl:onProperty <http://purl.org/socialparticipation/ocd/supporter> ],
+        [ a owl:Restriction ;
+            owl:onProperty <http://purl.org/socialparticipation/ocd/supporter> ;
+            owl:someValuesFrom <http://purl.org/socialparticipation/ocd/User> ] .
+
+<http://purl.org/socialparticipation/ocd/Tagging> rdfs:subClassOf [ a owl:Restriction ;
+            owl:onProperty <http://purl.org/socialparticipation/ocd/tagged> ;
+            owl:someValuesFrom <http://purl.org/socialparticipation/ocd/MacroTag> ],
+        [ a owl:Restriction ;
+            owl:onProperty <http://purl.org/socialparticipation/ocd/created> ;
+            owl:someValuesFrom xsd:dateTime ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom <http://purl.org/socialparticipation/ocd/Tag> ;
+            owl:onProperty <http://purl.org/socialparticipation/ocd/tag> ],
+        [ a owl:Restriction ;
+            owl:onProperty <http://purl.org/socialparticipation/ocd/tag> ;
+            owl:someValuesFrom <http://purl.org/socialparticipation/ocd/Tag> ] .
+
+<http://purl.org/socialparticipation/ocd/commentCount> a owl:DatatypeProperty,
+        owl:functionalProperty ;
+    rdfs:domain [ owl:unionOf <http://purl.org/socialparticipation/ocd/Post>,
+                <http://purl.org/socialparticipation/ocd/Problem>,
+                <http://purl.org/socialparticipation/ocd/Proposal> ],
+        <http://purl.org/socialparticipation/ocd/XMLSchema#integer> ;
+    rdfs:subPropertyOf <http://purl.org/socialparticipation/ocd/counting> .
+
+<http://purl.org/socialparticipation/ocd/followersCount> a owl:DatatypeProperty,
+        owl:functionalProperty ;
+    rdfs:domain [ owl:unionOf <http://purl.org/socialparticipation/ocd/Post>,
+                <http://purl.org/socialparticipation/ocd/Problem>,
+                <http://purl.org/socialparticipation/ocd/Proposal> ],
+        <http://purl.org/socialparticipation/ocd/XMLSchema#integer> ;
+    rdfs:subPropertyOf <http://purl.org/socialparticipation/ocd/counting> .
+
+<http://purl.org/socialparticipation/ocd/supportCount> a owl:DatatypeProperty,
+        owl:functionalProperty ;
+    rdfs:domain [ owl:unionOf <http://purl.org/socialparticipation/ocd/Post>,
+                <http://purl.org/socialparticipation/ocd/Problem>,
+                <http://purl.org/socialparticipation/ocd/Proposal> ],
+        <http://purl.org/socialparticipation/ocd/XMLSchema#integer> ;
+    rdfs:subPropertyOf <http://purl.org/socialparticipation/ocd/counting> .
+
+<http://purl.org/socialparticipation/ocd/Link> rdfs:subClassOf [ a owl:Restriction ;
+            owl:onProperty <http://purl.org/socialparticipation/ocd/description> ;
+            owl:someValuesFrom xsd:string ],
+        [ a owl:Restriction ;
+            owl:onProperty <http://purl.org/socialparticipation/ocd/url> ;
+            owl:someValuesFrom xsd:string ],
+        [ a owl:Restriction ;
+            owl:onProperty <http://purl.org/socialparticipation/ocd/created> ;
+            owl:someValuesFrom xsd:dateTime ] .
+
+<http://purl.org/socialparticipation/ocd/Triplestore> rdfs:subClassOf [ a owl:Restriction ;
+            owl:allValuesFrom xsd:string ;
+            owl:onProperty <http://purl.org/socialparticipation/ocd/software> ],
+        [ a owl:Restriction ;
+            owl:onProperty <http://purl.org/socialparticipation/ocd/created> ;
+            owl:someValuesFrom xsd:dateTime ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom xsd:string ;
+            owl:onProperty <http://purl.org/socialparticipation/ocd/relatedOntology> ],
+        [ a owl:Restriction ;
+            owl:onProperty <http://purl.org/socialparticipation/ocd/contact> ;
+            owl:someValuesFrom xsd:string ],
+        [ a owl:Restriction ;
+            owl:onProperty <http://purl.org/socialparticipation/ocd/software> ;
+            owl:someValuesFrom xsd:string ],
+        [ a owl:Restriction ;
+            owl:onProperty <http://purl.org/socialparticipation/ocd/relatedOntology> ;
+            owl:someValuesFrom xsd:string ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom xsd:string ;
+            owl:onProperty <http://purl.org/socialparticipation/ocd/contact> ],
+        [ a owl:Restriction ;
+            owl:onProperty <http://purl.org/socialparticipation/ocd/url> ;
+            owl:someValuesFrom xsd:string ] .
+
+<http://purl.org/socialparticipation/ocd/author> a owl:ObjectProperty,
+        owl:functionalProperty ;
+    rdfs:domain [ owl:unionOf <http://purl.org/socialparticipation/ocd/Comment>,
+                <http://purl.org/socialparticipation/ocd/Inspiration>,
+                <http://purl.org/socialparticipation/ocd/Post>,
+                <http://purl.org/socialparticipation/ocd/Problem>,
+                <http://purl.org/socialparticipation/ocd/Proposal> ],
+        <http://purl.org/socialparticipation/ocd/User> .
+
+<http://purl.org/socialparticipation/ocd/name> a owl:DatatypeProperty,
+        owl:functionalProperty ;
+    rdfs:domain [ owl:unionOf <http://purl.org/socialparticipation/ocd/City>,
+                <http://purl.org/socialparticipation/ocd/Competition>,
+                <http://purl.org/socialparticipation/ocd/Neighborhood>,
+                <http://purl.org/socialparticipation/ocd/Prize>,
+                <http://purl.org/socialparticipation/ocd/State>,
+                <http://purl.org/socialparticipation/ocd/User> ],
+        <http://purl.org/socialparticipation/ocd/XMLSchema#string> .
+
+<http://purl.org/socialparticipation/ocd/title> a owl:DatatypeProperty,
+        owl:functionalProperty ;
+    rdfs:domain [ owl:unionOf <http://purl.org/socialparticipation/ocd/Inspiration>,
+                <http://purl.org/socialparticipation/ocd/MacroTag>,
+                <http://purl.org/socialparticipation/ocd/Post>,
+                <http://purl.org/socialparticipation/ocd/Problem>,
+                <http://purl.org/socialparticipation/ocd/Proposal> ],
+        <http://purl.org/socialparticipation/ocd/XMLSchema#string> .
+
+<http://purl.org/socialparticipation/ocd/Comment> rdfs:subClassOf [ a owl:Restriction ;
+            owl:onProperty <http://purl.org/socialparticipation/ocd/type> ;
+            owl:someValuesFrom xsd:string ],
+        [ a owl:Restriction ;
+            owl:onProperty <http://purl.org/socialparticipation/ocd/created> ;
+            owl:someValuesFrom xsd:dateTime ],
+        [ a owl:Restriction ;
+            owl:onProperty <http://purl.org/socialparticipation/ocd/topic> ;
+            owl:someValuesFrom <http://purl.org/socialparticipation/ocd/Proposal> ],
+        [ a owl:Restriction ;
+            owl:onProperty <http://purl.org/socialparticipation/ocd/author> ;
+            owl:someValuesFrom <http://purl.org/socialparticipation/ocd/User> ] .
+
+<http://purl.org/socialparticipation/ocd/Neighborhood> rdfs:subClassOf [ a owl:Restriction ;
+            owl:onProperty <http://purl.org/socialparticipation/ocd/name> ;
+            owl:someValuesFrom xsd:string ],
+        [ a owl:Restriction ;
+            owl:onProperty <http://purl.org/socialparticipation/ocd/city> ;
+            owl:someValuesFrom <http://purl.org/socialparticipation/ocd/City> ],
+        [ a owl:Restriction ;
+            owl:onProperty <http://purl.org/socialparticipation/ocd/relevance> ;
+            owl:someValuesFrom xsd:integer ],
+        [ a owl:Restriction ;
+            owl:onProperty <http://purl.org/socialparticipation/ocd/created> ;
+            owl:someValuesFrom xsd:dateTime ] .
+
+<http://purl.org/socialparticipation/ocd/Observatory> rdfs:subClassOf [ a owl:Restriction ;
+            owl:onProperty <http://purl.org/socialparticipation/ocd/user> ;
+            owl:someValuesFrom <http://purl.org/socialparticipation/ocd/User> ],
+        [ a owl:Restriction ;
+            owl:onProperty <http://purl.org/socialparticipation/ocd/emailTrigger> ;
+            owl:someValuesFrom xsd:boolean ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom xsd:boolean ;
+            owl:onProperty <http://purl.org/socialparticipation/ocd/emailTrigger> ],
+        [ a owl:Restriction ;
+            owl:onProperty <http://purl.org/socialparticipation/ocd/created> ;
+            owl:someValuesFrom xsd:dateTime ] .
+
+<http://purl.org/socialparticipation/ocd/Tag> rdfs:subClassOf [ a owl:Restriction ;
+            owl:onProperty <http://purl.org/socialparticipation/ocd/relevance> ;
+            owl:someValuesFrom xsd:integer ],
+        [ a owl:Restriction ;
+            owl:onProperty <http://purl.org/socialparticipation/ocd/text> ;
+            owl:someValuesFrom xsd:string ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom xsd:string ;
+            owl:onProperty <http://purl.org/socialparticipation/ocd/text> ] .
+
+<http://purl.org/socialparticipation/ocd/City> rdfs:subClassOf [ a owl:Restriction ;
+            owl:onProperty <http://purl.org/socialparticipation/ocd/name> ;
+            owl:someValuesFrom xsd:string ],
+        [ a owl:Restriction ;
+            owl:onProperty <http://purl.org/socialparticipation/ocd/state> ;
+            owl:someValuesFrom <http://purl.org/socialparticipation/ocd/State> ],
+        [ a owl:Restriction ;
+            owl:onProperty <http://purl.org/socialparticipation/ocd/relevance> ;
+            owl:someValuesFrom xsd:integer ],
+        [ a owl:Restriction ;
+            owl:onProperty <http://purl.org/socialparticipation/ocd/created> ;
+            owl:someValuesFrom xsd:dateTime ] .
+
+<http://purl.org/socialparticipation/ocd/Inspiration> rdfs:subClassOf [ a owl:Restriction ;
+            owl:onProperty <http://purl.org/socialparticipation/ocd/author> ;
+            owl:someValuesFrom <http://purl.org/socialparticipation/ocd/User> ],
+        [ a owl:Restriction ;
+            owl:onProperty <http://purl.org/socialparticipation/ocd/competition> ;
+            owl:someValuesFrom <http://purl.org/socialparticipation/ocd/Competition> ],
+        [ a owl:Restriction ;
+            owl:onProperty <http://purl.org/socialparticipation/ocd/image> ;
+            owl:someValuesFrom xsd:string ],
+        [ a owl:Restriction ;
+            owl:onProperty <http://purl.org/socialparticipation/ocd/created> ;
+            owl:someValuesFrom xsd:dateTime ],
+        [ a owl:Restriction ;
+            owl:onProperty <http://purl.org/socialparticipation/ocd/title> ;
+            owl:someValuesFrom xsd:string ],
+        [ a owl:Restriction ;
+            owl:onProperty <http://purl.org/socialparticipation/ocd/description> ;
+            owl:someValuesFrom xsd:string ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom xsd:string ;
+            owl:onProperty <http://purl.org/socialparticipation/ocd/image> ] .
+
+<http://purl.org/socialparticipation/ocd/Prize> rdfs:subClassOf [ a owl:Restriction ;
+            owl:allValuesFrom <http://purl.org/socialparticipation/ocd/User> ;
+            owl:onProperty <http://purl.org/socialparticipation/ocd/offerer> ],
+        [ a owl:Restriction ;
+            owl:onProperty <http://purl.org/socialparticipation/ocd/created> ;
+            owl:someValuesFrom xsd:dateTime ],
+        [ a owl:Restriction ;
+            owl:onProperty <http://purl.org/socialparticipation/ocd/offerer> ;
+            owl:someValuesFrom <http://purl.org/socialparticipation/ocd/User> ],
+        [ a owl:Restriction ;
+            owl:onProperty <http://purl.org/socialparticipation/ocd/topic> ;
+            owl:someValuesFrom <http://purl.org/socialparticipation/ocd/Problem> ],
+        [ a owl:Restriction ;
+            owl:onProperty <http://purl.org/socialparticipation/ocd/updated> ;
+            owl:someValuesFrom xsd:dateTime ],
+        [ a owl:Restriction ;
+            owl:onProperty <http://purl.org/socialparticipation/ocd/name> ;
+            owl:someValuesFrom xsd:string ],
+        [ a owl:Restriction ;
+            owl:onProperty <http://purl.org/socialparticipation/ocd/competition> ;
+            owl:someValuesFrom <http://purl.org/socialparticipation/ocd/Competition> ],
+        [ a owl:Restriction ;
+            owl:onProperty <http://purl.org/socialparticipation/ocd/description> ;
+            owl:someValuesFrom xsd:string ] .
+
+<http://purl.org/socialparticipation/ocd/State> rdfs:subClassOf [ a owl:Restriction ;
+            owl:allValuesFrom xsd:string ;
+            owl:onProperty <http://purl.org/socialparticipation/ocd/abbreviation> ],
+        [ a owl:Restriction ;
+            owl:onProperty <http://purl.org/socialparticipation/ocd/relevance> ;
+            owl:someValuesFrom xsd:integer ],
+        [ a owl:Restriction ;
+            owl:onProperty <http://purl.org/socialparticipation/ocd/abbreviation> ;
+            owl:someValuesFrom xsd:string ],
+        [ a owl:Restriction ;
+            owl:onProperty <http://purl.org/socialparticipation/ocd/created> ;
+            owl:someValuesFrom xsd:dateTime ],
+        [ a owl:Restriction ;
+            owl:onProperty <http://purl.org/socialparticipation/ocd/name> ;
+            owl:someValuesFrom xsd:string ] .
+
+<http://purl.org/socialparticipation/ocd/relevance> a owl:DatatypeProperty,
+        owl:functionalProperty ;
+    rdfs:domain [ owl:unionOf <http://purl.org/socialparticipation/ocd/City>,
+                <http://purl.org/socialparticipation/ocd/Neighborhood>,
+                <http://purl.org/socialparticipation/ocd/Post>,
+                <http://purl.org/socialparticipation/ocd/Problem>,
+                <http://purl.org/socialparticipation/ocd/Proposal>,
+                <http://purl.org/socialparticipation/ocd/State>,
+                <http://purl.org/socialparticipation/ocd/Tag>,
+                <http://purl.org/socialparticipation/ocd/User> ],
+        <http://purl.org/socialparticipation/ocd/XMLSchema#integer> .
+
+<http://purl.org/socialparticipation/ocd/Image> rdfs:subClassOf [ a owl:Restriction ;
+            owl:allValuesFrom xsd:string ;
+            owl:onProperty <http://purl.org/socialparticipation/ocd/filename> ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom xsd:integer ;
+            owl:onProperty <http://purl.org/socialparticipation/ocd/size> ],
+        [ a owl:Restriction ;
+            owl:onProperty <http://purl.org/socialparticipation/ocd/created> ;
+            owl:someValuesFrom xsd:dateTime ],
+        [ a owl:Restriction ;
+            owl:onProperty <http://purl.org/socialparticipation/ocd/size> ;
+            owl:someValuesFrom xsd:integer ],
+        [ a owl:Restriction ;
+            owl:onProperty <http://purl.org/socialparticipation/ocd/type> ;
+            owl:someValuesFrom xsd:string ],
+        [ a owl:Restriction ;
+            owl:onProperty <http://purl.org/socialparticipation/ocd/filename> ;
+            owl:someValuesFrom xsd:string ] .
+
+<http://purl.org/socialparticipation/ocd/Competition> rdfs:subClassOf [ a owl:Restriction ;
+            owl:allValuesFrom xsd:string ;
+            owl:onProperty <http://purl.org/socialparticipation/ocd/regulation> ],
+        [ a owl:Restriction ;
+            owl:onProperty <http://purl.org/socialparticipation/ocd/awards> ;
+            owl:someValuesFrom xsd:string ],
+        [ a owl:Restriction ;
+            owl:onProperty <http://purl.org/socialparticipation/ocd/authorDescription> ;
+            owl:someValuesFrom xsd:string ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom xsd:string ;
+            owl:onProperty <http://purl.org/socialparticipation/ocd/authorDescription> ],
+        [ a owl:Restriction ;
+            owl:onProperty <http://purl.org/socialparticipation/ocd/created> ;
+            owl:someValuesFrom xsd:dateTime ],
+        [ a owl:Restriction ;
+            owl:onProperty <http://purl.org/socialparticipation/ocd/shortDescription> ;
+            owl:someValuesFrom xsd:string ],
+        [ a owl:Restriction ;
+            owl:onProperty <http://purl.org/socialparticipation/ocd/regulation> ;
+            owl:someValuesFrom xsd:string ],
+        [ a owl:Restriction ;
+            owl:onProperty <http://purl.org/socialparticipation/ocd/name> ;
+            owl:someValuesFrom xsd:string ],
+        [ a owl:Restriction ;
+            owl:onProperty <http://purl.org/socialparticipation/ocd/partners> ;
+            owl:someValuesFrom xsd:string ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom xsd:string ;
+            owl:onProperty <http://purl.org/socialparticipation/ocd/longDescription> ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom xsd:string ;
+            owl:onProperty <http://purl.org/socialparticipation/ocd/partners> ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom xsd:string ;
+            owl:onProperty <http://purl.org/socialparticipation/ocd/shortDescription> ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom xsd:dateTime ;
+            owl:onProperty <http://purl.org/socialparticipation/ocd/start> ],
+        [ a owl:Restriction ;
+            owl:onProperty <http://purl.org/socialparticipation/ocd/start> ;
+            owl:someValuesFrom xsd:dateTime ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom xsd:string ;
+            owl:onProperty <http://purl.org/socialparticipation/ocd/awards> ],
+        [ a owl:Restriction ;
+            owl:onProperty <http://purl.org/socialparticipation/ocd/longDescription> ;
+            owl:someValuesFrom xsd:string ] .
+
+<http://purl.org/socialparticipation/ocd/Problem> rdfs:subClassOf [ a owl:Restriction ;
+            owl:onProperty <http://purl.org/socialparticipation/ocd/relevance> ;
+            owl:someValuesFrom xsd:integer ],
+        [ a owl:Restriction ;
+            owl:onProperty <http://purl.org/socialparticipation/ocd/followersCount> ;
+            owl:someValuesFrom xsd:integer ],
+        [ a owl:Restriction ;
+            owl:onProperty <http://purl.org/socialparticipation/ocd/commentCount> ;
+            owl:someValuesFrom xsd:integer ],
+        [ a owl:Restriction ;
+            owl:onProperty <http://purl.org/socialparticipation/ocd/body> ;
+            owl:someValuesFrom xsd:string ],
+        [ a owl:Restriction ;
+            owl:onProperty <http://purl.org/socialparticipation/ocd/author> ;
+            owl:someValuesFrom <http://purl.org/socialparticipation/ocd/User> ],
+        [ a owl:Restriction ;
+            owl:onProperty <http://purl.org/socialparticipation/ocd/created> ;
+            owl:someValuesFrom xsd:dateTime ],
+        [ a owl:Restriction ;
+            owl:onProperty <http://purl.org/socialparticipation/ocd/title> ;
+            owl:someValuesFrom xsd:string ],
+        [ a owl:Restriction ;
+            owl:onProperty <http://purl.org/socialparticipation/ocd/supportCount> ;
+            owl:someValuesFrom xsd:integer ],
+        <http://purl.org/socialparticipation/ocd/Post> .
+
+<http://purl.org/socialparticipation/ocd/Post> rdfs:subClassOf [ a owl:Restriction ;
+            owl:onProperty <http://purl.org/socialparticipation/ocd/body> ;
+            owl:someValuesFrom xsd:string ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom xsd:integer ;
+            owl:onProperty <http://purl.org/socialparticipation/ocd/followersCount> ],
+        [ a owl:Restriction ;
+            owl:onProperty <http://purl.org/socialparticipation/ocd/author> ;
+            owl:someValuesFrom <http://purl.org/socialparticipation/ocd/User> ],
+        [ a owl:Restriction ;
+            owl:onProperty <http://purl.org/socialparticipation/ocd/relevance> ;
+            owl:someValuesFrom xsd:integer ],
+        [ a owl:Restriction ;
+            owl:onProperty <http://purl.org/socialparticipation/ocd/title> ;
+            owl:someValuesFrom xsd:string ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom xsd:integer ;
+            owl:onProperty <http://purl.org/socialparticipation/ocd/supportCount> ],
+        [ a owl:Restriction ;
+            owl:onProperty <http://purl.org/socialparticipation/ocd/followersCount> ;
+            owl:someValuesFrom xsd:integer ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom xsd:integer ;
+            owl:onProperty <http://purl.org/socialparticipation/ocd/commentCount> ],
+        [ a owl:Restriction ;
+            owl:onProperty <http://purl.org/socialparticipation/ocd/created> ;
+            owl:someValuesFrom xsd:dateTime ],
+        [ a owl:Restriction ;
+            owl:onProperty <http://purl.org/socialparticipation/ocd/commentCount> ;
+            owl:someValuesFrom xsd:integer ],
+        [ a owl:Restriction ;
+            owl:onProperty <http://purl.org/socialparticipation/ocd/supportCount> ;
+            owl:someValuesFrom xsd:integer ] .
+
+<http://purl.org/socialparticipation/ocd/Proposal> rdfs:subClassOf [ a owl:Restriction ;
+            owl:onProperty <http://purl.org/socialparticipation/ocd/created> ;
+            owl:someValuesFrom xsd:dateTime ],
+        [ a owl:Restriction ;
+            owl:onProperty <http://purl.org/socialparticipation/ocd/supportCount> ;
+            owl:someValuesFrom xsd:integer ],
+        [ a owl:Restriction ;
+            owl:onProperty <http://purl.org/socialparticipation/ocd/followersCount> ;
+            owl:someValuesFrom xsd:integer ],
+        [ a owl:Restriction ;
+            owl:onProperty <http://purl.org/socialparticipation/ocd/body> ;
+            owl:someValuesFrom xsd:string ],
+        [ a owl:Restriction ;
+            owl:onProperty <http://purl.org/socialparticipation/ocd/relevance> ;
+            owl:someValuesFrom xsd:integer ],
+        [ a owl:Restriction ;
+            owl:onProperty <http://purl.org/socialparticipation/ocd/commentCount> ;
+            owl:someValuesFrom xsd:integer ],
+        [ a owl:Restriction ;
+            owl:onProperty <http://purl.org/socialparticipation/ocd/author> ;
+            owl:someValuesFrom <http://purl.org/socialparticipation/ocd/User> ],
+        [ a owl:Restriction ;
+            owl:onProperty <http://purl.org/socialparticipation/ocd/title> ;
+            owl:someValuesFrom xsd:string ],
+        <http://purl.org/socialparticipation/ocd/Post> .
+
+<http://purl.org/socialparticipation/ocd/created> a owl:DatatypeProperty,
+        owl:functionalProperty ;
+    rdfs:domain [ owl:unionOf <http://purl.org/socialparticipation/ocd/City>,
+                <http://purl.org/socialparticipation/ocd/Comment>,
+                <http://purl.org/socialparticipation/ocd/Competition>,
+                <http://purl.org/socialparticipation/ocd/Image>,
+                <http://purl.org/socialparticipation/ocd/Inspiration>,
+                <http://purl.org/socialparticipation/ocd/Link>,
+                <http://purl.org/socialparticipation/ocd/Login>,
+                <http://purl.org/socialparticipation/ocd/MacroTag>,
+                <http://purl.org/socialparticipation/ocd/Neighborhood>,
+                <http://purl.org/socialparticipation/ocd/Observatory>,
+                <http://purl.org/socialparticipation/ocd/Place>,
+                <http://purl.org/socialparticipation/ocd/Post>,
+                <http://purl.org/socialparticipation/ocd/Prize>,
+                <http://purl.org/socialparticipation/ocd/Problem>,
+                <http://purl.org/socialparticipation/ocd/Proposal>,
+                <http://purl.org/socialparticipation/ocd/State>,
+                <http://purl.org/socialparticipation/ocd/Support>,
+                <http://purl.org/socialparticipation/ocd/Tagging>,
+                <http://purl.org/socialparticipation/ocd/Triplestore>,
+                <http://purl.org/socialparticipation/ocd/User> ],
+        <http://purl.org/socialparticipation/ocd/XMLSchema#dateTime> .
+
+<http://purl.org/socialparticipation/ocd/User> rdfs:subClassOf [ a owl:Restriction ;
+            owl:onProperty <http://purl.org/socialparticipation/ocd/created> ;
+            owl:someValuesFrom xsd:dateTime ],
+        [ a owl:Restriction ;
+            owl:onProperty <http://purl.org/socialparticipation/ocd/condition> ;
+            owl:someValuesFrom xsd:string ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom xsd:string ;
+            owl:onProperty <http://purl.org/socialparticipation/ocd/condition> ],
+        [ a owl:Restriction ;
+            owl:onProperty <http://purl.org/socialparticipation/ocd/mbox> ],
+        [ a owl:Restriction ;
+            owl:onProperty <http://purl.org/socialparticipation/ocd/mbox> ],
+        [ a owl:Restriction ;
+            owl:onProperty <http://purl.org/socialparticipation/ocd/relevance> ;
+            owl:someValuesFrom xsd:integer ],
+        [ a owl:Restriction ;
+            owl:onProperty <http://purl.org/socialparticipation/ocd/type> ;
+            owl:someValuesFrom xsd:string ] .
+

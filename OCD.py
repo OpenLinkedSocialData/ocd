@@ -301,7 +301,7 @@ f.close()
 
 # CHECKPOINT
 o=open("dumpCheck.pickle","rb")
-g,props,classes,vv_,P_=pickle.load(fo)
+g,props,classes,vv_,P_=pickle.load(o)
 o.close()
 # 6.2) qualificação das propriedades: range, domain e axioma de propriedade
 # owl:ObjectProperty, owl:DatatypeProperty or owl:AnnotationProperty
@@ -567,8 +567,12 @@ for tkey in kk:
                 e.attr["arrowsize"]=2.
                 print "UNIVERSAL"
 
-A.draw("imgs/OCD_.png",prog="twopi",args="-Granksep=14")
-A.draw("imgs/OCD_2.png",prog="dot",args="-Granksep=14 -Gsize='1000,1000'")
+#A.draw("imgs/OCD_.png",prog="twopi",args="-Granksep=14")
+#A.draw("imgs/OCD_2.png",prog="dot",args="-Granksep=14 -Gsize='1000,1000'")
+A.draw("imgs/OCD_.png",prog="dot")
+A.draw("imgs/OCD_2.png",prog="circo")
+A.draw("imgs/OCD_3.png",prog="fdp")
+A.draw("imgs/OCD_4.png",prog="twopi")
 print("Wrote geral _ ")
 
 # figura com as propriedades
@@ -679,6 +683,14 @@ g.add((ouri,dct.description,r.Literal(u"Ontologia do Cidade Democratica, levanta
 
 
 # 8) Escreve OWL, TTL e PNG
+
+f=open("OCD.owl","wb")
+f.write(g.serialize())
+f.close()
+f=open("OCD.ttl","wb")
+f.write(g.serialize(format="turtle"))
+f.close()
+
 
 # 9) Sobe no endpoint para mais testes
 
